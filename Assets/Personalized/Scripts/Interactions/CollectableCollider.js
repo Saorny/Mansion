@@ -1,22 +1,43 @@
 #pragma strict
 
-var sound 			: AudioClip;
-var ItemType 		: ObjectType;
-var ItemName		: String;
-var ItemDescription : String;
-var ItemIcon 		: Texture;
-var hero 			: Interaction;
-var object			: GameObject;
-var _heroBody 		: Transform;
-
-function OnTriggerStay(body : Collider)
+@DoNotSerialize
+public class CollectableCollider extends MonoBehaviour
 {
-	if (body.transform == _heroBody && Input.GetButtonDown("Use") && object.renderer.isVisible) 
-   	{
-		this.hero.getCollectable(ItemType, ItemName, ItemDescription, ItemIcon);
-		if (sound)
-			AudioSource.PlayClipAtPoint(sound, transform.position, 20);
-		Destroy (object.gameObject);
-		Destroy (this);
-   	}
+	public var sound 			: AudioClip;
+	public var ItemType 		: ObjectType;
+	public var ItemName			: String;
+	public var ItemDescription 	: String;
+	public var ItemIcon 		: Texture;	
+	public var object			: GameObject;
+	private var _hero 			: Interaction;
+	private var _heroBody 		: Transform;
+
+	public function		Awake() : void
+	{
+		this.loadComponents();
+	}
+
+	public function		OnTriggerStay(body : Collider)
+	{
+		if (body.transform == this._heroBody && Input.GetButtonDown("Use") && this.object.renderer.isVisible) 
+	   	{
+			this._hero.getCollectable(this.ItemType, this.ItemName, this.ItemDescription, this.ItemIcon);
+			if (this.sound)
+				AudioSource.PlayClipAtPoint(this.sound, transform.position, 20);
+			Destroy (this.object.gameObject);
+			Destroy (this);
+	   	}
+	}
+	
+	public function		getHero() : Interaction { return (this._hero); }
+	public function		getHeroBody() : Transform { return (this._heroBody); }
+	
+	private function	loadComponents() : void
+	{
+		var	hero : GameObject;
+	
+		hero = GameObject.Find("Hero");
+		this._heroBody = hero.transform;
+		this._hero = hero.GetComponent("Interaction") as Interaction;
+	}
 }

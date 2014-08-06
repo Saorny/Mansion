@@ -470,8 +470,6 @@ function OnControllerColliderHit (hit : ControllerColliderHit) {
 	var	collision_type : CollisionType;
 	
 	collision_type = hit.collider.gameObject.GetComponent(CollisionType);
-	/*if (collision_type != null)
-		print(collision_type.getType());*/
 
 	if (hit.normal.y > 0 && hit.normal.y > groundNormal.y && hit.moveDirection.y < 0) {
 		if ((hit.point - movement.lastHitPoint).sqrMagnitude > 0.001 || lastGroundNormal == Vector3.zero)
@@ -486,10 +484,13 @@ function OnControllerColliderHit (hit : ControllerColliderHit) {
 	
 	if (body == null || body.isKinematic) { return; }
 	if (hit.moveDirection.y < -0.3) { return; }
-	var pushDir = Vector3 (hit.moveDirection.x, 0, hit.moveDirection.z);
-	body.velocity = pushDir * _pushPower;
-	this._soundManager.playSoundType(parseInt(SoundType.SPEAK), parseInt(HeroVoice.BREATHING));
-	this._soundManager.playSoundType(parseInt(SoundType.PUSH), this._soundManager.getWalkingOn());
+	if (hit.gameObject.rigidbody)
+	{
+		var pushDir = Vector3 (hit.moveDirection.x, 0, hit.moveDirection.z);
+		body.velocity = pushDir * _pushPower;
+		this._soundManager.playSoundType(parseInt(SoundType.SPEAK), parseInt(HeroVoice.BREATHING));
+		this._soundManager.playSoundType(parseInt(SoundType.PUSH), this._soundManager.getWalkingOn());
+	}
 }
 
 private function SubtractNewPlatformVelocity () {

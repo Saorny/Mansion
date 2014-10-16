@@ -13,7 +13,7 @@ public function		OnTriggerEnter (body : Collider)
 	{
 		this.resetGhostInfluence();
 		this._sun.intensity = 0;
-		this._sun.gameObject.active = true;
+		this._sun.gameObject.SetActive(true);
 		this.changeLightIntensity(1.0, 3.0);
 	}
 }
@@ -24,7 +24,7 @@ public function		OnTriggerExit(body : Collider)
 	{
 		this.resetGhostInfluence();
 		yield this.changeLightIntensity(-this._sun.intensity, this._sun.intensity);
-		this._sun.gameObject.active = false;
+		this._sun.gameObject.SetActive(false);
 	}
 }
 
@@ -95,5 +95,5 @@ private function	manageThresholds() : void
 private function	makeMoonLightAppear(val : boolean) : void
 {
 	for (var child  : Transform in this._MoonLights)
-		child.renderer.gameObject.active = val;
+		child.renderer.gameObject.SetActive(val);
 }

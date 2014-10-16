@@ -21,9 +21,9 @@ public class EeryEvent0 extends CinematicManager
 			this.thunderSound.Play();
 			this._thunderLight.light.enabled = true;
 			yield WaitForSeconds(0.2);
-			this._thunderLight.gameObject.active = false;
+			this._thunderLight.gameObject.SetActive(false);
 			yield WaitForSeconds(0.55);
-			this._thunderLight.gameObject.active = true;
+			this._thunderLight.gameObject.SetActive(true);
 			this.thunderSound2.Play();
 			yield WaitForSeconds(0.1);
 			this._thunderLight.light.enabled = false;

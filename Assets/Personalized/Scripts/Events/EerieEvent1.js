@@ -1,11 +1,11 @@
-public	var		_Hero 				: Interaction;
+public	var		_Hero 				: HeroManager;
 public	var 	darkWhispers		: AudioClip;
 public	var 	_view 				: Camera;
 public	var 	_strangeLight		: Light;
 
 public function		OnTriggerEnter()
 {
-	if (_Hero.hasItem(ObjectType.key_basement, false))
+	if (_Hero.hasItem(Collectable.ObjectType.key_basement, false))
 	{
 		var i : int;
 

@@ -11,7 +11,7 @@ public class MultidimensionalSound
    	public function		MultidimensionalSound(src : Transform)
    	{
    		this._lasTime = 0;
-		for (var child  : Transform in src)
+		for (var child  : Transform in src as Object)
 			this._audioSources.Add(child.GetComponent(AudioSource));
    	}
    

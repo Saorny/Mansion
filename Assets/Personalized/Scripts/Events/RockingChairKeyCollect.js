@@ -14,6 +14,7 @@ public class RockingChairKeyCollect extends CollectableCollider
 			if (this.sound)
 				AudioSource.PlayClipAtPoint(this.sound, transform.position, 20);
 			this.rockTheBoat();
+			this._hero.scareHero(80);
 			Destroy (this.object.gameObject);
 			Destroy (this);
 	   	}
@@ -22,6 +23,6 @@ public class RockingChairKeyCollect extends CollectableCollider
 	private function	rockTheBoat() : void
 	{
 		this._sound.Play();
-		this._rockingChair.animation.Play("rocking");
+		this._rockingChair.animation.Play("Rocking");
 	}
 }

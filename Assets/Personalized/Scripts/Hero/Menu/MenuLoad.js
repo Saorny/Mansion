@@ -3,7 +3,7 @@
 @DoNotSerialize
 public class MenuLoad extends Menu
 {
-	private var			_interaction	: Interaction;
+	private var			_heroManager	: HeroManager;
 	private var			_button_action	: AudioSource;
 	private var			_newSaveName	: String;
 	private var			_defaultName	: String;
@@ -12,10 +12,10 @@ public class MenuLoad extends Menu
 
 	public function		MenuLoad() {}
 
-	public function		MenuLoad(interaction	: Interaction, action_sound : AudioSource, ptr : function(int) : void)
+	public function		MenuLoad(heroManager : HeroManager, action_sound : AudioSource, ptr : function(int) : void)
 	{
 		super(ptr, action_sound);
-		this._interaction = interaction;
+		this._heroManager = heroManager;
 		this._menuTitle = "Load a previously saved game:";
 		this.refresh();
 	}
@@ -48,5 +48,5 @@ public class MenuLoad extends Menu
 		   	this._subMenus.Add(new MenuButton(sg.Name + "(" + sg.Level + "," + sg.When + ")", this.loadGame, sg));
 	}
 
-	private function	returnMainMenu() : void { this.goTo(parseInt(Menu_Data.PREVIOUS)); }
+	private function	returnMainMenu() : void { this.goTo(parseInt(MenuManager.Menu_Data.PREVIOUS)); }
 };

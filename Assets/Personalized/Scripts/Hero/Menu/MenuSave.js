@@ -3,7 +3,7 @@
 @DoNotSerialize
 public class MenuSave extends Menu
 {
-	private var			_interaction	: Interaction;
+	private var			_heroManager	: HeroManager;
 	private var			_newSaveName	: String;
 	private var			_defaultName	: String;
 	private var			_save_code_name	: String;
@@ -11,10 +11,10 @@ public class MenuSave extends Menu
 
 	public function		MenuSave() {}
 
-	public function		MenuSave(interaction	: Interaction, action_sound : AudioSource, ptr : function(int) : void)
+	public function		MenuSave(heroManager : HeroManager, action_sound : AudioSource, ptr : function(int) : void)
 	{
 		super(ptr, action_sound);
-		this._interaction = interaction;
+		this._heroManager = heroManager;
 		this._menuTitle = "Save game";
 		this._newSaveName = "New save";
 		this._defaultName = "New save";
@@ -32,14 +32,14 @@ public class MenuSave extends Menu
 	
 	public function		display() : IEnumerable
 	{
-		GUI.Box (Rect (	(Screen.width / 2) - (parseInt(Button_Data.MENU_WIDTH) / 2), (Screen.height / 5),
-						parseInt(Button_Data.MENU_WIDTH), (this._subMenus.Count + 1) * (parseInt(Button_Data.BUTTON_HEIGHT) + parseInt(Button_Data.INTER_SPACE)) + parseInt(Button_Data.INTER_SPACE)), this._menuTitle);
+		GUI.Box (Rect (	(Screen.width / 2) - (parseInt(MenuManager.Button_Data.MENU_WIDTH) / 2), (Screen.height / 5),
+						parseInt(MenuManager.Button_Data.MENU_WIDTH), (this._subMenus.Count + 1) * (parseInt(MenuManager.Button_Data.BUTTON_HEIGHT) + parseInt(MenuManager.Button_Data.INTER_SPACE)) + parseInt(MenuManager.Button_Data.INTER_SPACE)), this._menuTitle);
 		GUI.SetNextControlName (this._save_code_name);
-		this._newSaveName = GUI.TextField (	Rect(	(Screen.width / 2) - (parseInt(Button_Data.BUTTON_WIDTH) / 2), (Screen.height / 5) + parseInt(Button_Data.INTER_SPACE),
-								parseInt(Button_Data.BUTTON_WIDTH), parseInt(Button_Data.BUTTON_HEIGHT)), this._newSaveName, this._maxCharacters);
+		this._newSaveName = GUI.TextField (	Rect(	(Screen.width / 2) - (parseInt(MenuManager.Button_Data.BUTTON_WIDTH) / 2), (Screen.height / 5) + parseInt(MenuManager.Button_Data.INTER_SPACE),
+								parseInt(MenuManager.Button_Data.BUTTON_WIDTH), parseInt(MenuManager.Button_Data.BUTTON_HEIGHT)), this._newSaveName, this._maxCharacters);
 		for (var i = 0 ; i < this._subMenus.Count ; ++i)
-			if (GUI.Button(Rect (	(Screen.width / 2) - (parseInt(Button_Data.BUTTON_WIDTH) / 2), (Screen.height / 5) + (i + 1) * (parseInt(Button_Data.BUTTON_HEIGHT) + parseInt(Button_Data.INTER_SPACE)) + parseInt(Button_Data.INTER_SPACE),
-									parseInt(Button_Data.BUTTON_WIDTH), parseInt(Button_Data.BUTTON_HEIGHT)), this._subMenus[i].getText())
+			if (GUI.Button(Rect (	(Screen.width / 2) - (parseInt(MenuManager.Button_Data.BUTTON_WIDTH) / 2), (Screen.height / 5) + (i + 1) * (parseInt(MenuManager.Button_Data.BUTTON_HEIGHT) + parseInt(MenuManager.Button_Data.INTER_SPACE)) + parseInt(MenuManager.Button_Data.INTER_SPACE),
+									parseInt(MenuManager.Button_Data.BUTTON_WIDTH), parseInt(MenuManager.Button_Data.BUTTON_HEIGHT)), this._subMenus[i].getText())
 									&& this._subMenus[i].getPointer() != null)
 		    {
 		    	this._lastClicked = i;
@@ -69,5 +69,5 @@ public class MenuSave extends Menu
 		this._newSaveName = this._defaultName = "New save";
 	}
 
-	private function	returnMainMenu() : void { this.goTo(parseInt(Menu_Data.RUNNING_MENU)); }
+	private function	returnMainMenu() : void { this.goTo(parseInt(MenuManager.Menu_Data.RUNNING_MENU)); }
 };

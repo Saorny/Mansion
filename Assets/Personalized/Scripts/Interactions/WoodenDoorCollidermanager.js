@@ -1,8 +1,8 @@
 public var _door : WoodenDoorManager;
-public var Hero : Interaction;
+public var Hero : HeroManager;
 public var state = 0;
 public var locked : boolean;
-public var _typeRequired : ObjectType;
+public var _typeRequired : Collectable.ObjectType;
 
 function OnTriggerStay()
 {

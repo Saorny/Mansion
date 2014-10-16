@@ -1,22 +1,25 @@
 @script SerializeAll
 public class Collectable
 {
-	private var	CollectableType 		: ObjectType;
-	private var CollectableName 		: String;
-	private var CollectableDescription 	: String;
-	private var CollectableIcon 		: Texture;
-	private var CollectableHandle		: boolean;
+	protected var _type 			: ObjectType;
+	protected var _name 			: String;
+	protected var _description 		: String;
+	protected var _icon 			: Texture;
 	
-	public function SetCollectable(type : ObjectType, name : String, description : String, icon : Texture)
+	public enum ObjectType { nothing, key_entrance, key_basement, lamp, mine_pick, book }
+	
+	public function Collectable(type : ObjectType, name : String, description : String, icon : Texture)
 	{
-		this.CollectableType = type;
-		this.CollectableName = name;
-		this.CollectableDescription = description;
-		this.CollectableIcon = icon;
+		this._type = type;
+		this._name = name;
+		this._description = description;
+		this._icon = icon;
 	}
 	
-	public function getType() {return (this.CollectableType);}
-	public function getName() {return (this.CollectableName);}
-	public function getDescription() {return (this.CollectableDescription);}
-	public function getIcon() {return (this.CollectableIcon);}
+	public function Collectable() {}
+	
+	public function getType() : ObjectType {return (this._type);}
+	public function getName() : String {return (this._name);}
+	public function getDescription() : String {return (this._description);}
+	public function getIcon() : Texture {return (this._icon);}
 };

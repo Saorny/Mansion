@@ -7,7 +7,7 @@ private var _engaged : boolean = false;
 
 public function		Start ()
 {
-	this._thunderLight.gameObject.active = false;
+	this._thunderLight.gameObject.SetActive(false);
 }
 
 public function		Update ()

@@ -32,12 +32,12 @@ public class Menu
 
 	public function		display() : IEnumerable
 	{
-		GUI.Box (Rect (	(Screen.width / 2) - (parseInt(Button_Data.MENU_WIDTH) / 2), (Screen.height / 5),
-						parseInt(Button_Data.MENU_WIDTH), this._subMenus.Count * (parseInt(Button_Data.BUTTON_HEIGHT) + parseInt(Button_Data.INTER_SPACE)) + parseInt(Button_Data.INTER_SPACE)), this.getMenuTitle());
+		GUI.Box (Rect (	(Screen.width / 2) - (parseInt(MenuManager.Button_Data.MENU_WIDTH) / 2), (Screen.height / 5),
+						parseInt(MenuManager.Button_Data.MENU_WIDTH), this._subMenus.Count * (parseInt(MenuManager.Button_Data.BUTTON_HEIGHT) + parseInt(MenuManager.Button_Data.INTER_SPACE)) + parseInt(MenuManager.Button_Data.INTER_SPACE)), this.getMenuTitle());
 
 		for (var i = 0 ; i < this._subMenus.Count ; ++i)
-			if (GUI.Button(Rect (	(Screen.width / 2) - (parseInt(Button_Data.BUTTON_WIDTH) / 2), (Screen.height / 5) + i * (parseInt(Button_Data.BUTTON_HEIGHT) + parseInt(Button_Data.INTER_SPACE)) + parseInt(Button_Data.INTER_SPACE),
-									parseInt(Button_Data.BUTTON_WIDTH), parseInt(Button_Data.BUTTON_HEIGHT)), this._subMenus[i].getText())
+			if (GUI.Button(Rect (	(Screen.width / 2) - (parseInt(MenuManager.Button_Data.BUTTON_WIDTH) / 2), (Screen.height / 5) + i * (parseInt(MenuManager.Button_Data.BUTTON_HEIGHT) + parseInt(MenuManager.Button_Data.INTER_SPACE)) + parseInt(MenuManager.Button_Data.INTER_SPACE),
+									parseInt(MenuManager.Button_Data.BUTTON_WIDTH), parseInt(MenuManager.Button_Data.BUTTON_HEIGHT)), this._subMenus[i].getText())
 									&& this._subMenus[i].getPointer() != null && this._hasClicked == false)
 		    {
 		    	this._lastClicked = i;

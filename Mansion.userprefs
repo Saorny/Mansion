@@ -1,25 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State expanded="True">
-          <Node name="Assembly-UnityScript" expanded="True">
-            <Node name="Assets" expanded="True">
-              <Node name="Personalized" expanded="True">
-                <Node name="Scripts" expanded="True">
-                  <Node name="Events" expanded="True" />
-                  <Node name="Hero" expanded="True">
-                    <Node name="PersoObjectManager.js" selected="True" />
-                  </Node>
-                  <Node name="Misc" expanded="True" />
-                </Node>
-              </Node>
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Personalized\Scripts\Interactions\ScaryToSee.js">
+    <Files>
+      <File FileName="Assets\Personalized\Scripts\Interactions\ScaryToSee.js" Line="10" Column="1" />
+    </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

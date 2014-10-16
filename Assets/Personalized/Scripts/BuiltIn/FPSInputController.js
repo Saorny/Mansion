@@ -1,10 +1,10 @@
 private var _motor : CharacterMotor;
-private var _hero : Interaction;
+private var _hero : HeroManager;
 
 // Use this for initialization
 function Awake () {
 	this._motor = GetComponent(CharacterMotor);
-	this._hero = GetComponent(Interaction);
+	this._hero = GetComponent(HeroManager);
 }
 
 // Update is called once per frame
@@ -40,5 +40,5 @@ function Update () {
 
 // Require a character controller to be attached to the same game object
 @script RequireComponent (CharacterMotor)
-@script RequireComponent (Interaction)
+@script RequireComponent (HeroManager)
 @script AddComponentMenu ("Character/FPS Input Controller")

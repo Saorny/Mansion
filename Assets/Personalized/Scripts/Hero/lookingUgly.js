@@ -1,6 +1,6 @@
 #pragma strict
 
-var hero 			: Interaction;
+var hero 			: HeroManager;
 var object			: GameObject;
 
 function OnTriggerStay()

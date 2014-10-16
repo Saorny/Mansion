@@ -9,6 +9,7 @@ public class BookCollider extends CollectableCollider
 	public var contentPath		: String;
 	public var style			: Font;
 	public var book				: GameObject;
+	public var _sketches		: Texture[];
 	private var bookContent		: TextAsset;
 	private var _finalText		: String = "";
 	
@@ -35,7 +36,7 @@ public class BookCollider extends CollectableCollider
 	
 	private function	retrieveBook() : void
 	{
-		this.getHero().giveBook(this.bookName, this.bookDescription, this.ItemIcon, this.bookTitle, this._finalText, this.style);
+		this.getHero().giveBook(this.bookName, this.bookDescription, this.ItemIcon, this.bookTitle, this._finalText, this.style, this._sketches);
 		if (this.sound)
 			AudioSource.PlayClipAtPoint(this.sound, transform.position, 20);
 		Destroy (this.book.gameObject);

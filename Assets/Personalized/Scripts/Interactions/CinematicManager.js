@@ -4,7 +4,7 @@
 public class CinematicManager extends MonoBehaviour
 {
 	public var 		_poses				: Transform[];
-	protected var	_hero				: Interaction;
+	protected var	_hero				: HeroManager;
 	protected var	_heroPos			: Transform;
 	protected var	_heroCamera			: Camera;
 	protected var	_cinematicCamera 	: Camera;
@@ -54,7 +54,7 @@ public class CinematicManager extends MonoBehaviour
 		this._heroPos = hero.transform;
 		this._heroCamera = hero.Find("Main Camera").GetComponent(Camera);
 		this._cinematicCamera = transform.Find("Camera").GetComponent(Camera);
-		this._hero = hero.GetComponent("Interaction") as Interaction;
+		this._hero = hero.GetComponent("HeroManager") as HeroManager;
 	}
 	
 	protected function		moveObject (thisTransform : Transform, startPos : Vector3, endPos : Vector3, time : float) : IEnumerator

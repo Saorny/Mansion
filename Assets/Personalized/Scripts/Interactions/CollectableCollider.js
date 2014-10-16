@@ -4,13 +4,13 @@
 public class CollectableCollider extends MonoBehaviour
 {
 	public var sound 			: AudioClip;
-	public var ItemType 		: ObjectType;
+	public var ItemType 		: Collectable.ObjectType;
 	public var ItemName			: String;
 	public var ItemDescription 	: String;
 	public var ItemIcon 		: Texture;	
 	public var object			: GameObject;
-	private var _hero 			: Interaction;
-	private var _heroBody 		: Transform;
+	protected var _hero 		: HeroManager;
+	protected var _heroBody 	: Transform;
 
 	public function		Awake() : void
 	{
@@ -29,7 +29,7 @@ public class CollectableCollider extends MonoBehaviour
 	   	}
 	}
 	
-	public function		getHero() : Interaction { return (this._hero); }
+	public function		getHero() : HeroManager { return (this._hero); }
 	public function		getHeroBody() : Transform { return (this._heroBody); }
 	
 	private function	loadComponents() : void
@@ -38,6 +38,6 @@ public class CollectableCollider extends MonoBehaviour
 	
 		hero = GameObject.Find("Hero");
 		this._heroBody = hero.transform;
-		this._hero = hero.GetComponent("Interaction") as Interaction;
+		this._hero = hero.GetComponent("HeroManager") as HeroManager;
 	}
 }

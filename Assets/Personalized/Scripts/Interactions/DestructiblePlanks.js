@@ -2,10 +2,10 @@
 
 public class DestructiblePlanks extends ActionType
 {
-	public var 		_interface 	: Interface;
+	public var 		_hero 			: HeroManager;
 	public var 		_destructibles 	: GameObject[];
 
-	override public function		doAction(Hero : Interaction) : IEnumerator
+	override public function		doAction(Hero : HeroManager) : IEnumerator
 	{
 		this.pauseGame(Hero);
 		yield this.displayAnimationPic();
@@ -20,7 +20,7 @@ public class DestructiblePlanks extends ActionType
 		for (var i : int = 0 ; i < this._animation.length ; ++i)
 		{
 			yield WaitForSeconds(0.005);
-			this._interface.setHeroAnimation(this._animation[i]);
+			this._hero.setSpecialAnimation(this._animation[i]);
 		}
 	}
 
@@ -36,18 +36,18 @@ public class DestructiblePlanks extends ActionType
 		}
 	}
 	
-	private function	pauseGame(Hero : Interaction)
+	private function	pauseGame(Hero : HeroManager)
 	{
-		Hero.setPauseHero(true);
-		Hero.HeroLockCamera(true);
+		this._hero.setPauseHero(true);
+		this._hero.HeroLockCamera(true);
 		Time.timeScale = 0.1;
 	}
 	
-	private function	resumeGame(Hero : Interaction)
+	private function	resumeGame(Hero : HeroManager)
 	{
-		Hero.setPauseHero(false);
-		Hero.HeroLockCamera(false);
-		_interface.setHeroAnimation(null);
+		this._hero.setPauseHero(false);
+		this._hero.HeroLockCamera(false);
+		this._hero.setSpecialAnimation(null);
 		Time.timeScale = 1;
 	}
 }

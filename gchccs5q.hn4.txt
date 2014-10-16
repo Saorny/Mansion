@@ -1,0 +1,99 @@
+﻿add objects
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	modified:   Assets/Entrance.unity
+#	new file:   Assets/Materials/clock.jpg
+#	modified:   Assets/Personalized/Cockroach.fbx
+#	new file:   Assets/Personalized/Materials/ClockPendulum.mat
+#	modified:   Assets/Personalized/Materials/Metal.mat
+#	new file:   Assets/Personalized/Materials/OldClockBody.mat
+#	new file:   Assets/Personalized/Materials/OldClockGlass.mat
+#	modified:   Assets/Personalized/Materials/WoodFine0011_S.mat
+#	new file:   Assets/Personalized/Materials/clock.mat
+#	new file:   Assets/Personalized/OldOclock.fbx
+#	new file:   Assets/Personalized/RockingChair.fbx
+#	modified:   Assets/Personalized/Scripts/BuiltIn/CharacterMotor.js
+#	new file:   Assets/Personalized/Scripts/Events/RockingChairKeyCollect.js
+#	modified:   Assets/Personalized/Scripts/Interactions/BookCollider.js
+#	modified:   Assets/Personalized/Scripts/Interactions/CollectableCollider.js
+#	new file:   Assets/Personalized/Scripts/Misc/IdleManager.js
+#	modified:   Assets/Personalized/Scripts/Misc/WanderingManager.js
+#	new file:   Assets/Sounds/Mansion/clock.mp3
+#	new file:   Assets/Sounds/Mansion/rocking_chair_creaking.mp3
+#	modified:   Library/InspectorExpandedItems.asset
+#	modified:   Library/ScriptAssemblies/Assembly-CSharp-Editor-firstpass.dll
+#	modified:   Library/ScriptAssemblies/Assembly-CSharp-Editor-firstpass.dll.mdb
+#	modified:   Library/ScriptAssemblies/Assembly-CSharp-firstpass.dll
+#	modified:   Library/ScriptAssemblies/Assembly-CSharp-firstpass.dll.mdb
+#	modified:   Library/ScriptAssemblies/Assembly-CSharp.dll
+#	modified:   Library/ScriptAssemblies/Assembly-CSharp.dll.mdb
+#	modified:   Library/ScriptAssemblies/Assembly-UnityScript-firstpass.dll
+#	modified:   Library/ScriptAssemblies/Assembly-UnityScript-firstpass.dll.mdb
+#	modified:   Library/ScriptAssemblies/Assembly-UnityScript.dll
+#	modified:   Library/ScriptAssemblies/Assembly-UnityScript.dll.mdb
+#	modified:   Library/assetDatabase3
+#	modified:   Library/cache/29/29d06ccd791a191498506fa3bd187738
+#	modified:   Library/cache/44/446aded1239d8204ab0af2b3a272f298
+#	new file:   Library/cache/69/69d260b560cad6a45abe39081591d7d3
+#	new file:   Library/cache/6a/6ae4998b2e2b3ea4c8f9873862af7093
+#	modified:   Library/cache/82/82451f2639deb204ca71943c0f4607d3
+#	new file:   Library/cache/87/87e4a31853352ec43ab809e230a54b36
+#	new file:   Library/cache/8b/8b7d362ed78e2654b93d85abb4c989b4
+#	new file:   Library/cache/9c/9c647ddd665ba7947939d334c37e22c4
+#	modified:   Library/cache/cf/cfc86a74743372748809d0c6173f5d44
+#	new file:   Library/cache/ee/ee50b7293a6faec42aeecbd864168676
+#	modified:   Library/expandedItems
+#	modified:   Library/guidmapper
+#	new file:   Library/metadata/69/69d260b560cad6a45abe39081591d7d3
+#	new file:   Library/metadata/6a/6a059f875c449504aa054ad85968636a
+#	new file:   Library/metadata/6a/6ae4998b2e2b3ea4c8f9873862af7093
+#	new file:   Library/metadata/6e/6e144ca54e94c8a4695c129136ae6eba
+#	new file:   Library/metadata/87/87e4a31853352ec43ab809e230a54b36
+#	new file:   Library/metadata/8b/8b7d362ed78e2654b93d85abb4c989b4
+#	new file:   Library/metadata/9c/9c647ddd665ba7947939d334c37e22c4
+#	new file:   Library/metadata/bb/bbe2aa261c745764eb90544a7dab928e
+#	new file:   Library/metadata/c8/c8c93a4e4b5ad6d41a3b6ce90dc117c2
+#	new file:   Library/metadata/d6/d697c91a3f6a6694db7b54cb1ce6a362
+#	new file:   Library/metadata/e0/e09fac695a4cf5c41ab0fa6f5020a6ab
+#	modified:   Library/metadata/ea/ea453fcb8cfef2e4ba41c8fc9639a998
+#	new file:   Library/metadata/ee/ee50b7293a6faec42aeecbd864168676
+#	modified:   Library/previews/3d/3df467bc062d42142ade8ff6b1635768
+#	new file:   Library/previews/69/69d260b560cad6a45abe39081591d7d3
+#	new file:   Library/previews/6a/6a059f875c449504aa054ad85968636a
+#	new file:   Library/previews/6e/6e144ca54e94c8a4695c129136ae6eba
+#	new file:   Library/previews/6e/6e144ca54e94c8a4695c129136ae6eba_/100000
+#	new file:   Library/previews/6e/6e144ca54e94c8a4695c129136ae6eba_/4300000
+#	new file:   Library/previews/8b/8b7d362ed78e2654b93d85abb4c989b4
+#	new file:   Library/previews/9c/9c647ddd665ba7947939d334c37e22c4
+#	modified:   Library/previews/ab/ab282ac484d343e41a6ff02a6d49975e
+#	new file:   Library/previews/bb/bbe2aa261c745764eb90544a7dab928e
+#	new file:   Library/previews/c8/c8c93a4e4b5ad6d41a3b6ce90dc117c2
+#	new file:   Library/previews/d6/d697c91a3f6a6694db7b54cb1ce6a362
+#	new file:   Library/previews/d6/d697c91a3f6a6694db7b54cb1ce6a362_/100002
+#	new file:   Library/previews/d6/d697c91a3f6a6694db7b54cb1ce6a362_/4300000
+#	new file:   Library/previews/e0/e09fac695a4cf5c41ab0fa6f5020a6ab
+#	modified:   Library/previews/ea/ea453fcb8cfef2e4ba41c8fc9639a998
+#	modified:   Library/previews/ea/ea453fcb8cfef2e4ba41c8fc9639a998_/4300000
+#	new file:   README
+#
+# Changes not staged for commit:
+#   (use "git add/rm <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#	modified:   Assembly-UnityScript-vs.unityproj
+#	modified:   Assembly-UnityScript.unityproj
+#	modified:   Mansion-csharp.sln
+#	modified:   Mansion.sln
+#	modified:   Mansion.userprefs
+#	deleted:    Temp/Undod2e9cd3dff958684a9f636d40fcba7a5
+#	modified:   Temp/__EditModeScene
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	Temp/WindowsLockFile
+

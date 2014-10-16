@@ -1,8 +1,8 @@
-public var _door : MansionDoorManager;
-public var _body : Transform;
-public var _heroBody : Transform;
-public var Hero : Interaction;
-public var _openable = true;
+public var _door		: MansionDoorManager;
+public var _body		: Transform;
+public var _heroBody	: Transform;
+public var Hero			: HeroManager;
+public var _openable	= true;
 
 function OnTriggerStay(body : Collider)
 {

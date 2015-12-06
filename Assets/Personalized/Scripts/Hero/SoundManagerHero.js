@@ -2,9 +2,10 @@
 
 public class SoundManagerHero extends MonoBehaviour
 {
-	public enum 	SoundType { WALK, SPEAK, PUSH, SCARED, TOTAL }
+	public enum 	SoundType { WALK, SPEAK, PUSH, SCARED, WEAPON, TOTAL }
 	public enum 	FloorType { GRASSY, WOODEN, WATERLY, CONCRETE, TOTAL }
-	public enum 	HeroVoice { UNINTERESTING, BREATHING, UGLY, LOCKED, HEART_BEAT, FLASHLIGHT, TOTAL }
+	public enum 	HeroVoice { UNINTERESTING, BREATHING, UGLY, LOCKED, HEART_BEAT, FLASHLIGHT, PAIN, BOTTLE, TOTAL }
+	public enum 	HeroWeapon { MINEPICK, TOTAL }
 	public enum 	CollisionSoundType { NOTHING, METAL, WOOD }
 	public enum 	MusicTheme { MENU }
 
@@ -17,9 +18,17 @@ public class SoundManagerHero extends MonoBehaviour
 	@DoNotSerialize
 	public var  	_soundScaredSources	: Transform[];
 	@DoNotSerialize
+	public var  	_soundWeapons		: Transform[];
+	@DoNotSerialize
 	public var		_themes				: AudioSource[];
 	@DoNotSerialize
 	public var		soundLamp 			: AudioSource;
+	@DoNotSerialize
+	public var		_soundOpenBook		: AudioSource;
+	@DoNotSerialize
+	public var		_soundCloseBook		: AudioSource;
+	@DoNotSerialize
+	public var		_soundTurnPage		: AudioSource;
 	@DoNotSerialize
 	public var		walkOnBones 		: AudioSource;
 	@DoNotSerialize
@@ -29,7 +38,7 @@ public class SoundManagerHero extends MonoBehaviour
 	public var		_weather_volume		: float = 0;
 	private var		_soundManagers		: List.<SoundTypeManager> = new List.<SoundTypeManager>();
 	@SerializeThis
-	public var 	_indoor 			: boolean = false;
+	public var 	_indoor 				: boolean = false;
 	@SerializeThis
 	public var		_walkingOn 			: FloorType = FloorType.WOODEN;
 	private var		_lastScare			: float;
@@ -41,6 +50,7 @@ public class SoundManagerHero extends MonoBehaviour
 		this._soundManagers.Add(new SoundTypeManager(this._soundSpeakSources, 0.1, 1.0));
 		this._soundManagers.Add(new SoundTypeManager(this._soundPushSources, 0.5, 1.0));
 		this._soundManagers.Add(new SoundTypeManager(this._soundScaredSources, 0.1, 0.15));
+		this._soundManagers.Add(new SoundTypeManager(this._soundWeapons, 0.1, 0.15));
 		this._lastScare = 0;
 		this._scareInterval = 4;
 	}
@@ -103,10 +113,10 @@ public class SoundManagerHero extends MonoBehaviour
 		this.Rain.volume = this._weather_volume;
 	}
 	
-	public function	walkingOnBones() : void
-	{
-		this.walkOnBones.Play();
-	}
+	public function	walkingOnBones() : void { this.walkOnBones.Play(); }
+	public function	playOpenBook() : void { this._soundOpenBook.Play(); }
+	public function	playCloseBook() : void { this._soundCloseBook.Play(); }
+	public function	playTurnPage() : void { this._soundTurnPage.Play(); }
 
 	public function	setWeatherVolume(volume : float) : void { this._weather_volume = volume; }
 	public function	setFloorType(type : FloorType) : void { this._walkingOn = type; }

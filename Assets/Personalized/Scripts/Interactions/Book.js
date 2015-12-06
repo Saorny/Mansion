@@ -4,10 +4,10 @@ public class Book extends Collectable
 	private var	_title 					: String = "";
 	private var	_text 					: String = "";
 	private var _currentPage			: int = 0;
-	private var LINE_LENGTH				: int = 30;
-	private var PAGE_NB_ROWS			: int = 13;
+	private var LINE_LENGTH				: int = 35;
+	private var PAGE_NB_ROWS			: int = 9;
 	private var _bookContent 			= new Array();
-	private var _fontStyle				 : Font;
+	private var _fontStyle				: Font;
 	private var _sketches				: Texture[];
 
 	public function Book(	name : String, description : String, icon : Texture ,

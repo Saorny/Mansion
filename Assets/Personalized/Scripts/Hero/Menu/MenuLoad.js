@@ -25,7 +25,7 @@ public class MenuLoad extends Menu
 		this._subMenus.Clear();
 		this._subMenus.Add(new MenuButton("Erase all saves", this.eraseAllSaves));
 		this.createLoadEntries();
-		this._subMenus.Add(new MenuButton("Return", this.returnMainMenu));
+		this._subMenus.Add(new MenuButton("Return", this.returnPrevious));
 	}
 	
 	private function loadGame() : void
@@ -48,5 +48,5 @@ public class MenuLoad extends Menu
 		   	this._subMenus.Add(new MenuButton(sg.Name + "(" + sg.Level + "," + sg.When + ")", this.loadGame, sg));
 	}
 
-	private function	returnMainMenu() : void { this.goTo(parseInt(MenuManager.Menu_Data.PREVIOUS)); }
+	private function	returnPrevious() : void { this.goTo(parseInt(MenuManager.Menu_Data.PREVIOUS)); }
 };

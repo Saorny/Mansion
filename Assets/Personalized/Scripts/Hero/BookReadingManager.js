@@ -1,19 +1,26 @@
 @DoNotSerialize
 public class BookReadingManager extends MonoBehaviour
 {
-	var 		open_book 			: Texture[];
-	var 		turn_page 			: Texture[];
-	var 		normal 				: Texture;
-	var 		sound_open_book 	: AudioClip;
-	var 		sound_close_book 	: AudioClip;
-	var 		sound_turn_page 	: AudioClip;
-	var			_style				: GUIStyle;
+	public var 	open_book 			: Texture[];
+	public var 	turn_page 			: Texture[];
+	public var 	normal 				: Texture;
+	public var	_style				: GUIStyle;
 	private var _bookMode			: boolean = false;
 	private var _isTurningPage		: boolean = false;
-	private var LeftPage 			= null;
-	private var RightPage 			= null;
+	private var _leftPage 			: String[];
+	private var _rightPage;
 	private var _currentBook		: Book;
 	private var _hero 				: HeroManager;
+	private var _frameDelay			: float = 0.04;
+	private var _innerMargin		: int = 2;
+	private var _pageMinY			: int = 123;
+	private var _pageMaxY			: int = 590;
+	private var _pageLeftMinX		: int = 117;
+	private var _pageLeftMaxX		: int = 515;
+	private var _pageRightMinX		: int = 545;
+	private var _pageRightMaxX		: int = 950;
+	private var _lineLength			: int = 400;
+	private var _lineHeight			: int = 35;
 	
 	public function		Start()
 	{
@@ -42,14 +49,14 @@ public class BookReadingManager extends MonoBehaviour
 	
 	public function		displayLeftPage() : void
 	{
-		if (this.LeftPage != null)
-			this.displayPageContent(150, 160, this.LeftPage);
+		if (this._leftPage != null)
+			this.displayPageContent(this._pageLeftMinX + this._innerMargin, this._pageMinY + this._innerMargin, this._leftPage);
 	}
 	
 	public function		displayRightPage() : void
 	{
-		if (this.RightPage != null)
-			this.displayPageContent(600, 160, this.RightPage);
+		if (this._rightPage != null)
+			this.displayPageContent(this._pageRightMinX + this._innerMargin, this._pageMinY + this._innerMargin, this._rightPage);
 	}
 	
 	public function	getBookMode() : boolean { return (_bookMode); }
@@ -59,19 +66,13 @@ public class BookReadingManager extends MonoBehaviour
 	public function	openBook(obj : Book) : IEnumerator
 	{
 		this._isTurningPage = true;
-		if (sound_open_book)
-			AudioSource.PlayClipAtPoint(sound_open_book, transform.position, 20);
+		this._hero.hearOpenBook();
 		this._currentBook = obj;
 		this._style.font = this._currentBook.getFontStyle();
-		_bookMode = true;
-		Time.timeScale = 0.1;
+		this._bookMode = true;
 		for (var i : int = 0 ; i < 25 ; ++i)
-		{
-			this._hero.setSpecialAnimation(open_book[i]);
-			yield WaitForSeconds(0.005);
-		}
+			yield this.setNextFrameToDisplay(open_book[i]);
 		this._hero.setSpecialAnimation(normal);
-		Time.timeScale = 0;
 		_currentBook.resetReading();
 		displayBookContent();
 		this._isTurningPage = false;
@@ -79,20 +80,12 @@ public class BookReadingManager extends MonoBehaviour
 	
 	public public function	closeBook()
 	{
-		this._isTurningPage = true;
-		this.LeftPage = null;
-		this.RightPage = null;
-		if (sound_close_book)
-			AudioSource.PlayClipAtPoint(sound_close_book, transform.position, 20);
-		Time.timeScale = 0.1;
+		this.turningPage();
+		this._hero.hearCloseBook();
 		for (var i : int = 24 ; i >= 0 ; --i)
-		{
-			this._hero.setSpecialAnimation(open_book[i]);
-			yield WaitForSeconds(0.005);
-		}
-		_bookMode = false;
+			yield this.setNextFrameToDisplay(open_book[i]);
+		this._bookMode = false;
 		this._hero.setSpecialAnimation(null);
-		Time.timeScale = 0;
 		this._currentBook = null;
 		this._isTurningPage = false;
 	}
@@ -101,19 +94,11 @@ public class BookReadingManager extends MonoBehaviour
 	{
 		if (this._currentBook.getCurrentPage() > 0)
 		{
-			this._isTurningPage = true;
-			LeftPage = null;
-			RightPage = null;
-			if (sound_turn_page)
-				AudioSource.PlayClipAtPoint(sound_open_book, transform.position, 20);
-			Time.timeScale = 0.1;
+			this.turningPage();
+			this._hero.hearTurnPage();
 			for (var i : int = 24 ; i >= 0 ; --i)
-			{
-				this._hero.setSpecialAnimation(turn_page[i]);
-				yield WaitForSeconds(0.005);
-			}
+				yield this.setNextFrameToDisplay(turn_page[i]);
 			this._hero.setSpecialAnimation(normal);
-			Time.timeScale = 0;
 			this._currentBook.goPreviousPage();
 			this.displayBookContent();
 			this._isTurningPage = false;
@@ -126,19 +111,11 @@ public class BookReadingManager extends MonoBehaviour
 	{
 		if (this._currentBook.canTurnRightPage() == true)
 		{
-			this._isTurningPage = true;
-			LeftPage = null;
-			RightPage = null;
-			if (sound_turn_page)
-				AudioSource.PlayClipAtPoint(sound_open_book, transform.position, 20);
-			Time.timeScale = 0.1;
+			this.turningPage();
+			this._hero.hearTurnPage();
 			for (var i : int = 0 ; i < 25 ; ++i)
-			{
-				this._hero.setSpecialAnimation(turn_page[i]);
-				yield WaitForSeconds(0.005);
-			}
+				yield this.setNextFrameToDisplay(turn_page[i]);
 			this._hero.setSpecialAnimation(normal);
-			Time.timeScale = 0;
 			this._currentBook.goNextPage();
 			this.displayBookContent();
 			this._isTurningPage = false;
@@ -149,11 +126,11 @@ public class BookReadingManager extends MonoBehaviour
 	{
 		if (Input.GetMouseButtonDown(0) && this._isTurningPage == false)
 		{
-			if 	((Input.mousePosition.x >= 124 && Input.mousePosition.x <= 515) &&
-				(Input.mousePosition.y >= 170 && Input.mousePosition.y <= 590))
+			if 	((Input.mousePosition.x >= this._pageLeftMinX && Input.mousePosition.x <= this._pageLeftMaxX) &&
+				(Input.mousePosition.y >= this._pageMinY && Input.mousePosition.y <= this._pageMaxY))
 				this.playTurnLeftPageAnimation();
-			if 	((Input.mousePosition.x >= 550 && Input.mousePosition.x <= 950) &&
-				(Input.mousePosition.y >= 170 && Input.mousePosition.y <= 590))
+			if 	((Input.mousePosition.x >= this._pageRightMinX && Input.mousePosition.x <= this._pageRightMaxX) &&
+				(Input.mousePosition.y >= this._pageMinY && Input.mousePosition.y <= this._pageMaxY))
 				this.playTurnRightPageAnimation();	
 		}
 	}
@@ -163,13 +140,13 @@ public class BookReadingManager extends MonoBehaviour
 	{
 		if (_currentBook.getCurrentPage() == 0)
 		{
-			LeftPage = null;
-			RightPage = _currentBook.getTitle();
+			this._leftPage = null;
+			this._rightPage = this._currentBook.getTitle();
 		}
 		else
 		{
-			LeftPage = _currentBook.getLeftPageContent();
-			RightPage = _currentBook.getRightPageContent();
+			this._leftPage = this._currentBook.getLeftPageContent();
+			this._rightPage = this._currentBook.getRightPageContent();
 		}
 	}
 	
@@ -183,12 +160,27 @@ public class BookReadingManager extends MonoBehaviour
 		{
 			for (i = 0 ; i < nb_rows ; ++i)
 			{
-				UnityEngine.GUI.Label(Rect (posX, posY, 400, 50), content[i], this._style);
-				posY += 30;
+				UnityEngine.GUI.Label(Rect (posX, posY, this._lineLength, this._lineHeight + 5), content[i], this._style);
+				posY += this._lineHeight;
 			}
 		}
 		else
-			UnityEngine.GUI.DrawTexture(Rect(posX, posY,  350, 13 * 30),
+		{
+			UnityEngine.GUI.DrawTexture(Rect(posX - this._innerMargin, posY - this._innerMargin,  this._lineLength, 10 * this._lineHeight),
 			this._currentBook.getSketchAt(parseInt(content[0].Substring(5))));
+		}
+	}
+	
+	private function	setNextFrameToDisplay(frame : Texture) : IEnumerator
+	{
+		this._hero.setSpecialAnimation(frame);
+		yield this._hero.WaitForRealSeconds(this._frameDelay);
+	}
+	
+	private function	turningPage() : void
+	{
+		this._isTurningPage = true;
+		this._leftPage = null;
+		this._rightPage = null;
 	}
 }

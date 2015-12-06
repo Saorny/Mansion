@@ -5,12 +5,12 @@ public class Menu
 {
 	protected var		_subMenus		: List.<MenuButton> = new List.<MenuButton>();
 	protected var		_menuTitle		: String;
-	protected var		_lastClicked	: int;
+	protected var		_lastClicked	: float;
 	protected var		_button_action	: AudioSource;
 	protected var		_hasClicked		: boolean;
-	private var			_goTo 			: function(int) : void;
-	private var			_clickTime		: float;
-	private var			_wait_button	: float;
+	protected var		_goTo 			: function(int) : void;
+	protected var		_clickTime		: float;
+	protected var		_wait_button	: float;
 
 	public function		Menu() {}
 
@@ -34,21 +34,50 @@ public class Menu
 	{
 		GUI.Box (Rect (	(Screen.width / 2) - (parseInt(MenuManager.Button_Data.MENU_WIDTH) / 2), (Screen.height / 5),
 						parseInt(MenuManager.Button_Data.MENU_WIDTH), this._subMenus.Count * (parseInt(MenuManager.Button_Data.BUTTON_HEIGHT) + parseInt(MenuManager.Button_Data.INTER_SPACE)) + parseInt(MenuManager.Button_Data.INTER_SPACE)), this.getMenuTitle());
-
-		for (var i = 0 ; i < this._subMenus.Count ; ++i)
-			if (GUI.Button(Rect (	(Screen.width / 2) - (parseInt(MenuManager.Button_Data.BUTTON_WIDTH) / 2), (Screen.height / 5) + i * (parseInt(MenuManager.Button_Data.BUTTON_HEIGHT) + parseInt(MenuManager.Button_Data.INTER_SPACE)) + parseInt(MenuManager.Button_Data.INTER_SPACE),
-									parseInt(MenuManager.Button_Data.BUTTON_WIDTH), parseInt(MenuManager.Button_Data.BUTTON_HEIGHT)), this._subMenus[i].getText())
-									&& this._subMenus[i].getPointer() != null && this._hasClicked == false)
-		    {
-		    	this._lastClicked = i;
-		    	this._clickTime = Time.realtimeSinceStartup;
-		    	this._hasClicked = true;
-		    	this.playSound();
+		for (var i : float = 0 ; i < this._subMenus.Count ; ++i)
+		{
+			if (this._subMenus[i].getText2() == "")
+			{
+				if (GUI.Button(Rect (	(Screen.width / 2) - (parseInt(MenuManager.Button_Data.BUTTON_WIDTH) / 2), (Screen.height / 5) + i * (parseInt(MenuManager.Button_Data.BUTTON_HEIGHT) + parseInt(MenuManager.Button_Data.INTER_SPACE)) + parseInt(MenuManager.Button_Data.INTER_SPACE),
+										parseInt(MenuManager.Button_Data.BUTTON_WIDTH), parseInt(MenuManager.Button_Data.BUTTON_HEIGHT)), this._subMenus[i].getText())
+										&& this._subMenus[i].getPointer() != null && this._hasClicked == false)
+			    {
+			    	this._lastClicked = i;
+			    	this._clickTime = Time.realtimeSinceStartup;
+			    	this._hasClicked = true;
+			    	this.playSound();
+			    }
 		    }
+		    else
+		    {
+		    	if (GUI.Button(Rect (	(Screen.width / 2) - (parseInt(MenuManager.Button_Data.BUTTON_WIDTH) / 2), (Screen.height / 5) + i * (parseInt(MenuManager.Button_Data.BUTTON_HEIGHT) + parseInt(MenuManager.Button_Data.INTER_SPACE)) + parseInt(MenuManager.Button_Data.INTER_SPACE),
+										(parseInt(MenuManager.Button_Data.BUTTON_WIDTH) / 2) - parseInt(MenuManager.Button_Data.INTER_SPACE), parseInt(MenuManager.Button_Data.BUTTON_HEIGHT)), this._subMenus[i].getText())
+										&& this._subMenus[i].getPointer() != null && this._hasClicked == false)
+			    {
+			    	this._lastClicked = i;
+			    	this._clickTime = Time.realtimeSinceStartup;
+			    	this._hasClicked = true;
+			    	this.playSound();
+			    }
+			    
+			    else if (GUI.Button(Rect (	(Screen.width / 2) - (parseInt(MenuManager.Button_Data.BUTTON_WIDTH) / 2) + (parseInt(MenuManager.Button_Data.BUTTON_WIDTH) / 2) + parseInt(MenuManager.Button_Data.INTER_SPACE), (Screen.height / 5) + i * (parseInt(MenuManager.Button_Data.BUTTON_HEIGHT) + parseInt(MenuManager.Button_Data.INTER_SPACE)) + parseInt(MenuManager.Button_Data.INTER_SPACE),
+										(parseInt(MenuManager.Button_Data.BUTTON_WIDTH) / 2) - parseInt(MenuManager.Button_Data.INTER_SPACE), parseInt(MenuManager.Button_Data.BUTTON_HEIGHT)), this._subMenus[i].getText2())
+										&& this._subMenus[i].getPointer() != null && this._hasClicked == false)
+			    {
+			    	this._lastClicked = i + 0.5;
+			    	this._clickTime = Time.realtimeSinceStartup;
+			    	this._hasClicked = true;
+			    	this.playSound();
+			    }
+		    }
+		}
 		if (this._hasClicked == true && (Time.realtimeSinceStartup - this._clickTime) > (this._wait_button))
 		{
 			this._hasClicked = false;
-			this._subMenus[this._lastClicked].exec();
+			if (this._lastClicked % 1 == 0)
+				this._subMenus[this._lastClicked].exec();
+			else
+				this._subMenus[this._lastClicked].exec2();
 		}
 	}
 	

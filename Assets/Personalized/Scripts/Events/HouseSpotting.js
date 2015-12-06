@@ -13,8 +13,8 @@ public class HouseSpotting extends CinematicManager
 		{
 			this._triggered = true;
 			this.setCinematicMode();
-			yield this.transitCamera(2);
-			yield this.takeCinematicView(this._poses[0], 3.0);
+			yield this.MakeHeroLookAt(this._spots[0], 2);
+			yield this.MakeHeroLookAt(this._spots[1], 3);
 			yield WaitForSeconds(1.0);
 			this._thunder.light.enabled = true;
 			this._sound.Play();

@@ -5,13 +5,18 @@ public class HeroManager extends MonoBehaviour
 {
 	public var 		_heroPaused 		: boolean = false;
 	public var		_rainingSpawner		: ParticleSystem;
+	public var		_fading				: Texture;
 	private var		_blurringEffect		: MotionBlur;
 	private var		_fishEyeEffect		: Fisheye;
-	private var 	_lastTimeScary	 	: float;
-	private var 	_intervalScare	 	: float;
+	private var 	_hpMax			 	: int;
+	private var 	_hp				 	: int;
 	private var 	_heroCamera		 	: Camera;
 	private var		_sanity				: float;
 	private var		_gameStarted		: boolean;
+	private var		_dying				: boolean;
+	private var		_mouseLook			: MouseLook;
+	private var		_sanityManager		: SanityManager;
+	private var		_splatterEffect		: SplatterEffectManager;
 	private var 	_soundManager 		: SoundManagerHero;
 	private var		_menu				: MenuManager;
 	private var		_inventoryManager	: InventoryManager;
@@ -22,12 +27,12 @@ public class HeroManager extends MonoBehaviour
 	public function 	Start()
 	{
 		this._rainingSpawner.enableEmission = false;
-		this.openMenu();
+		this.openMenu(MenuManager.Menu_Data.MAIN_MENU);
 		this._gameStarted = false;
+		this._dying = false;
 		this._targets	= new List.<GameObject>();
-		this._sanity = 100;
-		this._intervalScare = 0.04;
-		this._lastTimeScary = 0;
+		this._hpMax = 100;
+		this._hp = 75;
 	}
 	
 	public function		Awake() : void
@@ -38,17 +43,17 @@ public class HeroManager extends MonoBehaviour
 		this._soundManager = hero.GetComponent("SoundManagerHero") as SoundManagerHero;
 		this._menu = hero.GetComponent("MenuManager") as MenuManager;
 		this._inventoryManager = hero.GetComponent("InventoryManager") as InventoryManager;
+		this._splatterEffect = hero.GetComponent("SplatterEffectManager") as SplatterEffectManager;
+		this._sanityManager = hero.GetComponent("SanityManager") as SanityManager;
+		this._mouseLook = hero.GetComponent("MouseLook") as MouseLook;
 		this._heroCamera = hero.Find("Main Camera").GetComponent(Camera);
-		this._blurringEffect = this._heroCamera.GetComponent("MotionBlur") as MotionBlur;
-		this._fishEyeEffect = this._heroCamera.GetComponent("Fisheye") as Fisheye;
-		this._blurringEffect.enabled = false;
-		this._fishEyeEffect.enabled = false;
+		this._sanityManager.setSoundManager(this._soundManager);
 	}
 	
 	public function OnGUI () : IEnumerable
 	{
 		if (this.getInv() != InventoryManager.InventoryMode.OFF)
-			this._inventoryManager.displayInventory();
+			this._inventoryManager.displayInventory(this._hp, this._hpMax);
 		else if (this.getMenuMode() == true)
 			this.manageDisplayMenu();
 		else if (this.getInv() == InventoryManager.InventoryMode.OFF && this.getPauseHero() == false)
@@ -58,7 +63,6 @@ public class HeroManager extends MonoBehaviour
 			else
 				this._inventoryManager.displaySpecialAnimation();
 		}
-		
 	}
 	
 	public function setSpecialAnimation(newAnimation : Texture) : void { this._inventoryManager.setSpecialAnimation(newAnimation); }
@@ -75,7 +79,7 @@ public class HeroManager extends MonoBehaviour
 	
 	public function 	Update()
 	{
-		if (this._gameStarted == true)
+		if (this._gameStarted == true && this._dying == false)
 		{
 			if (Input.GetButtonDown("Escape"))
 			{
@@ -84,7 +88,7 @@ public class HeroManager extends MonoBehaviour
 				else
 				{
 					if (this._inventoryManager.getInventoryMode() == InventoryManager.InventoryMode.OFF)
-						this.openMenu();
+						this.openMenu(MenuManager.Menu_Data.RUNNING_MENU);
 					else
 					{
 						if (this._inventoryManager.getInventoryMode() == InventoryManager.InventoryMode.MAIN)
@@ -142,45 +146,49 @@ public class HeroManager extends MonoBehaviour
 				}
 			}
 		}
-		if (this._sanity < 100 && this._menu.getMenuMode() == false && this._inventoryManager.getInventoryMode() == InventoryManager.InventoryMode.OFF)
-			this.manageHeroScared();
+		if (this._menu.getMenuMode() == false && this._inventoryManager.getInventoryMode() == InventoryManager.InventoryMode.OFF)
+			this._sanityManager.manageHeroScared();
 	}
 	
 	public function 	manageDisplayMenu() : IEnumerable { _menu.manageDisplayMenu(); }
 	
-	public function		openMenu() : void
+	public function		openMenu(menu : MenuManager.Menu_Data) : void
 	{
 		Time.timeScale = 0;
-		this.HeroLockCamera(true);
-		if (this._gameStarted == true)
-			this._menu.goTo(parseInt(MenuManager.Menu_Data.RUNNING_MENU));
+		this.allowMouseMovement(false);
+		this._menu.goTo(parseInt(menu));
 		this._menu.setMenuMode(true);
 		this._soundManager.setPlayRain(false);
 		this._soundManager.stopHeroAllAudios();
 		this._soundManager.playTheme(SoundManagerHero.MusicTheme.MENU, true);
+		/*this._heroCamera.gameObject.GetComponent(AudioListener).pause = true;*/
+		this._heroCamera.gameObject.GetComponent(AudioListener).pause = true;
+		
+		
 	}
 	
 	public function		closeMenu() : void
 	{
 		Time.timeScale = 1.0;
-		this.HeroLockCamera(false);
+		this.allowMouseMovement(true);
 		this._menu.setMenuMode(false);
 		this._soundManager.setPlayRain(true);
 		this._soundManager.playTheme(SoundManagerHero.MusicTheme.MENU, false);
+		this._heroCamera.gameObject.GetComponent(AudioListener).pause = false;
 	}
 	
 	public function 	openInventoryMode()
 	{
 		Time.timeScale = 0;
 		this._inventoryManager.setInventoryMode(InventoryManager.InventoryMode.MAIN);
-		this.HeroLockCamera(true);
+		this.allowMouseMovement(false);
 	}
 	
 	public function 	closeInventoryMode()
 	{
 		Time.timeScale = 1.0;
 		this._inventoryManager.setInventoryMode(InventoryManager.InventoryMode.OFF);
-		this.HeroLockCamera(false);
+		this.allowMouseMovement(true);
 	}
 	
 	public function getCollectable(type : Collectable.ObjectType, name : String, description : String, icon : Texture) 
@@ -201,13 +209,13 @@ public class HeroManager extends MonoBehaviour
 		animation, canAttack, minDamage, maxDamage, coldown);
 	}
 	
-	public function manageObjectUse(obj : Collectable) { this._inventoryManager.manageObjectUse(obj); }
+	public function manageObjectUse(obj : Collectable) { this._inventoryManager.manageObjectUse(obj, this._hp, this._hpMax); }
 	
 	public function hasItem(typeRequested : Collectable.ObjectType, onceUse : boolean) : boolean {
 		return (this._inventoryManager.hasItem(typeRequested, onceUse));
 	}
 	
-	public function		HeroLockCamera(val : boolean) { gameObject.SendMessage("setLocked", val); }
+	public function		allowMouseMovement(val : boolean) { this._mouseLook.enabled = val; }
 	
 	public function		addTarget(item : GameObject) : void
 	{
@@ -221,40 +229,33 @@ public class HeroManager extends MonoBehaviour
 			this._targets.Remove(item);		
 	}
 	
-	public function		manageLookingAtScaryThings() : void
+	public function		manageLookingAtScaryThings() : void { this._sanityManager.manageLookingAtScaryThings(); }
+	public function		scareHero(val : int) : void { this._sanityManager.scareHero(val); }
+	
+	public function		takeDamage(damage : int) : void
 	{
-		if (this._sanity > 0)
-		{
-			if (Time.time - this._lastTimeScary > this._intervalScare)
-			{
-				if (this._sanity == 100)
-					this._fishEyeEffect.enabled = true;
-				if (((this._sanity - 1) % 10) > 9)
-				{
-					this._fishEyeEffect.strengthX = (1 - (Mathf.Round(this._sanity / 10) / 10));
-					this._fishEyeEffect.strengthY = (1 - (Mathf.Round(this._sanity / 10) / 10));
-				}
-				this._lastTimeScary = Time.time;
-				--this._sanity;
-				if (this._sanity < 50 && this._blurringEffect.enabled == false)
-				{
-					this.hearHeartBeat();
-					this._blurringEffect.enabled = true;
-				}
-			}
-		}
+		this._splatterEffect.hitHero();
+		this._soundManager.playSoundType(parseInt(SoundManagerHero.SoundType.SPEAK), parseInt(SoundManagerHero.HeroVoice.PAIN));
+		this._hp -= damage;
+		if (this._hp <= 30 && this._sanityManager.getSepiaToneEffect() == false)
+			this._sanityManager.setSepiaToneEffect(true);
+		if (this._hp <= 0)
+			this.die();
 	}
 	
-	public function		scareHero(val : int) : void
+	public function		drinkHealingPotion(hp : int) : void
 	{
-		this._sanity -= val;
-		if (this._sanity < 0)
-			this._sanity = 0;
-		this.hearHeartBeat();
-		this._fishEyeEffect.enabled = true;
-		this._blurringEffect.enabled = true;
-		this._fishEyeEffect.strengthX = (1 - (Mathf.Round(this._sanity / 10) / 10));
-		this._fishEyeEffect.strengthY = (1 - (Mathf.Round(this._sanity / 10) / 10));
+		this._soundManager.playSoundType(parseInt(SoundManagerHero.SoundType.SPEAK), parseInt(SoundManagerHero.HeroVoice.BOTTLE));
+		this._hp += hp;
+		if (this._hp > this._hpMax)
+			this._hp = this._hpMax;
+	}
+	
+	public function	WaitForRealSeconds(time : float) : IEnumerator
+	{
+		 var start : float = Time.realtimeSinceStartup;
+
+         while (Time.realtimeSinceStartup < start + time) { };
 	}
 	
 	public function 	getCamera() : Camera { return(this._heroCamera); }
@@ -273,33 +274,21 @@ public class HeroManager extends MonoBehaviour
 	public function 	lookingUgly() { this._soundManager.playSoundType(parseInt(SoundManagerHero.SoundType.SPEAK), parseInt(SoundManagerHero.HeroVoice.UGLY)); }
 	public function 	lookingAtDoorLocked() { this._soundManager.playSoundType(parseInt(SoundManagerHero.SoundType.SPEAK), parseInt(SoundManagerHero.HeroVoice.LOCKED)); }
 	public function 	hearHeartBeat() { this._soundManager.playSoundType(parseInt(SoundManagerHero.SoundType.SPEAK), parseInt(SoundManagerHero.HeroVoice.HEART_BEAT)); }
+	public function 	hearOpenBook() { this._soundManager.playOpenBook(); }
+	public function 	hearCloseBook() { this._soundManager.playCloseBook(); }
+	public function 	hearTurnPage() { this._soundManager.playTurnPage(); }
 	public function		walkingOnBones() : void { this._soundManager.walkingOnBones(); }
 	
-	private function	manageHeroScared() : IEnumerator
+	private function	die() : void
 	{
-		if (Time.time - this._lastTimeScary > this._intervalScare)
-		{
-			this._lastTimeScary = Time.time;
-			this._sanity += 0.3;
-			if (this._sanity >= 100)
-			{
-				if (this._sanity > 100)
-					this._sanity = 100;
-				this._fishEyeEffect.enabled = false;
-			}
-			if (((this._sanity + 0.3) % 10) < 0.3)
-			{
-				this._fishEyeEffect.strengthX = (1 - (Mathf.Round(this._sanity / 10) / 10));
-				this._fishEyeEffect.strengthY = (1 - (Mathf.Round(this._sanity / 10) / 10));
-			}
-			if (this._sanity > 50 && this._blurringEffect.enabled == true)
-			{
-				this._blurringEffect.enabled = false;
-				this._soundManager.stopHeroSoundType(parseInt(SoundManagerHero.SoundType.SPEAK));
-			}
-		}
-		if (this._sanity < 75)
-			this._soundManager.manageScaredSounds();
+		Time.timeScale = 0.1;
+		this.allowMouseMovement(false);
+		this._dying = true;
+		var alphaFadeValue = 1.0;
+		alphaFadeValue -= Mathf.Clamp01(Time.deltaTime / 5);
+		GUI.color = new Color(alphaFadeValue, alphaFadeValue, alphaFadeValue, alphaFadeValue);
+		GUI.DrawTexture( new Rect(0, 0, Screen.width, Screen.height ), this._fading);
+		//this.openMenu(MenuManager.Menu_Data.GAME_OVER);
 	}
 	
 	private function manageIsRaining(indoor : boolean) : void
@@ -314,6 +303,7 @@ public class HeroManager extends MonoBehaviour
 	{
 		var target : Hittable;
 	
+		this._soundManager.playSoundType(parseInt(SoundManagerHero.SoundType.WEAPON), parseInt(SoundManagerHero.HeroWeapon.MINEPICK));
 		for (var i : int = 0 ; i < this._targets.Count ; ++i)
 		{
 			target = this._targets[i].GetComponent("Hittable") as Hittable;

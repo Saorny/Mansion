@@ -17,8 +17,6 @@ public class Hittable extends MonoBehaviour
 		this.loadHero();
 	}
 	
-	public function		Awake() : void { this.loadHero(); }
-	
 	public function		OnTriggerEnter(body : Collider) : void
 	{
 		if (body.transform == this._heroBody)

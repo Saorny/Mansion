@@ -6,7 +6,7 @@ public class Collectable
 	protected var _description 		: String;
 	protected var _icon 			: Texture;
 	
-	public enum ObjectType { nothing, key_entrance, key_basement, lamp, mine_pick, book }
+	public enum ObjectType { nothing, key_entrance, key_basement, lamp, mine_pick, book, healing }
 	
 	public function Collectable(type : ObjectType, name : String, description : String, icon : Texture)
 	{

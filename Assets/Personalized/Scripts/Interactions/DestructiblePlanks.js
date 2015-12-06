@@ -39,14 +39,14 @@ public class DestructiblePlanks extends ActionType
 	private function	pauseGame(Hero : HeroManager)
 	{
 		this._hero.setPauseHero(true);
-		this._hero.HeroLockCamera(true);
+		this._hero.allowMouseMovement(false);
 		Time.timeScale = 0.1;
 	}
 	
 	private function	resumeGame(Hero : HeroManager)
 	{
 		this._hero.setPauseHero(false);
-		this._hero.HeroLockCamera(false);
+		this._hero.allowMouseMovement(true);
 		this._hero.setSpecialAnimation(null);
 		Time.timeScale = 1;
 	}

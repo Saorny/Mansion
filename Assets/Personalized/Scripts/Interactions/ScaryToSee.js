@@ -7,16 +7,16 @@ public class ScaryToSee extends MonoBehaviour
 
 	function Update ()
 	{
-		if (this.renderer.isVisible)
+		if (this.renderer.isVisible && Vector3.Distance(this._hero.transform.position, this.transform.position) < 5)
 		{
 			var viewPos : Vector3 = this._hero.getCamera().WorldToViewportPoint(this.gameObject.transform.position);
 
-			if(viewPos.x > 0.3 && viewPos.x < 0.7 && viewPos.y > 0.3 &&  viewPos.y < 0.7 && Vector3.Distance(this._hero.transform.position, this.transform.position) < 15)
+			if(viewPos.x > 0.3 && viewPos.x < 0.7 && viewPos.y > 0.3 &&  viewPos.y < 0.7)
 				this._hero.manageLookingAtScaryThings();
 		}
 	}
 
-	public function		Awake() : void
+	public function		Start() : void
 	{
 		var	hero : GameObject;
 		

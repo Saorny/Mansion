@@ -10,7 +10,7 @@ public function OnTriggerStay(body : Collider)
 		this._hero.lookingUninteresting();
 }
 
-public function		Awake() : void
+public function		Start() : void
 {
 	var	hero : GameObject;
 	

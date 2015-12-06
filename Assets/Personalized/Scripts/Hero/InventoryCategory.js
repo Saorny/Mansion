@@ -7,9 +7,9 @@ public class InventoryCategory
 	private var _title 				: String;
 	private var _description	 	: String;
 	private var _icon		 		: Texture;
-	private var _ptr				: function() : void;
+	private var _ptr				: function(int, int) : void;
 	
-	public function InventoryCategory(type : InventoryManager.InventoryMode, title : String, description : String, icon : Texture, ptr : function() : void)
+	public function InventoryCategory(type : InventoryManager.InventoryMode, title : String, description : String, icon : Texture, ptr : function(int, int) : void)
 	{
 		this._type = type;
 		this._title = title;
@@ -24,5 +24,5 @@ public class InventoryCategory
 	public function getTitle() : String {return (this._title);}
 	public function getDescription() : String {return (this._description);}
 	public function getIcon() : Texture {return (this._icon);}
-	public function getPtr() : function() : void {return (this._ptr);}
+	public function getPtr() : function(int, int) : void {return (this._ptr);}
 };

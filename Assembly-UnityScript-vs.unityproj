@@ -62,6 +62,7 @@
      <Compile Include="Assets\Personalized\Scripts\Events\WindowEerieEvent.js" />
      <Compile Include="Assets\Personalized\Scripts\Hero\BookReadingManager.js" />
      <Compile Include="Assets\Personalized\Scripts\Hero\CinematicManager.js" />
+     <Compile Include="Assets\Personalized\Scripts\Hero\DialogManager.js" />
      <Compile Include="Assets\Personalized\Scripts\Hero\EnterArea.js" />
      <Compile Include="Assets\Personalized\Scripts\Hero\HeroManager.js" />
      <Compile Include="Assets\Personalized\Scripts\Hero\InputManager.js" />
@@ -78,6 +79,7 @@
      <Compile Include="Assets\Personalized\Scripts\Hero\Menu\MenuManager.js" />
      <Compile Include="Assets\Personalized\Scripts\Hero\Menu\MenuOptions.js" />
      <Compile Include="Assets\Personalized\Scripts\Hero\Menu\MenuSave.js" />
+     <Compile Include="Assets\Personalized\Scripts\Hero\Message.js" />
      <Compile Include="Assets\Personalized\Scripts\Hero\MultidimentionalSound.js" />
      <Compile Include="Assets\Personalized\Scripts\Hero\SanityManager.js" />
      <Compile Include="Assets\Personalized\Scripts\Hero\SoundManagerHero.js" />

@@ -17,7 +17,6 @@ public class MenuOptions extends Menu
 		this._hero = hero;
 		this._menuTitle = "Options";
 		
-		this._subMenus.Add(new MenuButton("Keyboard control", this.goToKeyboardControl));
 		this._subMenus.Add(new MenuButton("Cancel", this.returnCancel, "Apply", this.returnSave));
 		this._inputManager = inputManager;
 	}

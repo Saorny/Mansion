@@ -20,7 +20,9 @@ public class HeroManager extends MonoBehaviour
 	private var 	_soundManager 		: SoundManagerHero;
 	private var		_menu				: MenuManager;
 	private var		_inventoryManager	: InventoryManager;
+	private var		_dialogManager		: DialogManager;
 	private var		_targets			: List.<GameObject>;
+	private var		_audiosPaused		: List.<AudioSource>;
 	
 	private enum	sanityState { HEALTHY, UNSTABLE, INSANE }
 
@@ -30,7 +32,7 @@ public class HeroManager extends MonoBehaviour
 		this.openMenu(MenuManager.Menu_Data.MAIN_MENU);
 		this._gameStarted = false;
 		this._dying = false;
-		this._targets	= new List.<GameObject>();
+		this._targets = new List.<GameObject>();
 		this._hpMax = 100;
 		this._hp = 75;
 	}
@@ -45,9 +47,15 @@ public class HeroManager extends MonoBehaviour
 		this._inventoryManager = hero.GetComponent("InventoryManager") as InventoryManager;
 		this._splatterEffect = hero.GetComponent("SplatterEffectManager") as SplatterEffectManager;
 		this._sanityManager = hero.GetComponent("SanityManager") as SanityManager;
+		this._dialogManager = hero.GetComponent("DialogManager") as DialogManager;
 		this._mouseLook = hero.GetComponent("MouseLook") as MouseLook;
 		this._heroCamera = hero.Find("Main Camera").GetComponent(Camera);
 		this._sanityManager.setSoundManager(this._soundManager);
+		this._audiosPaused	= new List.<AudioSource>();
+		
+		/*this.addDialogText('this is a test1', 3, Message.messageType.DIALOG);
+		this.addDialogText('this is a test2', 3, Message.messageType.TUTORIAL);
+		this.addDialogText('this is a test3', 3, Message.messageType.WARNING);*/
 	}
 	
 	public function OnGUI () : IEnumerable
@@ -58,25 +66,15 @@ public class HeroManager extends MonoBehaviour
 			this.manageDisplayMenu();
 		else if (this.getInv() == InventoryManager.InventoryMode.OFF && this.getPauseHero() == false)
 		{
-			if (this._inventoryManager.hasSpecialAnimation() == false)
+			if (this._inventoryManager.hasSpecialAnimation() == false) {
 				this._inventoryManager.displayObjectInHand();
+				this._dialogManager.displayDialogs();
+			}
 			else
 				this._inventoryManager.displaySpecialAnimation();
 		}
 	}
-	
-	public function setSpecialAnimation(newAnimation : Texture) : void { this._inventoryManager.setSpecialAnimation(newAnimation); }
-	
-	public function	setIndoor(val : boolean)
-	{
-		this.manageIsRaining(val);
-		this._soundManager.setIndoor(val);
-	}
-	
-	public function		setFloorType(val : SoundManagerHero.FloorType) : void { this._soundManager.setFloorType(val); }
-	
-	public function		setHearThunder(volume : float) : void { this._soundManager.setThunderVolume(volume); }
-	
+
 	public function 	Update()
 	{
 		if (this._gameStarted == true && this._dying == false)
@@ -149,21 +147,40 @@ public class HeroManager extends MonoBehaviour
 		if (this._menu.getMenuMode() == false && this._inventoryManager.getInventoryMode() == InventoryManager.InventoryMode.OFF)
 			this._sanityManager.manageHeroScared();
 	}
+		
+	public function setSpecialAnimation(newAnimation : Texture) : void { this._inventoryManager.setSpecialAnimation(newAnimation); }
+	
+	public function	setIndoor(val : boolean)
+	{
+		this.manageIsRaining(val);
+		this._soundManager.setIndoor(val);
+	}
+	
+	public function		setFloorType(val : SoundManagerHero.FloorType) : void { this._soundManager.setFloorType(val); }
+	
+	public function		setHearThunder(volume : float) : void { this._soundManager.setThunderVolume(volume); }
+	
 	
 	public function 	manageDisplayMenu() : IEnumerable { _menu.manageDisplayMenu(); }
 	
 	public function		openMenu(menu : MenuManager.Menu_Data) : void
 	{
+		var allAudioSources = FindObjectsOfType(AudioSource) as AudioSource[];
+		
 		Time.timeScale = 0;
 		this.allowMouseMovement(false);
 		this._menu.goTo(parseInt(menu));
 		this._menu.setMenuMode(true);
 		this._soundManager.setPlayRain(false);
 		this._soundManager.stopHeroAllAudios();
-		this._soundManager.playTheme(SoundManagerHero.MusicTheme.MENU, true);
-		/*this._heroCamera.gameObject.GetComponent(AudioListener).pause = true;*/
-		this._heroCamera.gameObject.GetComponent(AudioListener).pause = true;
 		
+		for (var audioS : AudioSource in allAudioSources) {
+			if (audioS.isPlaying == true) {
+				this._audiosPaused.Add(audioS);
+				audioS.active = false;
+			}
+		}
+		this._soundManager.playTheme(SoundManagerHero.MusicTheme.MENU, true);
 		
 	}
 	
@@ -175,6 +192,10 @@ public class HeroManager extends MonoBehaviour
 		this._soundManager.setPlayRain(true);
 		this._soundManager.playTheme(SoundManagerHero.MusicTheme.MENU, false);
 		this._heroCamera.gameObject.GetComponent(AudioListener).pause = false;
+		for (var i = 0 ; i < this._audiosPaused.Count ; ++i) {
+			this._audiosPaused[i].active = true;
+		}
+		this._audiosPaused.Clear();
 	}
 	
 	public function 	openInventoryMode()
@@ -258,6 +279,10 @@ public class HeroManager extends MonoBehaviour
          while (Time.realtimeSinceStartup < start + time) { };
 	}
 	
+	public function		addDialogText(content : String, duration : float, type : Message.messageType) : void {
+		this._dialogManager.addTextToDisplay(content, duration, type);
+	}
+	
 	public function 	getCamera() : Camera { return(this._heroCamera); }
 	public function 	getMenuMode() : boolean { return(this._menu.getMenuMode()); }
 	public function		getInv() : InventoryManager.InventoryMode { return (this._inventoryManager.getInventoryMode()); }
@@ -265,6 +290,7 @@ public class HeroManager extends MonoBehaviour
 	public function 	getGameStarted() : boolean { return (this._gameStarted); }
 	public function 	getIndoor() : boolean { return (this._soundManager.getIndoor()); }
 
+	public function		setMouseMovement(val : boolean) { this.allowMouseMovement(val);}
 	public function 	setPauseHero(val : boolean) { this._heroPaused = val; }
 	public function		setGameStarted(val : boolean) { this._gameStarted = val; }
 	public function 	setUsableItemArea(area : UsableItemArea) : void { this._inventoryManager.setUsableItemArea(area); }

@@ -273,7 +273,7 @@ public class InventoryManager extends MonoBehaviour
 	{
 		Time.timeScale = 1.0;
 		this._inventoryMode = InventoryMode.OFF;
-		gameObject.SendMessage("setLocked", false);
+		gameObject.SendMessage("allowMouseMovement", true);
 	}
 	
 	private function manageInventoryBrowsing(category : InventoryCategory) : IEnumerator

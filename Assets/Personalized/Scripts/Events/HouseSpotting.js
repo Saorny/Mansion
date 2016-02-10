@@ -22,6 +22,7 @@ public class HouseSpotting extends CinematicManager
 			this._thunder.light.enabled = false;
 			yield WaitForSeconds(1.0);
 			this.setAdventureMode();
+			this._hero.addDialogText('This must be the house I was looking for...', 10, Message.messageType.DIALOG);
 		}
 	}
 }

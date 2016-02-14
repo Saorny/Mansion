@@ -21,6 +21,7 @@ public class EventDraft extends CinematicManager
 			this._draft.Play();
 			yield WaitForSeconds(3.0);
 			this.setAdventureMode();
+			this._hero.addDialogText('I should be able to push the bookcase...\n I have a funny feeling something is behind...', 3, Message.messageType.DIALOG);
 		}
 	}
 }

@@ -20,5 +20,9 @@ public function OnTriggerEnter (body : Collider)
 		this._hero.setIndoor(this._isIndoor);
 		this._hero.setFloorType(this._floor_type);
 		this._hero.setHearThunder(this._thunderVolume);
+		this._hero.addDialogText('You may press "Escape" to access the menu. Do not hesitate the read the tutorial!', 
+			10, Message.messageType.TUTORIAL);
+		this._hero.addDialogText('You may press "i" to access your inventory.', 10, Message.messageType.TUTORIAL);
+		Destroy(this);
 	}
 }

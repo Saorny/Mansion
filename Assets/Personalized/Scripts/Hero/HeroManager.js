@@ -34,7 +34,7 @@ public class HeroManager extends MonoBehaviour
 		this._dying = false;
 		this._targets = new List.<GameObject>();
 		this._hpMax = 100;
-		this._hp = 75;
+		this._hp = 100;
 	}
 	
 	public function		Awake() : void
@@ -349,4 +349,6 @@ public class HeroManager extends MonoBehaviour
 		this.closeMenu();
 		this._gameStarted = true;
 	}
+
+	
 }

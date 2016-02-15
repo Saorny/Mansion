@@ -99,7 +99,6 @@ public class DialogManager extends MonoBehaviour {
 		tl = content.Length;
 		ci = 0;
 		
-		Debug.Log(content);
 		for (cl = 0 ; ci < tl ; ++cl) {
 			for (ll = 0 ; ll < this.LINE_LENGTH && (ci + ll) < tl ; ) {
 				if ((ci + ll) < tl && content[ci + ll] != ' ' && content[ci + ll] != ':' && content[ci + ll] != '\n') {

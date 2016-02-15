@@ -24,6 +24,7 @@ public class CollectableCollider extends MonoBehaviour
 	{
 		if (body.transform == this._heroBody && this._object.renderer.isVisible)
 		{
+			
 	        this._object.renderer.material.color.r = this._originalColor.r * this._highlight;
 	        this._object.renderer.material.color.g = this._originalColor.g * this._highlight;
 	        this._object.renderer.material.color.b = this._originalColor.b * this._highlight * 3;

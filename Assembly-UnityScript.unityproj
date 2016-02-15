@@ -59,6 +59,7 @@
      <Compile Include="Assets\Personalized\Scripts\Events\HiddenCave_DeepSwimming.js" />
      <Compile Include="Assets\Personalized\Scripts\Events\HouseSpotting.js" />
      <Compile Include="Assets\Personalized\Scripts\Events\RockingChairKeyCollect.js" />
+     <Compile Include="Assets\Personalized\Scripts\Events\StartingPoint.js" />
      <Compile Include="Assets\Personalized\Scripts\Events\WindowEerieEvent.js" />
      <Compile Include="Assets\Personalized\Scripts\Hero\BookReadingManager.js" />
      <Compile Include="Assets\Personalized\Scripts\Hero\CinematicManager.js" />
@@ -85,6 +86,7 @@
      <Compile Include="Assets\Personalized\Scripts\Hero\SoundManagerHero.js" />
      <Compile Include="Assets\Personalized\Scripts\Hero\SoundTypeManager.js" />
      <Compile Include="Assets\Personalized\Scripts\Hero\SplatterEffectManager.js" />
+     <Compile Include="Assets\Personalized\Scripts\Hero\TutorialManager.js" />
      <Compile Include="Assets\Personalized\Scripts\Hero\lookingUgly.js" />
      <Compile Include="Assets\Personalized\Scripts\Hero\lookingUninteresting.js" />
      <Compile Include="Assets\Personalized\Scripts\Interactions\ActionType.js" />

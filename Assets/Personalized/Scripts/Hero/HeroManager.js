@@ -18,6 +18,7 @@ public class HeroManager extends MonoBehaviour
 	private var		_sanityManager		: SanityManager;
 	private var		_splatterEffect		: SplatterEffectManager;
 	private var 	_soundManager 		: SoundManagerHero;
+	private var 	_tutoManager 		: TutorialManager;
 	private var		_menu				: MenuManager;
 	private var		_inventoryManager	: InventoryManager;
 	private var		_dialogManager		: DialogManager;
@@ -48,6 +49,7 @@ public class HeroManager extends MonoBehaviour
 		this._splatterEffect = hero.GetComponent("SplatterEffectManager") as SplatterEffectManager;
 		this._sanityManager = hero.GetComponent("SanityManager") as SanityManager;
 		this._dialogManager = hero.GetComponent("DialogManager") as DialogManager;
+		this._tutoManager = hero.GetComponent("TutorialManager") as TutorialManager;
 		this._mouseLook = hero.GetComponent("MouseLook") as MouseLook;
 		this._heroCamera = hero.Find("Main Camera").GetComponent(Camera);
 		this._sanityManager.setSoundManager(this._soundManager);
@@ -282,6 +284,7 @@ public class HeroManager extends MonoBehaviour
 	public function		addDialogText(content : String, duration : float, type : Message.messageType) : void {
 		this._dialogManager.addTextToDisplay(content, duration, type);
 	}
+	public function		mayDislayTuto(type : TutorialManager.TutoList) { this._tutoManager.mayDislayTuto(type, this.addDialogText); }
 	
 	public function 	getCamera() : Camera { return(this._heroCamera); }
 	public function 	getMenuMode() : boolean { return(this._menu.getMenuMode()); }

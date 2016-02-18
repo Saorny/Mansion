@@ -1,11 +1,12 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Personalized\Scripts\Events\StartingPoint.js">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Personalized\Scripts\Hero\TutorialManager.js">
     <Files>
-      <File FileName="Assets\Personalized\Scripts\Hero\EnterArea.js" Line="1" Column="1" />
-      <File FileName="Assets\Personalized\Scripts\Hero\HeroManager.js" Line="287" Column="32" />
-      <File FileName="Assets\Personalized\Scripts\Hero\TutorialManager.js" Line="10" Column="22" />
-      <File FileName="Assets\Personalized\Scripts\Events\StartingPoint.js" Line="11" Column="53" />
+      <File FileName="Assets\Personalized\Scripts\Interactions\Book.js" Line="22" Column="20" />
+      <File FileName="Assets\Personalized\Scripts\Hero\TutorialManager.js" Line="27" Column="52" />
+      <File FileName="Assets\Personalized\Scripts\Hero\HeroManager.js" Line="1" Column="1" />
+      <File FileName="Assets\Personalized\Scripts\Events\StartingPoint.js" Line="16" Column="1" />
+      <File FileName="Assets\Personalized\Scripts\Hero\InventoryManager.js" Line="48" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

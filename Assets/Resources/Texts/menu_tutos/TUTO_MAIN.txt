@@ -1,0 +1,13 @@
+Welcome to the game!
+
+You control a detective in charge of solving a mysterious case (see the tutorial section to known more about the background). You need to explore areas, collect objects and solve puzzles to follow up the story. Here are a few useful infos:
+
+- press "W/A/S/D" : strife front/left/back/right
+
+- press "i" : access inventory
+
+- press "escape" : access menu, or close current menu
+
+- "space" : jump
+
+- "e" : collect or interact with an object

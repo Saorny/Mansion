@@ -3,15 +3,13 @@
 @DoNotSerialize
 public class MenuKeyboardControl extends Menu
 {
-	private var			_hero			: HeroManager;
 	private var			_inputManager	: InputManager;
 
 	public function		MenuMain() {}
 
-	public function		MenuKeyboardControl(hero : HeroManager, action_sound : AudioSource, ptr : function(int) : void, inputManager : InputManager)
+	public function		MenuKeyboardControl(hero : HeroManager, action_sound : AudioSource, ptr : function(MenuManager.Menu_Data) : void, inputManager : InputManager)
 	{
-		super(ptr, action_sound);
-		this._hero = hero;
+		super(hero, ptr, action_sound);
 		this._menuTitle = "Keyboard input pannel";
 
 		this._subMenus.Add(new MenuButton("Cancel", this.returnPrevious, "Apply", this.returnPrevious));
@@ -69,6 +67,5 @@ public class MenuKeyboardControl extends Menu
 		}
 	}
 
-	private function	goToKeyboardControl() : void { this.goTo(parseInt(MenuManager.Menu_Data.KEYBOARD_CONTROL)); }
-	private function	returnPrevious() : void { this.goTo(parseInt(MenuManager.Menu_Data.PREVIOUS)); }
+	private function	returnPrevious() : void { this.goTo(MenuManager.Menu_Data.PREVIOUS); }
 };

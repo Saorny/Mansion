@@ -3,7 +3,6 @@
 @DoNotSerialize
 public class MenuSave extends Menu
 {
-	private var			_heroManager	: HeroManager;
 	private var			_newSaveName	: String;
 	private var			_defaultName	: String;
 	private var			_save_code_name	: String;
@@ -11,10 +10,9 @@ public class MenuSave extends Menu
 
 	public function		MenuSave() {}
 
-	public function		MenuSave(heroManager : HeroManager, action_sound : AudioSource, ptr : function(int) : void)
+	public function		MenuSave(heroManager : HeroManager, action_sound : AudioSource, ptr : function(MenuManager.Menu_Data) : void)
 	{
-		super(ptr, action_sound);
-		this._heroManager = heroManager;
+		super(heroManager, ptr, action_sound);
 		this._menuTitle = "Save game";
 		this._newSaveName = "New save";
 		this._defaultName = "New save";

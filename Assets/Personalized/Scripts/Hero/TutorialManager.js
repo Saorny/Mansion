@@ -21,7 +21,6 @@ public class TutorialManager extends MonoBehaviour {
 		menuItems = TutoList.GetValues(typeof(TutoList));
 		for (var i = 0 ; i < menuItems.Count ; ++i) {
 			this._hasDisplayed[menuItems[i]] = false;
-			Debug.Log(menuItems[i].ToString());
 			res = Resources.Load(this.COMMON_PATH + menuItems[i].ToString(), typeof(TextAsset));
 			if (res != null) {
 				this._tutorials[menuItems[i]] = res.ToString();

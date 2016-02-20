@@ -3,19 +3,24 @@
 @script SerializeAll
 public class MenuManager extends MonoBehaviour
 {
-	public enum Menu_Data { MAIN_MENU, RUNNING_MENU, SAVE_MENU, LOAD_MENU, GAME_OVER, OPTIONS, KEYBOARD_CONTROL, TOTAL, PREVIOUS }
-	public enum Button_Data { BUTTON_WIDTH = 350, BUTTON_HEIGHT = 30, MENU_WIDTH = 450, INTER_SPACE = 20 }
+	public enum Menu_Data { 
+		MAIN_MENU, RUNNING_MENU, SAVE_MENU, LOAD_MENU, GAME_OVER, OPTIONS
+		, TUTORIALS, TUTO_MAIN, TUTO_INVENTORY, TUTO_HEALTH
+		, TOTAL, PREVIOUS
+		}
+	public enum Button_Data { BUTTON_WIDTH = 350, BUTTON_HEIGHT = 30, MENU_WIDTH = 450 , INTER_SPACE = 20 }
 	
 	public var 			_background 	: Texture;
 	public var			_button_click	: AudioSource;
 	public var			_button_action	: AudioSource;
-	private var			_menus		: List.<Menu> = new List.<Menu>();
+	private var			_menus			: Dictionary.<MenuManager.Menu_Data, Menu>;
+	private var			_previousMenus	: List.<Menu>;
 	private var 		_menuMode 		: boolean = false;
 	private var			_selectedMenu 	: Menu;
-	private var			_previousMenu	: Menu;
 	private var			_loaded			: boolean;
 	private var			_hero			: HeroManager;
 	private var			_inputManager	: InputManager;
+	private var			COMMON_PATH 	: String = 'Texts/menu_tutos/';
 	
 	public function		Awake() : void
 	{
@@ -26,6 +31,8 @@ public class MenuManager extends MonoBehaviour
 		this._hero = hero.GetComponent("HeroManager") as HeroManager;
 		this._inputManager = hero.GetComponent("InputManager") as InputManager;
 		this._loaded = false;
+		this._menus = new Dictionary.<MenuManager.Menu_Data, Menu>();
+		this._previousMenus = new List.<Menu>();
 		this.buildUpMenu();
 	}
 	
@@ -38,25 +45,27 @@ public class MenuManager extends MonoBehaviour
 		}
 	}
 	
-	public function goTo(val : int) : void
-	{
+	public function goTo(val : int) : void {
 		if (val != parseInt(Menu_Data.PREVIOUS))
 		{
 			if (val < this._menus.Count && this._menus != null)
 			{
 				this._menus[val].refresh();
-				this._previousMenu = this._selectedMenu;
+				this._previousMenus.Add(this._selectedMenu);
 				this._selectedMenu = this._menus[val];
 			}
 		}
 		else
 		{
-			var	save 	: Menu;
+			var	item 	: Menu;
 			
-			save = this._selectedMenu;
-			this._selectedMenu = this._previousMenu;
-			this._previousMenu = save;
-			
+			item = this._previousMenus[this._previousMenus.Count - 1];
+			if (this._previousMenus.Count > 0) {
+				this._selectedMenu = item;
+				this._previousMenus.Remove(item);
+			}
+			else
+				Debug.Log("Error: there is no previous menu");
 		}
 	}
 	
@@ -80,15 +89,17 @@ public class MenuManager extends MonoBehaviour
 	
 	private function	buildUpMenu() : void
 	{
-		this._menus.Add(new MenuMain(this._hero, this._button_action, this.goTo));
-		this._menus.Add(new MenuMainRunning(this._hero, this._button_action, this.goTo));
-		this._menus.Add(new MenuSave(this._hero, this._button_action, this.goTo));
-		this._menus.Add(new MenuLoad(this._hero, this._button_action, this.goTo));
-		this._menus.Add(new MenuGameOver(this._hero, this._button_action, this.goTo));
-		this._menus.Add(new MenuOptions(this._hero, this._button_action, this.goTo, this._inputManager));
-		this._menus.Add(new MenuKeyboardControl(this._hero, this._button_action, this.goTo, this._inputManager));
-		this._selectedMenu = this._menus[parseInt(Menu_Data.MAIN_MENU)];
-		this._previousMenu = this._menus[parseInt(Menu_Data.MAIN_MENU)];
+		this._menus[Menu_Data.MAIN_MENU] = new MenuMain(this._hero, this._button_action, this.goTo);
+		this._menus[Menu_Data.RUNNING_MENU] = new MenuMainRunning(this._hero, this._button_action, this.goTo);
+		this._menus[Menu_Data.SAVE_MENU] = new MenuSave(this._hero, this._button_action, this.goTo);
+		this._menus[Menu_Data.LOAD_MENU] = new MenuLoad(this._hero, this._button_action, this.goTo);
+		this._menus[Menu_Data.GAME_OVER] = new MenuGameOver(this._hero, this._button_action, this.goTo);
+		this._menus[Menu_Data.OPTIONS] = new MenuOptions(this._hero, this._button_action, this.goTo, this._inputManager);
+		this._menus[Menu_Data.TUTORIALS] = new MenuTutorial(this._hero, this._button_action, this.goTo);
+		this._menus[Menu_Data.TUTO_MAIN] = new MenuTutoMain(this._hero, this._button_action, this.goTo, this.COMMON_PATH + Menu_Data.TUTO_MAIN.ToString());
+		this._menus[Menu_Data.TUTO_INVENTORY] = new MenuTutoIventory(this._hero, this._button_action, this.goTo, this.COMMON_PATH + Menu_Data.TUTO_INVENTORY.ToString());
+		this._menus[Menu_Data.TUTO_HEALTH] = new MenuTutoHealth(this._hero, this._button_action, this.goTo, this.COMMON_PATH + Menu_Data.TUTO_HEALTH.ToString());
+		this._selectedMenu = this._menus[Menu_Data.MAIN_MENU];
 		this._loaded = true;
 	}
 }

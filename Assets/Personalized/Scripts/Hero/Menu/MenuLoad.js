@@ -3,7 +3,6 @@
 @DoNotSerialize
 public class MenuLoad extends Menu
 {
-	private var			_heroManager	: HeroManager;
 	private var			_button_action	: AudioSource;
 	private var			_newSaveName	: String;
 	private var			_defaultName	: String;
@@ -12,10 +11,9 @@ public class MenuLoad extends Menu
 
 	public function		MenuLoad() {}
 
-	public function		MenuLoad(heroManager : HeroManager, action_sound : AudioSource, ptr : function(int) : void)
+	public function		MenuLoad(heroManager : HeroManager, action_sound : AudioSource, ptr : function(MenuManager.Menu_Data) : void)
 	{
-		super(ptr, action_sound);
-		this._heroManager = heroManager;
+		super(heroManager, ptr, action_sound);
 		this._menuTitle = "Load a previously saved game:";
 		this.refresh();
 	}

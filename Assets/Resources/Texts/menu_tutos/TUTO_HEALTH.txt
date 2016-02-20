@@ -1,0 +1,8 @@
+- Physical health :
+
+Your physical health is visible within your inventory ("i"). It drops when you fall from very high, or get hurt by an hostile.
+
+- Mental health :
+
+Whenever you are looking at something disturbing (corpsing, ghost, monster, etc.), you will start feeling awkward.Vision will get blurry, hearbeat speed will increase and you may experience strange things.
+The only to retrieve your original sanity is to look away until it comes back to its normal state.

@@ -1,0 +1,7 @@
+Your inventory is accessible by typing "i". It allows you to manipulate objects previously collected. It consists of three categories.
+
+- Weapons : You may hold only one weapon at a time. For example, your lamp allows you to explore dark area. You may however need at some point to use another weapon for, say, destroy an obstable. Press left click to use it (no effect with the lamp).
+
+- Books : allows you to read the books you have previously collect. You start with your faithful personal diary. Left click on a book to open it, then click on the page you wish to turn.
+
+- Usables : the objects you have collected so far. They will be useful at some point (for examples, keys will grant you access to new areas, by unlocking a specific door).

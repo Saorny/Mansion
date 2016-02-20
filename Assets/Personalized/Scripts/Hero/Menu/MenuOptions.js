@@ -3,7 +3,6 @@
 @DoNotSerialize
 public class MenuOptions extends Menu
 {
-	private var			_hero				: HeroManager;
 	private var			_inputManager		: InputManager;
 	private var			_mouseSensitivity	: int;
 	
@@ -11,12 +10,10 @@ public class MenuOptions extends Menu
 
 	public function		MenuMain() {}
 
-	public function		MenuOptions(hero : HeroManager, action_sound : AudioSource, ptr : function(int) : void, inputManager : InputManager)
+	public function		MenuOptions(hero : HeroManager, action_sound : AudioSource, ptr : function(MenuManager.Menu_Data) : void, inputManager : InputManager)
 	{
-		super(ptr, action_sound);
-		this._hero = hero;
+		super(hero, ptr, action_sound);
 		this._menuTitle = "Options";
-		
 		this._subMenus.Add(new MenuButton("Cancel", this.returnCancel, "Apply", this.returnSave));
 		this._inputManager = inputManager;
 	}
@@ -98,8 +95,7 @@ public class MenuOptions extends Menu
 		}
 	}
 
-	private function	goToKeyboardControl() : void { this.goTo(parseInt(MenuManager.Menu_Data.KEYBOARD_CONTROL)); }
-	private function	returnCancel() : void { this.goTo(parseInt(MenuManager.Menu_Data.PREVIOUS)); }
+	private function	returnCancel() : void { this.goTo(MenuManager.Menu_Data.PREVIOUS); }
 	
 	private function	returnSave() : void
 	{

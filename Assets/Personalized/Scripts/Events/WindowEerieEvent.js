@@ -12,7 +12,7 @@ public class WindowEerieEvent extends CinematicManager
 
 	public function		OnTriggerEnter(body : Collider)
 	{
-		if (body.transform == _heroPos && this._window.renderer.isVisible == true &&  this._triggered == false)
+		if (body.transform == _heroBody && this._window.renderer.isVisible == true &&  this._triggered == false)
 		{
 			var clone : GameObject;
 		

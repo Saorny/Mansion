@@ -1,0 +1,1 @@
+You may open a door by pressing "e".

@@ -12,17 +12,15 @@ public class SanityManager extends MonoBehaviour
 	private var		_fishEyeEffect		: Fisheye;
 	private var		_sepiaToneEffect	: SepiaToneEffect;
 	
-	private enum	sanityState { HEALTHY, UNSTABLE, INSANE }
+	public enum	sanityState { HEALTHY, UNSTABLE, INSANE }
 
-	public function 	Start()
-	{
+	public function 	Start() : void {
 		this._sanity = 100;
 		this._intervalScare = 0.04;
 		this._lastTimeScary = 0;
 	}
 	
-	public function		Awake() : void
-	{
+	public function		Awake() : void {
 		var	hero : GameObject;
 	
 		hero = GameObject.Find("Hero");
@@ -35,14 +33,12 @@ public class SanityManager extends MonoBehaviour
 		this._sepiaToneEffect.enabled = false;
 	}
 	
-	private function	calculateEyeFishiness()
-	{
+	private function	calculateEyeFishiness() : void {
 		this._fishEyeEffect.strengthX = (1 - (this._sanity / 100)) / 3;
 		this._fishEyeEffect.strengthY = (1 - (this._sanity / 100)) / 3;
 	}
 	
-	public function		manageLookingAtScaryThings() : void
-	{
+	public function		manageLookingAtScaryThings() : void {
 		if (this._sanity > 0)
 		{
 			if (Time.time - this._lastTimeScary > this._intervalScare)
@@ -57,27 +53,26 @@ public class SanityManager extends MonoBehaviour
 				this._lastTimeScary = Time.time;
 				if (this._sanity < 50)
 				{
+					gameObject.SendMessage("sendScareAlert", true);
 					if (this._blurringEffect.enabled == false)
 						this._blurringEffect.enabled = true;
-					this._soundManager.playSoundType(parseInt(SoundManagerHero.SoundType.SPEAK), parseInt(SoundManagerHero.HeroVoice.HEART_BEAT));			
+					this._soundManager.playSoundType(SoundManagerHero.SoundType.SPEAK, SoundManagerHero.HeroVoice.HEART_BEAT);			
 				}
 			}
 		}
 	}
 	
-	public function		scareHero(val : int) : void
-	{
+	public function		scareHero(val : int) : void {
 		this._sanity -= val;
 		if (this._sanity < 0)
 			this._sanity = 0;
-		this._soundManager.playSoundType(parseInt(SoundManagerHero.SoundType.SPEAK), parseInt(SoundManagerHero.HeroVoice.HEART_BEAT));
+		this._soundManager.playSoundType(SoundManagerHero.SoundType.SPEAK, SoundManagerHero.HeroVoice.HEART_BEAT);
 		this._fishEyeEffect.enabled = true;
 		this._blurringEffect.enabled = true;
 		this.calculateEyeFishiness();
 	}
 	
-	public function	manageHeroScared() : IEnumerator
-	{
+	public function	manageHeroScared() : IEnumerator {
 		if (this._sanity < 100 && Time.time - this._lastTimeScary > this._intervalScare)
 		{
 			this._lastTimeScary = Time.time;

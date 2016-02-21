@@ -5,11 +5,11 @@ public class TutorialManager extends MonoBehaviour {
 
 	private var		_hasDisplayed : Dictionary.<TutorialManager.TutoList, boolean>;
 	private var		_tutorials : Dictionary.<TutorialManager.TutoList, String>;
-	private var		_tutoDuration : float = 10.0;
-	private var		COMMON_PATH : String = 'Texts/Tutorials/';
+	private var		_tutoDuration : float = 6.0;
+	private var		COMMON_PATH : String = 'Texts/info_tutos/';
 	
 	public enum	TutoList { 	ACCESS_MENU, ACCESS_INVENTORY, SANITY_WARNING,
-							COLLECT_OBJECT, OBJECT_COLLECTED, BEING_HIT, USE_POTION }
+							COLLECT_OBJECT, OBJECT_COLLECTED, BEING_HIT, USE_POTION, OPEN_DOOR, WEAPON_COLLECTED }
 	
 	public function Awake() : void {
 		var menuItems = new Array();

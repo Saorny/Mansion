@@ -21,8 +21,9 @@ public class EerieLightEvent extends CinematicManager
 			}
 			this._hero.scareHero(80);
 			this.endVision();
-			Destroy(this);
+			this._hero.addDialogText('Am I going insane?!!', 4, Message.messageType.DIALOG);
 			this.setAdventureMode();
+			Destroy(this);
 		}
 	}
 

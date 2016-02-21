@@ -13,6 +13,7 @@ public class WeaponCollider extends CollectableCollider
 	{
 		if (body.transform == this.getHeroBody() && Input.GetButtonDown("Use") && this._object.renderer.isVisible) 
 	   	{
+	   		this._hero.mayDislayTuto(TutorialManager.TutoList.WEAPON_COLLECTED);
 	   		this.getHero().giveWeapon(	this.ItemType, this.ItemName, this.ItemDescription, this.ItemIcon,
 	   									this._animation, this._canAttack, this._minDamage, this._maxDamage, this._coldown);
 			if (this.sound)

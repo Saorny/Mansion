@@ -1,23 +1,23 @@
 #pragma strict
 
 @DoNotSerialize
-public class CinematicManager extends MonoBehaviour
+public class CinematicManager extends Interactable
 {
-	protected var	_hero				: HeroManager;
-	protected var	_heroPos			: Transform;
+	protected var	_menuManager		: Transform;
 	protected var	_heroCamera			: Camera;
 	protected var 	_triggered			: boolean = false;
 	public var		_spots				: Camera[];
 	
-	public function CinematicManager()
-	{
+	public function CinematicManager() {
 		this._triggered = false;
 	}
 
-	public function		Start() { this.loadComponents(); }
+	public function		Start() {
+		super();
+		this.loadComponents(); 
+	}
 
-	protected function	setCinematicMode() : IEnumerator
-	{
+	protected function	setCinematicMode() : IEnumerator {
 		this._hero.setPauseHero(true);
 		this._hero.allowMouseMovement(false);
 	}
@@ -30,8 +30,8 @@ public class CinematicManager extends MonoBehaviour
 	
 	protected function	MakeHeroLookAt(spot : Camera, time : float) : IEnumerator
 	{
-		this.rotateObject(this._heroPos.transform, this._heroPos.transform.rotation, spot.transform.rotation, time);
-		yield this.moveObject2D(this._heroPos.transform, this._heroPos.transform.position, spot.transform.transform.position, time);
+		this.rotateObject(this._heroBody.transform, this._heroBody.transform.rotation, spot.transform.rotation, time);
+		yield this.moveObject2D(this._heroBody.transform, this._heroBody.transform.position, spot.transform.transform.position, time);
 	}
 	
 	protected function	loadComponents() : IEnumerable
@@ -39,9 +39,8 @@ public class CinematicManager extends MonoBehaviour
 		var	hero : GameObject;
 	
 		hero = GameObject.Find("Hero");
-		this._heroPos = hero.transform;
+		this._heroBody = hero.transform;
 		this._heroCamera = hero.Find("Main Camera").GetComponent(Camera);
-		this._hero = hero.GetComponent("HeroManager") as HeroManager;
 	}
 	
 	protected function		moveObject2D(thisTransform : Transform, startPos : Vector3, endPos : Vector3, time : float) : IEnumerator

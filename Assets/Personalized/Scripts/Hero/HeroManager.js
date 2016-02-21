@@ -6,29 +6,25 @@ public class HeroManager extends MonoBehaviour
 	public var 		_heroPaused 		: boolean = false;
 	public var		_rainingSpawner		: ParticleSystem;
 	public var		_fading				: Texture;
-	private var		_blurringEffect		: MotionBlur;
-	private var		_fishEyeEffect		: Fisheye;
 	private var 	_hpMax			 	: int;
 	private var 	_hp				 	: int;
-	private var 	_heroCamera		 	: Camera;
-	private var		_sanity				: float;
 	private var		_gameStarted		: boolean;
 	private var		_dying				: boolean;
+	private var 	_heroCamera		 	: Camera;
 	private var		_mouseLook			: MouseLook;
+	private var		_blurringEffect		: MotionBlur;
+	private var		_fishEyeEffect		: Fisheye;
+	private var		_targets			: List.<GameObject>;
+	private var		_audiosPaused		: List.<AudioSource>;
 	private var		_sanityManager		: SanityManager;
 	private var		_splatterEffect		: SplatterEffectManager;
 	private var 	_soundManager 		: SoundManagerHero;
 	private var 	_tutoManager 		: TutorialManager;
-	private var		_menu				: MenuManager;
+	private var		_menuManager		: MenuManager;
 	private var		_inventoryManager	: InventoryManager;
 	private var		_dialogManager		: DialogManager;
-	private var		_targets			: List.<GameObject>;
-	private var		_audiosPaused		: List.<AudioSource>;
-	
-	private enum	sanityState { HEALTHY, UNSTABLE, INSANE }
 
-	public function 	Start()
-	{
+	public function 	Start() {
 		this._rainingSpawner.enableEmission = false;
 		this.openMenu(MenuManager.Menu_Data.MAIN_MENU);
 		this._gameStarted = false;
@@ -38,13 +34,12 @@ public class HeroManager extends MonoBehaviour
 		this._hp = 100;
 	}
 	
-	public function		Awake() : void
-	{
+	public function		Awake() : void {
 		var	hero : GameObject;
 	
 		hero = GameObject.Find("Hero");
 		this._soundManager = hero.GetComponent("SoundManagerHero") as SoundManagerHero;
-		this._menu = hero.GetComponent("MenuManager") as MenuManager;
+		this._menuManager = hero.GetComponent("MenuManager") as MenuManager;
 		this._inventoryManager = hero.GetComponent("InventoryManager") as InventoryManager;
 		this._splatterEffect = hero.GetComponent("SplatterEffectManager") as SplatterEffectManager;
 		this._sanityManager = hero.GetComponent("SanityManager") as SanityManager;
@@ -66,14 +61,17 @@ public class HeroManager extends MonoBehaviour
 			this._inventoryManager.displayInventory(this._hp, this._hpMax);
 		else if (this.getMenuMode() == true)
 			this.manageDisplayMenu();
-		else if (this.getInv() == InventoryManager.InventoryMode.OFF && this.getPauseHero() == false)
-		{
-			if (this._inventoryManager.hasSpecialAnimation() == false) {
-				this._inventoryManager.displayObjectInHand();
-				this._dialogManager.displayDialogs();
+		else if (this.getInv() == InventoryManager.InventoryMode.OFF) {
+			if (this._dying == true)
+				GUI.DrawTexture( new Rect(0, 0, Screen.width, Screen.height ), this._fading);
+			if (this.getPauseHero() == false) {
+				if (this._inventoryManager.hasSpecialAnimation() == false) {
+					this._inventoryManager.displayObjectInHand();
+					this._dialogManager.displayDialogs();
+				}
+				else
+					this._inventoryManager.displaySpecialAnimation();
 			}
-			else
-				this._inventoryManager.displaySpecialAnimation();
 		}
 	}
 
@@ -83,7 +81,7 @@ public class HeroManager extends MonoBehaviour
 		{
 			if (Input.GetButtonDown("Escape"))
 			{
-				if (this._menu.getMenuMode() == true)
+				if (this._menuManager.getMenuMode() == true)
 					this.closeMenu();
 				else
 				{
@@ -100,7 +98,7 @@ public class HeroManager extends MonoBehaviour
 			}
 			else if (Input.GetButtonDown("Inventory"))
 			{
-				if (this._menu.getMenuMode() == false && this._heroPaused == false)
+				if (this._menuManager.getMenuMode() == false && this._heroPaused == false)
 				{
 					if (this._inventoryManager.getInventoryMode() == InventoryManager.InventoryMode.OFF)
 						this.openInventoryMode();
@@ -117,7 +115,7 @@ public class HeroManager extends MonoBehaviour
 			{
 				if (Input.GetMouseButtonDown(0))
 				{
-					if (this._menu.getMenuMode() == false && this._inventoryManager.getInventoryMode() == InventoryManager.InventoryMode.OFF && this._heroPaused == false)
+					if (this._menuManager.getMenuMode() == false && this._inventoryManager.getInventoryMode() == InventoryManager.InventoryMode.OFF && this._heroPaused == false)
 					{
 						var weapon : Weapon;
 						
@@ -131,22 +129,22 @@ public class HeroManager extends MonoBehaviour
 				}
 				else if (Input.GetButtonDown("Lamp"))
 				{
-					if (this._menu.getMenuMode() == false && this._inventoryManager.getInventoryMode() == InventoryManager.InventoryMode.OFF && this._heroPaused == false)
+					if (this._menuManager.getMenuMode() == false && this._inventoryManager.getInventoryMode() == InventoryManager.InventoryMode.OFF && this._heroPaused == false)
 						this._inventoryManager.manageLamp();
 				}
 				else if (Input.GetButtonDown("Weapon1"))
 				{
-					if (this._menu.getMenuMode() == false && this._inventoryManager.getInventoryMode() == InventoryManager.InventoryMode.OFF && this._heroPaused == false)
+					if (this._menuManager.getMenuMode() == false && this._inventoryManager.getInventoryMode() == InventoryManager.InventoryMode.OFF && this._heroPaused == false)
 						this._inventoryManager.switchToWeapon(0);
 				}
 				else if (Input.GetButtonDown("Weapon2"))
 				{
-					if (this._menu.getMenuMode() == false && this._inventoryManager.getInventoryMode() == InventoryManager.InventoryMode.OFF && this._heroPaused == false)
+					if (this._menuManager.getMenuMode() == false && this._inventoryManager.getInventoryMode() == InventoryManager.InventoryMode.OFF && this._heroPaused == false)
 						this._inventoryManager.switchToWeapon(1);
 				}
 			}
 		}
-		if (this._menu.getMenuMode() == false && this._inventoryManager.getInventoryMode() == InventoryManager.InventoryMode.OFF)
+		if (this._menuManager.getMenuMode() == false && this._inventoryManager.getInventoryMode() == InventoryManager.InventoryMode.OFF)
 			this._sanityManager.manageHeroScared();
 	}
 		
@@ -162,8 +160,7 @@ public class HeroManager extends MonoBehaviour
 	
 	public function		setHearThunder(volume : float) : void { this._soundManager.setThunderVolume(volume); }
 	
-	
-	public function 	manageDisplayMenu() : IEnumerable { _menu.manageDisplayMenu(); }
+	public function 	manageDisplayMenu() : IEnumerable { this._menuManager.manageDisplayMenu(); }
 	
 	public function		openMenu(menu : MenuManager.Menu_Data) : void
 	{
@@ -171,8 +168,8 @@ public class HeroManager extends MonoBehaviour
 		
 		Time.timeScale = 0;
 		this.allowMouseMovement(false);
-		this._menu.goTo(parseInt(menu));
-		this._menu.setMenuMode(true);
+		this._menuManager.goTo(parseInt(menu));
+		this._menuManager.setMenuMode(true);
 		this._soundManager.setPlayRain(false);
 		this._soundManager.stopHeroAllAudios();
 		
@@ -182,7 +179,7 @@ public class HeroManager extends MonoBehaviour
 				audioS.active = false;
 			}
 		}
-		this._soundManager.playTheme(SoundManagerHero.MusicTheme.MENU, true);
+		this._soundManager.playTheme(SoundManagerHero.MUSIC_THEMES.MENU, true);
 		
 	}
 	
@@ -190,9 +187,9 @@ public class HeroManager extends MonoBehaviour
 	{
 		Time.timeScale = 1.0;
 		this.allowMouseMovement(true);
-		this._menu.setMenuMode(false);
+		this._menuManager.setMenuMode(false);
 		this._soundManager.setPlayRain(true);
-		this._soundManager.playTheme(SoundManagerHero.MusicTheme.MENU, false);
+		this._soundManager.playTheme(SoundManagerHero.MUSIC_THEMES.MENU, false);
 		this._heroCamera.gameObject.GetComponent(AudioListener).pause = false;
 		for (var i = 0 ; i < this._audiosPaused.Count ; ++i) {
 			this._audiosPaused[i].active = true;
@@ -240,14 +237,16 @@ public class HeroManager extends MonoBehaviour
 	
 	public function		allowMouseMovement(val : boolean) { this._mouseLook.enabled = val; }
 	
-	public function		addTarget(item : GameObject) : void
-	{
+	public function		sendScareAlert() {
+		this.mayDislayTuto(TutorialManager.TutoList.SANITY_WARNING);
+	}
+	
+	public function		addTarget(item : GameObject) : void {
 		if (this._targets.Contains(item) == false)
 			this._targets.Add(item);		
 	}
 	
-	public function		removeTarget(item : GameObject) : void
-	{
+	public function		removeTarget(item : GameObject) : void {
 		if (this._targets.Contains(item) == true)
 			this._targets.Remove(item);		
 	}
@@ -255,10 +254,9 @@ public class HeroManager extends MonoBehaviour
 	public function		manageLookingAtScaryThings() : void { this._sanityManager.manageLookingAtScaryThings(); }
 	public function		scareHero(val : int) : void { this._sanityManager.scareHero(val); }
 	
-	public function		takeDamage(damage : int) : void
-	{
+	public function		takeDamage(damage : int) : void {
 		this._splatterEffect.hitHero();
-		this._soundManager.playSoundType(parseInt(SoundManagerHero.SoundType.SPEAK), parseInt(SoundManagerHero.HeroVoice.PAIN));
+		this._soundManager.playSoundType(SoundManagerHero.SoundType.SPEAK, SoundManagerHero.HeroVoice.PAIN);
 		this._hp -= damage;
 		if (this._hp <= 30 && this._sanityManager.getSepiaToneEffect() == false)
 			this._sanityManager.setSepiaToneEffect(true);
@@ -266,16 +264,14 @@ public class HeroManager extends MonoBehaviour
 			this.die();
 	}
 	
-	public function		drinkHealingPotion(hp : int) : void
-	{
-		this._soundManager.playSoundType(parseInt(SoundManagerHero.SoundType.SPEAK), parseInt(SoundManagerHero.HeroVoice.BOTTLE));
+	public function		drinkHealingPotion(hp : int) : void {
+		this._soundManager.playSoundType(SoundManagerHero.SoundType.SPEAK, SoundManagerHero.HeroVoice.USE_BOTTLE);
 		this._hp += hp;
 		if (this._hp > this._hpMax)
 			this._hp = this._hpMax;
 	}
 	
-	public function	WaitForRealSeconds(time : float) : IEnumerator
-	{
+	public function	WaitForRealSeconds(time : float) : IEnumerator {
 		 var start : float = Time.realtimeSinceStartup;
 
          while (Time.realtimeSinceStartup < start + time) { };
@@ -287,7 +283,7 @@ public class HeroManager extends MonoBehaviour
 	public function		mayDislayTuto(type : TutorialManager.TutoList) { this._tutoManager.mayDislayTuto(type, this.addDialogText); }
 	
 	public function 	getCamera() : Camera { return(this._heroCamera); }
-	public function 	getMenuMode() : boolean { return(this._menu.getMenuMode()); }
+	public function 	getMenuMode() : boolean { return(this._menuManager.getMenuMode()); }
 	public function		getInv() : InventoryManager.InventoryMode { return (this._inventoryManager.getInventoryMode()); }
 	public function 	getPauseHero() : boolean { return (this._heroPaused); }
 	public function 	getGameStarted() : boolean { return (this._gameStarted); }
@@ -299,17 +295,31 @@ public class HeroManager extends MonoBehaviour
 	public function 	setUsableItemArea(area : UsableItemArea) : void { this._inventoryManager.setUsableItemArea(area); }
 
 	public function 	updateDiary(content: String) : void { this._inventoryManager.updateDiary(content); }
-	public function 	lookingUninteresting() { this._soundManager.playSoundType(parseInt(SoundManagerHero.SoundType.SPEAK), parseInt(SoundManagerHero.HeroVoice.UNINTERESTING)); }
-	public function 	lookingUgly() { this._soundManager.playSoundType(parseInt(SoundManagerHero.SoundType.SPEAK), parseInt(SoundManagerHero.HeroVoice.UGLY)); }
-	public function 	lookingAtDoorLocked() { this._soundManager.playSoundType(parseInt(SoundManagerHero.SoundType.SPEAK), parseInt(SoundManagerHero.HeroVoice.LOCKED)); }
-	public function 	hearHeartBeat() { this._soundManager.playSoundType(parseInt(SoundManagerHero.SoundType.SPEAK), parseInt(SoundManagerHero.HeroVoice.HEART_BEAT)); }
+	public function 	lookingUninteresting() { this._soundManager.playSoundType(SoundManagerHero.SoundType.SPEAK, SoundManagerHero.HeroVoice.UNINTERESTING); }
+	public function 	lookingUgly() { this._soundManager.playSoundType(SoundManagerHero.SoundType.SPEAK, SoundManagerHero.HeroVoice.UGLY_PAINTING); }
+	public function 	lookingAtDoorLocked() { this._soundManager.playSoundType(SoundManagerHero.SoundType.SPEAK, SoundManagerHero.HeroVoice.LOCKED); }
+	public function 	hearHeartBeat() { this._soundManager.playSoundType(SoundManagerHero.SoundType.SPEAK, SoundManagerHero.HeroVoice.HEART_BEAT); }
 	public function 	hearOpenBook() { this._soundManager.playOpenBook(); }
 	public function 	hearCloseBook() { this._soundManager.playCloseBook(); }
 	public function 	hearTurnPage() { this._soundManager.playTurnPage(); }
 	public function		walkingOnBones() : void { this._soundManager.walkingOnBones(); }
 	
-	private function	die() : void
-	{
+	public function 	landingViolently(damage : int) : void { 
+		this._soundManager.playSoundType(SoundManagerHero.SoundType.SPEAK, SoundManagerHero.HeroVoice.LANDING);
+		this.takeDamage(damage);
+	}
+	
+	public function	die() : IEnumerator {
+		Time.timeScale = 0.2;
+		this.allowMouseMovement(false);
+		this.setPauseHero(true);
+		yield WaitForSeconds(0.5);
+		this.addDialogText('The adventure ends here...', 3, Message.messageType.DIALOG);
+		this._dying = true;
+		this.openMenu(MenuManager.Menu_Data.GAME_OVER);
+	}
+	
+	private function	dying() : void {
 		Time.timeScale = 0.1;
 		this.allowMouseMovement(false);
 		this._dying = true;
@@ -320,19 +330,17 @@ public class HeroManager extends MonoBehaviour
 		//this.openMenu(MenuManager.Menu_Data.GAME_OVER);
 	}
 	
-	private function manageIsRaining(indoor : boolean) : void
-	{
+	private function manageIsRaining(indoor : boolean) : void {
 		if (indoor == true)
 			this._rainingSpawner.enableEmission = false;
 		else
 			this._rainingSpawner.enableEmission = true;
 	}
 	
-	private function hitTargets(weapon : Weapon) : void
-	{
+	private function hitTargets(weapon : Weapon) : void {
 		var target : Hittable;
 	
-		this._soundManager.playSoundType(parseInt(SoundManagerHero.SoundType.WEAPON), parseInt(SoundManagerHero.HeroWeapon.MINEPICK));
+		this._soundManager.playSoundType(SoundManagerHero.SoundType.WEAPON, SoundManagerHero.HeroWeapon.MINEPICK);
 		for (var i : int = 0 ; i < this._targets.Count ; ++i)
 		{
 			target = this._targets[i].GetComponent("Hittable") as Hittable;
@@ -347,11 +355,8 @@ public class HeroManager extends MonoBehaviour
 		}
 	}
 	
-	private function 	OnDeserialized() : void
-	{
+	private function 	OnDeserialized() : void {
 		this.closeMenu();
 		this._gameStarted = true;
 	}
-
-	
 }

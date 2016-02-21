@@ -9,7 +9,7 @@ public class HouseSpotting extends CinematicManager
 
 	public function		OnTriggerEnter(body : Collider)
 	{
-		if (body.transform.name == this._heroPos.transform.name && this._triggered == false)
+		if (body.transform.name == this._heroBody.transform.name && this._triggered == false)
 		{
 			this._triggered = true;
 			this.setCinematicMode();

@@ -13,7 +13,7 @@ public class EventDraft extends CinematicManager
 
 	public function		OnTriggerEnter(body : Collider) : IEnumerator
 	{
-		if (this._heroPos != null && body.transform.name == this._heroPos.transform.name && this._furniture.renderer.isVisible && this._triggered == false)
+		if (this._heroBody != null && body.transform.name == this._heroBody.transform.name && this._furniture.renderer.isVisible && this._triggered == false)
 		{
 			this._triggered = true;
 			this.setCinematicMode();
@@ -21,7 +21,7 @@ public class EventDraft extends CinematicManager
 			this._draft.Play();
 			yield WaitForSeconds(3.0);
 			this.setAdventureMode();
-			this._hero.addDialogText('I should be able to push the bookcase...\n I have a funny feeling something is behind...', 3, Message.messageType.DIALOG);
+			this._hero.addDialogText('I should be able to push the bookcase... I have a funny feeling something is behind...', 3, Message.messageType.DIALOG);
 		}
 	}
 }

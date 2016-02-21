@@ -1,0 +1,1 @@
+You have collected a new weapon! Press "i" in your inventory and select the weapon category to hold it in your hand.

@@ -8,20 +8,28 @@ public class MultidimensionalSound
     private var			_finishedAt		: float;
  
  	public function		MultidimensionalSound() {}
-   	public function		MultidimensionalSound(src : Transform)
+ 	
+   	public function		MultidimensionalSound(src : AudioSource[])
    	{
    		this._lasTime = 0;
-		for (var child  : Transform in src as Object)
-			this._audioSources.Add(child.GetComponent(AudioSource));
+		for (var child  : AudioSource in src as AudioSource[]) {
+			this._audioSources.Add(child);
+		}
    	}
    
    	public function		getRandomSound() : AudioSource
 	{
 		var sound : AudioSource;
 
-		sound = this._audioSources[Mathf.Round(Random.value * (this._audioSources.Count - 1))];
-		this._lasTime = Time.time;
-		this._finishedAt = this._lasTime + sound.clip.length;
+		if (this._audioSources.Count > 0) {
+			sound = this._audioSources[Mathf.Round(Random.value * (this._audioSources.Count - 1))];
+			this._lasTime = Time.time;
+			this._finishedAt = this._lasTime + sound.clip.length;
+		}
+		else {
+			Debug.Log("No sound available");
+			sound = null;
+		}
 		return (sound);
 	}
 	

@@ -423,7 +423,7 @@ private function ApplyGravityAndJumping (velocity : Vector3) {
 		
 	if (grounded) {
 		if (velocity.x != 0 || velocity.z != 0)
-			this._soundManager.playSoundType(parseInt(SoundManagerHero.SoundType.WALK), this._soundManager.getWalkingOn());
+			this._soundManager.playSoundType(SoundManagerHero.SoundType.WALK, this._soundManager.getWalkingOn());
 		// Jump only if the jump button was pressed down in the last 0.2 seconds.
 		// We use this check instead of checking if it's pressed down right now
 		// because players will often try to jump in the exact moment when hitting the ground after a jump
@@ -488,8 +488,8 @@ function OnControllerColliderHit (hit : ControllerColliderHit) {
 	{
 		var pushDir = Vector3 (hit.moveDirection.x, 0, hit.moveDirection.z);
 		body.velocity = pushDir * _pushPower;
-		this._soundManager.playSoundType(parseInt(SoundManagerHero.SoundType.SPEAK), parseInt(SoundManagerHero.HeroVoice.BREATHING));
-		this._soundManager.playSoundType(parseInt(SoundManagerHero.SoundType.PUSH), this._soundManager.getWalkingOn());
+		this._soundManager.playSoundType(SoundManagerHero.SoundType.SPEAK, SoundManagerHero.HeroVoice.BREATHING_PUSHING);
+		this._soundManager.playSoundType(SoundManagerHero.SoundType.PUSH, this._soundManager.getWalkingOn());
 	}
 }
 

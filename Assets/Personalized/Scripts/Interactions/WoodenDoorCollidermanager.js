@@ -5,6 +5,12 @@ public var _typeRequired : Collectable.ObjectType;
 private var _hero : HeroManager;
 private var _heroBody 	: Transform;
 
+public function OnTriggerEnter(body : Collider) {
+	if (body.transform == this._heroBody && this._door.isDoorVisible() == true) {
+		this._hero.mayDislayTuto(TutorialManager.TutoList.OPEN_DOOR);
+	}
+}
+
 public function OnTriggerStay(body : Collider)
 {
    if (Input.GetButtonDown("Use") && body.transform == this._heroBody && this._door.isDoorVisible() == true)
@@ -13,11 +19,11 @@ public function OnTriggerStay(body : Collider)
    		{
    			if (this._hero.hasItem(this._typeRequired, true) == true) {
    				this.locked = false;
-   				this._hero.addDialogText('I used the key to open the door!', 5, Message.messageType.DIALOG);
+   				this._hero.addDialogText('I used the key to open the door!', 2, Message.messageType.DIALOG);
    			}
 	   		else {
 	   			this._hero.lookingAtDoorLocked();
-	   			this._hero.addDialogText('The door is locked... I need to find the key!', 5, Message.messageType.DIALOG);
+	   			this._hero.addDialogText('The door is locked... I need to find the key!', 2, Message.messageType.DIALOG);
 	   		}	
    		}
    		if  (this.locked == false)

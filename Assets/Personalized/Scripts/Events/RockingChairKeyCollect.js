@@ -15,6 +15,7 @@ public class RockingChairKeyCollect extends CollectableCollider
 				AudioSource.PlayClipAtPoint(this.sound, transform.position, 20);
 			this.rockTheBoat();
 			this._hero.scareHero(80);
+			this._hero.addDialogText('This house is... unholy!!!', 3, Message.messageType.DIALOG);
 			Destroy (this._object.gameObject);
 			Destroy (this);
 	   	}

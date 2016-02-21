@@ -10,4 +10,4 @@ You control a detective in charge of solving a mysterious case (see the tutorial
 
 - "space" : jump
 
-- "e" : collect or interact with an object
+- press "e" : collect or interact with an object

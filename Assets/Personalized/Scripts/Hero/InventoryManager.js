@@ -102,8 +102,14 @@ public class InventoryManager extends MonoBehaviour
 	{
 		if (Input.GetMouseButtonDown(0))
 		{
-			if (obj.getType() == Collectable.ObjectType.healing && hp < hpMax)
+			var type : Collectable.ObjectType;
+		
+			type = obj.getType();
+			if (type == Collectable.ObjectType.healing && hp < hpMax)
 				this.useFirstAid(obj);
+			else if (type == Collectable.ObjectType.ink_bottle) {
+				this.useInkBottle(obj);
+			}
 			else if (this._usableArea != null)
 				this._usableArea.tryObjectHere(obj.getType());	
 		}
@@ -230,6 +236,20 @@ public class InventoryManager extends MonoBehaviour
 			this._lastAnimTime = Time.time;
 			if (this._specialAnimation == null)
 				this._attacking = false;
+		}
+	}
+	
+	public function depleteInkBottle() : void {
+		var item : Collectable;
+		
+		for (var i = 0 ; i < this._usables.length ; ++i) {
+			item = this._usables[i] as Collectable;
+			Debug.Log(item.getType());
+			if (item.getType() == Collectable.ObjectType.ink_bottle) {
+				this._hero.addDialogText('Saving game...', 3, Message.messageType.TUTORIAL);
+				this._usables.Remove(item);
+				break;
+			}
 		}
 	}
 	
@@ -413,8 +433,7 @@ public class InventoryManager extends MonoBehaviour
 		pace = this.calculatePace(margin);
 		x = margin;
 		y = this.OBJECT_HEIGHT;
-		for (i = 0 ; i < this._usables.length ; ++i)
-		{
+		for (i = 0 ; i < this._usables.length ; ++i) {
 			item = this._usables[i] as Collectable;
 			GUI.DrawTexture(Rect(x, y, this.OBJECT_WIDTH, this.OBJECT_HEIGHT), item.getIcon());
 			if ((Input.mousePosition.x >= x && Input.mousePosition.x <= (x + this.OBJECT_WIDTH)) && (Screen.height - Input.mousePosition.y) >= y && (Screen.height - Input.mousePosition.y) <= (y + this.OBJECT_WIDTH))
@@ -469,14 +488,17 @@ public class InventoryManager extends MonoBehaviour
 		++this._interval;
 	}
 	
-	private function useFirstAid(obj: Collectable) : void
-	{
+	private function useFirstAid(obj: Collectable) : void {
 		this._usables.Remove(obj);
 		this._hero.drinkHealingPotion(this._healingPotionHP);
 	}
 	
-	private function 	OnDeserialized() : void
-	{
+	private function useInkBottle(obj: Collectable) : void {
+		this.closeInventoryMode();
+		this._hero.openMenu(MenuManager.Menu_Data.SAVE_MENU);
+	}
+	
+	private function 	OnDeserialized() : void {
 		this._inventories.Clear();
 		this.buildUpInventories();
 	}

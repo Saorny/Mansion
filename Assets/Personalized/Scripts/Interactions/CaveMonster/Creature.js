@@ -7,19 +7,26 @@ public class Creature extends Hittable
 	
 	public var 		_attackSounds	: AudioClip[];
 	public var 		_state 			: Creature.STATE;
-	public var 		_whole	 		: Transform;
 	public var 		_damageMin 		: int = 10;
 	public var 		_damageMax 		: int = 20;
 	public var		_range			: float = 3.0;
 	public var		_attackColdown	: float = 1.0;
+	protected var 	_whole	 		: Transform;
 	protected var	_agent			: NavMeshAgent;
 	protected var	_target			: Vector3 =  Vector3.zero;
 	
-	public function		Start()
-	{
-		this._volume = 20.0;
-		this.loadHero();
+	public function		Start() {
 		this._agent = GetComponent.<NavMeshAgent>();
+		this._whole = this.transform;
+		super();
+	}
+	
+	public function		Awake() {
+		
+		this._volume = 20.0;
+		this._agent = GetComponent.<NavMeshAgent>();
+		this._whole = this.transform;
+		
 	}
 	
 	public function		Update()
@@ -55,7 +62,7 @@ public class Creature extends Hittable
 		
 	protected function		attackHero() : IEnumerator
 	{
-		yield this.lookAt(this._heroBody.gameObject.transform);
+		yield this.lookAt(this._heroBody.gameObject.transform, 1.0);
 		var relativePoint = this.transform.InverseTransformPoint(this._heroBody.gameObject.transform.position);
 		if (this.getRemainingDistanceFromTarget(this._heroBody.gameObject.transform.position) < this._range && relativePoint.z > 0)
 		{
@@ -95,7 +102,7 @@ public class Creature extends Hittable
 			AudioSource.PlayClipAtPoint(sound, this.transform.position, this._volume);
 	}
 	
-	protected function		moveTo(spot : Transform, time : float) : IEnumerator
+	public function		moveTo(spot : Transform, time : float) : IEnumerator
 	{
 	    var i 			: float;
 	    var rate 		: float;
@@ -104,6 +111,7 @@ public class Creature extends Hittable
 	    
 	    i = 0.0;
 	    rate = (1.0 / time);
+	    this.animation.Play("Walking");
 	    startPos = this._whole.transform.position;
 	    endPos  = spot.position;
 	    while (i < 1.0)
@@ -112,21 +120,20 @@ public class Creature extends Hittable
 	        this._whole.transform.position = Vector3.Lerp(startPos, endPos, i);
 	        yield; 
 	    }
+	    this.animation.Play("Idling");
 	}
 		
-	protected function		lookAt(target : Transform) : IEnumerator
+	public function		lookAt(target : Transform, time : float) : IEnumerator
 	{
 		var			arrival			: Vector3;
 		var			neededRotation	: Quaternion;
 		var			i				: System.Decimal;
 		var			rate			: System.Decimal;
-		var			time			: float;
 		
 		arrival.x = target.position.x;
 		arrival.y = this._whole.transform.position.y;
 		arrival.z = target.position.z;
 	    i = 0.0;
-	    time = 1.0;
 	    rate = 1.0 / time;
 	    while (i < 1.0)
 	    {

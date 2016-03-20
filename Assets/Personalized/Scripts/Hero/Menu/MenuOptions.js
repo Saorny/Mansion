@@ -8,7 +8,7 @@ public class MenuOptions extends Menu
 	
 	public enum mouse_sensitivity { MOUSE_SENSITIVITY_MIN = 1, MOUSE_SENSITIVITY_MAX = 20 }
 
-	public function		MenuMain() {}
+	public function		MenuOptions() {}
 
 	public function		MenuOptions(hero : HeroManager, action_sound : AudioSource, ptr : function(MenuManager.Menu_Data) : void, inputManager : InputManager)
 	{

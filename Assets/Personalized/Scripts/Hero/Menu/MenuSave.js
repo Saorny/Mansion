@@ -14,7 +14,7 @@ public class MenuSave extends Menu
 	{
 		super(heroManager, ptr, action_sound);
 		this._menuTitle = "Save game";
-		this._newSaveName = "New save";
+		this._newSaveName = "Write your progress";
 		this._defaultName = "New save";
 		this._save_code_name = "new_save";
 		this._maxCharacters = 20;
@@ -25,7 +25,7 @@ public class MenuSave extends Menu
 	{
 		this._subMenus.Clear();
 		this.createLoadEntries();
-		this._subMenus.Add(new MenuButton("Return", returnMainMenu));
+		this._subMenus.Add(new MenuButton("Cancel action", returnMainMenu));
 	}
 	
 	public function		display() : IEnumerable
@@ -57,7 +57,8 @@ public class MenuSave extends Menu
 	{
 		LevelSerializer.SaveGame(this._subMenus[this.getLastClicked()].getSaveEntry().Name);
 		this._subMenus[this.getLastClicked()].getSaveEntry().Delete();
-		
+		this._hero.useInkBottle();
+		this._hero.closeMenu();
 	}
 	
 	private function	createNewSave() : void
@@ -65,7 +66,9 @@ public class MenuSave extends Menu
 		LevelSerializer.SaveGame(this._newSaveName);
 		this._subMenus.Insert(0, new MenuButton(this._newSaveName + "(" + Application.loadedLevelName + "," + System.DateTime.Now + ")", null));
 		this._newSaveName = this._defaultName = "New save";
+		this._hero.useInkBottle();
+		this._hero.closeMenu();
 	}
 
-	private function	returnMainMenu() : void { this.goTo(parseInt(MenuManager.Menu_Data.RUNNING_MENU)); }
+	private function	returnMainMenu() : void { this._hero.closeMenu(); }
 };

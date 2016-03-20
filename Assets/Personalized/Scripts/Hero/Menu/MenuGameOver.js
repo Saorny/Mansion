@@ -3,7 +3,7 @@
 @DoNotSerialize
 public class MenuGameOver extends Menu
 {
-	public function		MenuMain() {}
+	public function		MenuGameOver() {}
 
 	public function		MenuGameOver(hero : HeroManager, action_sound : AudioSource, ptr : function(MenuManager.Menu_Data) : void)
 	{

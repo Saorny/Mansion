@@ -3,6 +3,9 @@
 @DoNotSerialize
 public class MenuTutoHealth extends MenuTuto
 {
+
+	public function		MenuTutoHealth() {}
+
 	public function		MenuTutoHealth(heroManager	: HeroManager, action_sound : AudioSource, ptr : function(MenuManager.Menu_Data) : void, path : String)
 	{
 		super(heroManager, ptr, action_sound, path);

@@ -1,10 +1,14 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Personalized\Scripts\Hero\MultidimentionalSound.js">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Personalized\Scripts\Hero\CinematicManager.js">
     <Files>
-      <File FileName="Assets\Personalized\Scripts\Hero\SoundTypeManager.js" Line="13" Column="12" />
-      <File FileName="Assets\Personalized\Scripts\Hero\SoundManagerHero.js" Line="1" Column="1" />
-      <File FileName="Assets\Personalized\Scripts\Hero\MultidimentionalSound.js" Line="22" Column="1" />
+      <File FileName="Assets\Personalized\Scripts\Hero\HeroManager.js" Line="49" Column="68" />
+      <File FileName="Assets\Personalized\Scripts\Hero\InventoryManager.js" Line="249" Column="1" />
+      <File FileName="Assets\Personalized\Scripts\Hero\Menu\MenuSave.js" Line="60" Column="1" />
+      <File FileName="Assets\Personalized\Scripts\Hero\DialogManager.js" Line="34" Column="48" />
+      <File FileName="Assets\Personalized\Scripts\Events\EerieLightEvent.js" Line="39" Column="19" />
+      <File FileName="Assets\Personalized\Scripts\Hero\CinematicManager.js" Line="19" Column="34" />
+      <File FileName="Assets\Personalized\Scripts\Interactions\Interactable.js" Line="18" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

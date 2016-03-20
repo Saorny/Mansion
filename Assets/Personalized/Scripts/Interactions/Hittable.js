@@ -1,20 +1,17 @@
 #pragma strict
 
 @script SerializeAll
-public class Hittable extends MonoBehaviour
+public class Hittable extends Interactable
 {
 	public var 		_hurtSounds		: AudioClip[];
 	public var		_volume			: float;
 	public var		_body			: GameObject;
 	public var		_hp				: int;
 	public var		_destructibles	: GameObject[];
-	protected var 	_hero 			: HeroManager;
-	protected var 	_heroBody 		: Transform;
 		
-	public function		Start()
-	{
+	public function		Start() : void {
 		this._volume = 20.0;
-		this.loadHero();
+		super();
 	}
 	
 	public function		OnTriggerEnter(body : Collider) : void
@@ -52,15 +49,6 @@ public class Hittable extends MonoBehaviour
 			
 		}
 		GameObject.Destroy(this.gameObject);
-	}
-	
-	protected function	loadHero() : void
-	{
-		var	hero : GameObject;
-	
-		hero = GameObject.Find("Hero");
-		this._heroBody = hero.transform;
-		this._hero = hero.GetComponent("HeroManager") as HeroManager;
 	}
 	
 	protected function		playHurt() : IEnumerator

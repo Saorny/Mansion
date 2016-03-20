@@ -8,6 +8,8 @@ public class MenuTuto extends Menu
 	
 	public enum FORMAT_DATA { LINE_LENGTH = 70, TUTO_HEIGHT = 100, TUTO_MENU_WIDTH = 600, BUTTON_WIDTH = 500 , INTER_SPACE = 45 }
 
+	public function		MenuTuto() {}
+
 	public function		MenuTuto(hero : HeroManager, ptr : function(MenuManager.Menu_Data) : void, action_sound : AudioSource, path : String) {
 		super(hero, ptr, action_sound);
 		var	res : TextAsset;

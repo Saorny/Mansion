@@ -12,7 +12,7 @@ public class MenuMainRunning extends Menu
 		this._subMenus.Add(new MenuButton("Resume", this.resumeGame));
 		this._subMenus.Add(new MenuButton("Options", this.goToOptionsMenu));
 		this._subMenus.Add(new MenuButton("Tutorial", this.goToTutorialsMenu));
-		this._subMenus.Add(new MenuButton("Save game", this.goSaveMenu, "Load game", this.goToLoadMenu));
+		this._subMenus.Add(new MenuButton("Load game", this.goToLoadMenu));
 		this._subMenus.Add(new MenuButton("Abandon game", this.quitGame));
 	}
 	

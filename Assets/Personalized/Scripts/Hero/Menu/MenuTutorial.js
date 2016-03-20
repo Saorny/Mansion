@@ -3,6 +3,9 @@
 @DoNotSerialize
 public class MenuTutorial extends Menu
 {
+
+	public function		MenuTutorial() {}
+
 	public function		MenuTutorial(heroManager	: HeroManager, action_sound : AudioSource, ptr : function(MenuManager.Menu_Data) : void)
 	{
 		super(heroManager, ptr, action_sound);

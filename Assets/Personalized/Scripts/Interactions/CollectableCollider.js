@@ -12,8 +12,7 @@ public class CollectableCollider extends Interactable
 	public var _highlight			: float = 2.5;
 	protected var _originalColor	: Color;
 
-	public function		Start() : void
-	{
+	public function		Start() : void {
 		super();
 		this._originalColor = this._object.renderer.material.color;
 	}

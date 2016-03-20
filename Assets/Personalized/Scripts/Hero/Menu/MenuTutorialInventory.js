@@ -3,6 +3,9 @@
 @DoNotSerialize
 public class MenuTutoIventory extends MenuTuto
 {
+
+	public function		MenuTutoIventory() {}
+
 	public function		MenuTutoIventory(heroManager	: HeroManager, action_sound : AudioSource, ptr : function(MenuManager.Menu_Data) : void, path : String)
 	{
 		super(heroManager, ptr, action_sound, path);

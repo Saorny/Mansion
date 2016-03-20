@@ -49,10 +49,6 @@ public class HeroManager extends MonoBehaviour
 		this._heroCamera = hero.Find("Main Camera").GetComponent(Camera);
 		this._sanityManager.setSoundManager(this._soundManager);
 		this._audiosPaused	= new List.<AudioSource>();
-		
-		/*this.addDialogText('this is a test1', 3, Message.messageType.DIALOG);
-		this.addDialogText('this is a test2', 3, Message.messageType.TUTORIAL);
-		this.addDialogText('this is a test3', 3, Message.messageType.WARNING);*/
 	}
 	
 	public function OnGUI () : IEnumerable
@@ -317,6 +313,10 @@ public class HeroManager extends MonoBehaviour
 		this.addDialogText('The adventure ends here...', 3, Message.messageType.DIALOG);
 		this._dying = true;
 		this.openMenu(MenuManager.Menu_Data.GAME_OVER);
+	}
+	
+	public function useInkBottle() : void {
+		this._inventoryManager.depleteInkBottle();
 	}
 	
 	private function	dying() : void {

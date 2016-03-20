@@ -11,10 +11,13 @@ public class CinematicManager extends Interactable
 	public function CinematicManager() {
 		this._triggered = false;
 	}
-
+	
 	public function		Start() {
 		super();
-		this.loadComponents(); 
+		var	hero : GameObject;
+	
+		hero = GameObject.Find("Hero");
+		this._heroCamera = hero.Find("Main Camera").GetComponent(Camera);
 	}
 
 	protected function	setCinematicMode() : IEnumerator {
@@ -32,15 +35,6 @@ public class CinematicManager extends Interactable
 	{
 		this.rotateObject(this._heroBody.transform, this._heroBody.transform.rotation, spot.transform.rotation, time);
 		yield this.moveObject2D(this._heroBody.transform, this._heroBody.transform.position, spot.transform.transform.position, time);
-	}
-	
-	protected function	loadComponents() : IEnumerable
-	{
-		var	hero : GameObject;
-	
-		hero = GameObject.Find("Hero");
-		this._heroBody = hero.transform;
-		this._heroCamera = hero.Find("Main Camera").GetComponent(Camera);
 	}
 	
 	protected function		moveObject2D(thisTransform : Transform, startPos : Vector3, endPos : Vector3, time : float) : IEnumerator

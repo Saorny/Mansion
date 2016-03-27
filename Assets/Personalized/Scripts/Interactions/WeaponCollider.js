@@ -4,6 +4,7 @@
 public class WeaponCollider extends CollectableCollider
 {
 	public var _animation			: Texture[];
+	public var _handling			: Texture;
 	public var _canAttack 			: boolean;
 	public var _minDamage 			: int;
 	public var _maxDamage 			: int;
@@ -15,7 +16,7 @@ public class WeaponCollider extends CollectableCollider
 	   	{
 	   		this._hero.mayDislayTuto(TutorialManager.TutoList.WEAPON_COLLECTED);
 	   		this.getHero().giveWeapon(	this.ItemType, this.ItemName, this.ItemDescription, this.ItemIcon,
-	   									this._animation, this._canAttack, this._minDamage, this._maxDamage, this._coldown);
+	   									this._animation, this._handling, this._canAttack, this._minDamage, this._maxDamage, this._coldown);
 			if (this.sound)
 				AudioSource.PlayClipAtPoint(this.sound, transform.position, 20);
 			Destroy (this._object.gameObject);

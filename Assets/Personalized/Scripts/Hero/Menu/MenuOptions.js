@@ -10,9 +10,9 @@ public class MenuOptions extends Menu
 
 	public function		MenuOptions() {}
 
-	public function		MenuOptions(hero : HeroManager, action_sound : AudioSource, ptr : function(MenuManager.Menu_Data) : void, inputManager : InputManager)
+	public function		MenuOptions(action_sound : AudioSource, ptr : function(MenuManager.Menu_Data) : void, inputManager : InputManager)
 	{
-		super(hero, ptr, action_sound);
+		super(ptr, action_sound);
 		this._menuTitle = "Options";
 		this._subMenus.Add(new MenuButton("Cancel", this.returnCancel, "Apply", this.returnSave));
 		this._inputManager = inputManager;

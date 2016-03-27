@@ -82,7 +82,6 @@
      <Compile Include="Assets\Personalized\Scripts\Hero\Menu\MenuLoad.js" />
      <Compile Include="Assets\Personalized\Scripts\Hero\Menu\MenuMain.js" />
      <Compile Include="Assets\Personalized\Scripts\Hero\Menu\MenuMainRunning.js" />
-     <Compile Include="Assets\Personalized\Scripts\Hero\Menu\MenuManager.js" />
      <Compile Include="Assets\Personalized\Scripts\Hero\Menu\MenuOptions.js" />
      <Compile Include="Assets\Personalized\Scripts\Hero\Menu\MenuSave.js" />
      <Compile Include="Assets\Personalized\Scripts\Hero\Menu\MenuTuto.js" />
@@ -90,6 +89,7 @@
      <Compile Include="Assets\Personalized\Scripts\Hero\Menu\MenuTutorial.js" />
      <Compile Include="Assets\Personalized\Scripts\Hero\Menu\MenuTutorialHealth.js" />
      <Compile Include="Assets\Personalized\Scripts\Hero\Menu\MenuTutorialInventory.js" />
+     <Compile Include="Assets\Personalized\Scripts\Hero\MenuManager.js" />
      <Compile Include="Assets\Personalized\Scripts\Hero\Message.js" />
      <Compile Include="Assets\Personalized\Scripts\Hero\MultidimentionalSound.js" />
      <Compile Include="Assets\Personalized\Scripts\Hero\SanityManager.js" />
@@ -108,6 +108,7 @@
      <Compile Include="Assets\Personalized\Scripts\Interactions\Collectable.js" />
      <Compile Include="Assets\Personalized\Scripts\Interactions\CollectableCollider.js" />
      <Compile Include="Assets\Personalized\Scripts\Interactions\CollisionType.js" />
+     <Compile Include="Assets\Personalized\Scripts\Interactions\CommentObject.js" />
      <Compile Include="Assets\Personalized\Scripts\Interactions\CupBoardColliderManager.js" />
      <Compile Include="Assets\Personalized\Scripts\Interactions\CupBoardManager.js" />
      <Compile Include="Assets\Personalized\Scripts\Interactions\DestructiblePlanks.js" />
@@ -116,7 +117,6 @@
      <Compile Include="Assets\Personalized\Scripts\Interactions\Hittable.js" />
      <Compile Include="Assets\Personalized\Scripts\Interactions\Interactable.js" />
      <Compile Include="Assets\Personalized\Scripts\Interactions\LookingUgly.js" />
-     <Compile Include="Assets\Personalized\Scripts\Interactions\LookingUninteresting.js" />
      <Compile Include="Assets\Personalized\Scripts\Interactions\MansionDoorColliderManager.js" />
      <Compile Include="Assets\Personalized\Scripts\Interactions\MansionDoorManager.js" />
      <Compile Include="Assets\Personalized\Scripts\Interactions\PersoObjectManager.js" />
@@ -127,7 +127,7 @@
      <Compile Include="Assets\Personalized\Scripts\Interactions\WalkOnBones.js" />
      <Compile Include="Assets\Personalized\Scripts\Interactions\Weapon.js" />
      <Compile Include="Assets\Personalized\Scripts\Interactions\WeaponCollider.js" />
-     <Compile Include="Assets\Personalized\Scripts\Interactions\WoodenDoorCollidermanager.js" />
+     <Compile Include="Assets\Personalized\Scripts\Interactions\WoodenDoorColliderManager.js" />
      <Compile Include="Assets\Personalized\Scripts\Interactions\WoodenDoorManager.js" />
      <Compile Include="Assets\Personalized\Scripts\Misc\HouseAtmosphere.js" />
      <Compile Include="Assets\Personalized\Scripts\Misc\IdleManager.js" />

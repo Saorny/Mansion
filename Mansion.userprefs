@@ -1,14 +1,14 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Personalized\Scripts\Hero\CinematicManager.js">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Personalized\Scripts\Hero\HeroManager.js">
     <Files>
-      <File FileName="Assets\Personalized\Scripts\Hero\HeroManager.js" Line="49" Column="68" />
-      <File FileName="Assets\Personalized\Scripts\Hero\InventoryManager.js" Line="249" Column="1" />
-      <File FileName="Assets\Personalized\Scripts\Hero\Menu\MenuSave.js" Line="60" Column="1" />
-      <File FileName="Assets\Personalized\Scripts\Hero\DialogManager.js" Line="34" Column="48" />
-      <File FileName="Assets\Personalized\Scripts\Events\EerieLightEvent.js" Line="39" Column="19" />
-      <File FileName="Assets\Personalized\Scripts\Hero\CinematicManager.js" Line="19" Column="34" />
-      <File FileName="Assets\Personalized\Scripts\Interactions\Interactable.js" Line="18" Column="3" />
+      <File FileName="Assets\Personalized\Scripts\Hero\HeroManager.js" Line="314" Column="37" />
+      <File FileName="Assets\Personalized\Scripts\Interactions\WoodenDoorManager.js" Line="23" Column="39" />
+      <File FileName="Assets\Personalized\Scripts\Interactions\Interactable.js" Line="4" Column="48" />
+      <File FileName="Assets\Personalized\Scripts\Hero\SoundManagerHero.js" Line="67" Column="3" />
+      <File FileName="Assets\Personalized\Scripts\Interactions\Hittable.js" Line="9" Column="27" />
+      <File FileName="Assets\Personalized\Scripts\Interactions\CaveMonster\Creature.js" Line="1" Column="1" />
+      <File FileName="Assets\Personalized\Scripts\Events\EventDraft.js" Line="23" Column="94" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

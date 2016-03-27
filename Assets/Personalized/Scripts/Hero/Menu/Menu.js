@@ -11,18 +11,16 @@ public class Menu
 	protected var		_goTo 			: function(MenuManager.Menu_Data) : void;
 	protected var		_clickTime		: float;
 	protected var		_wait_button	: float;
-	protected var		_hero			: HeroManager;
 
 	public function		Menu() {}
 
-	public function		Menu(hero : HeroManager, ptr : function(MenuManager.Menu_Data) : void, action_sound : AudioSource)
+	public function		Menu(ptr : function(MenuManager.Menu_Data) : void, action_sound : AudioSource)
 	{
 		this._goTo = ptr;
 		this._button_action = action_sound;
 		this._lastClicked = -1;
 		this._hasClicked = false;
 		this._wait_button = 0.4;
-		this._hero = hero;
 	}
 
 	public function		goTo(val : MenuManager.Menu_Data) : void { this._goTo(val); }

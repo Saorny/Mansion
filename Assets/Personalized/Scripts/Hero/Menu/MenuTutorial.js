@@ -6,9 +6,9 @@ public class MenuTutorial extends Menu
 
 	public function		MenuTutorial() {}
 
-	public function		MenuTutorial(heroManager	: HeroManager, action_sound : AudioSource, ptr : function(MenuManager.Menu_Data) : void)
+	public function		MenuTutorial(action_sound : AudioSource, ptr : function(MenuManager.Menu_Data) : void)
 	{
-		super(heroManager, ptr, action_sound);
+		super(ptr, action_sound);
 		this._menuTitle = "Tutorial menu";
 		this._subMenus.Add(new MenuButton("Return", this.returnCancel));
 		this._subMenus.Add(new MenuButton("First step", this.goToMainTuto));

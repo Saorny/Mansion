@@ -70,6 +70,9 @@ public class SanityManager extends MonoBehaviour
 		this._fishEyeEffect.enabled = true;
 		this._blurringEffect.enabled = true;
 		this.calculateEyeFishiness();
+		if (this._sanity < 50) {
+			gameObject.SendMessage("sendScareAlert", true);
+		}
 	}
 	
 	public function	manageHeroScared() : IEnumerator {

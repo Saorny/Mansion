@@ -10,7 +10,7 @@ public class RockingChairKeyCollect extends CollectableCollider
 	{
 		if (body.transform == this.getHeroBody() && Input.GetButtonDown("Use") && this._object.renderer.isVisible) 
 	   	{
-			this.getHero().getCollectable(this.ItemType, this.ItemName, this.ItemDescription, this.ItemIcon);
+			this._hero.getCollectable(this.ItemType, this.ItemName, this.ItemDescription, this.ItemIcon, this._heroComment, this._heroCommentTime);
 			if (this.sound)
 				AudioSource.PlayClipAtPoint(this.sound, transform.position, 20);
 			this.rockTheBoat();

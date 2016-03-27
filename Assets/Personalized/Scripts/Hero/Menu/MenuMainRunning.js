@@ -1,13 +1,15 @@
 #pragma strict
 
 @DoNotSerialize
-public class MenuMainRunning extends Menu
-{
+public class MenuMainRunning extends Menu {
+	
+	private var			_closeMenuPtr	: function() : void;
+
 	public function		MenuMainRunning() {}
 
-	public function		MenuMainRunning(heroManager	: HeroManager, action_sound : AudioSource, ptr : function(MenuManager.Menu_Data) : void)
-	{
-		super(heroManager, ptr, action_sound);
+	public function		MenuMainRunning(action_sound : AudioSource, ptr : function(MenuManager.Menu_Data) : void, closeMenuPtr : function() : void) {
+		super(ptr, action_sound);
+		this._closeMenuPtr = closeMenuPtr;
 		this._menuTitle = "Game menu";
 		this._subMenus.Add(new MenuButton("Resume", this.resumeGame));
 		this._subMenus.Add(new MenuButton("Options", this.goToOptionsMenu));
@@ -16,7 +18,7 @@ public class MenuMainRunning extends Menu
 		this._subMenus.Add(new MenuButton("Abandon game", this.quitGame));
 	}
 	
-	private function	resumeGame() : void { this._hero.closeMenu(); }
+	private function	resumeGame() : void { this._closeMenuPtr(); }
 	private function	goToOptionsMenu() : void { this.goTo(MenuManager.Menu_Data.OPTIONS); }
 	private function	goToTutorialsMenu() : void { this.goTo(MenuManager.Menu_Data.TUTORIALS); }
 	private function	goSaveMenu() : void { this.goTo(MenuManager.Menu_Data.SAVE_MENU); }

@@ -5,12 +5,12 @@ public class SoundManagerHero extends MonoBehaviour
 {
 	public enum 	SoundType { WALK, SPEAK, PUSH, WEAPON }
 	public enum 	FloorType { GRASSY, WOODEN, WATERLY }
-	public enum 	HeroVoice { UNINTERESTING, BREATHING_PUSHING, UGLY_PAINTING, LOCKED, HEART_BEAT, LANDING, PAIN, SCARED, USE_BOTTLE }
+	public enum 	HeroVoice { BREATHING_PUSHING, LOCKED, UNLOCKED, HEART_BEAT, LANDING, PAIN, SCARED, USE_BOTTLE }
 	public enum 	HeroWeapon { MINEPICK }
 	public enum 	CollisionSoundType { NOTHING, METAL, WOOD }
 	public enum 	MUSIC_THEMES { MENU }
-
-	public var		soundLamp 			: AudioSource;
+	
+	public var		_savingSound		: AudioSource;
 	public var		_soundOpenBook		: AudioSource;
 	public var		_soundCloseBook		: AudioSource;
 	public var		_soundTurnPage		: AudioSource;
@@ -32,8 +32,7 @@ public class SoundManagerHero extends MonoBehaviour
 	private var		_THEME_SOURCE		: String = "Atmosphere/SoundManager/Themes/";
 	private var		_HERO_SOURCE		: String = "Atmosphere/SoundManager/HeroSounds/";
 
-	public function		Start() : void
-	{
+	public function		Start() : void {
 		this._soundManagers[SoundManagerHero.SoundType.WALK] = new SoundTypeManager(this._HERO_SOURCE + "WALK", 0.1, 0.15, FloorType.GetValues(typeof(FloorType)));
 		this._soundManagers[SoundManagerHero.SoundType.SPEAK] = new SoundTypeManager(this._HERO_SOURCE + "SPEAK", 0.1, 1.0, HeroVoice.GetValues(typeof(HeroVoice)));
 		this._soundManagers[SoundManagerHero.SoundType.PUSH] = new SoundTypeManager(this._HERO_SOURCE + "PUSH", 0.5, 1.0, FloorType.GetValues(typeof(FloorType)));
@@ -44,8 +43,7 @@ public class SoundManagerHero extends MonoBehaviour
 		this.loadThemes();
 	}
 
-	public function		playTheme(theme : SoundManagerHero.MUSIC_THEMES, val : boolean) : void
-	{
+	public function		playTheme(theme : SoundManagerHero.MUSIC_THEMES, val : boolean) : void {
 		if (this._themes[theme] != null)
 		{
 			if (val == true)
@@ -55,14 +53,12 @@ public class SoundManagerHero extends MonoBehaviour
 		}
 	}
 
-	public function		playSoundType(category : SoundManagerHero.SoundType, type : System.Enum) : IEnumerator
-	{
+	public function		playSoundType(category : SoundManagerHero.SoundType, type : System.Enum) : IEnumerator {
 		if (this._soundManagers[category])
 			this._soundManagers[category].playType(type);
 	}
 	
-	public function		manageScaredSounds() : IEnumerator
-	{
+	public function		manageScaredSounds() : IEnumerator {
 		if ((Time.time - this._lastScare) > this._scareInterval)
 		{
 			this._lastScare = Time.time;
@@ -114,6 +110,8 @@ public class SoundManagerHero extends MonoBehaviour
 	public function	setWeatherVolume(volume : float) : void { this._weather_volume = volume; }
 	public function	setFloorType(type : FloorType) : void { this._walkingOn = type; }
 	public function	setThunderVolume(volume : float) : void { this._thunder.setThunderVolume(volume); }
+	
+	public function	savingGame() : void { this._savingSound.Play(); }
 
 	private function 	OnDeserialized() : void {
 	}

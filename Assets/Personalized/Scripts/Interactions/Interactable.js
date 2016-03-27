@@ -13,8 +13,7 @@ public class Interactable extends MonoBehaviour
 	public function		getHero() : HeroManager { return (this._hero); }
 	public function		getHeroBody() : Transform { return (this._heroBody); }
 	
-	protected function	loadHero() : void
-	{
+	protected function	loadHero() : void {
 		var	hero : GameObject;
 	
 		hero = GameObject.Find("Hero");

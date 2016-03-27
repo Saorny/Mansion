@@ -1,8 +1,8 @@
 #pragma strict
 
 @DoNotSerialize
-public class MenuLoad extends Menu
-{
+public class MenuLoad extends Menu {
+	
 	private var			_button_action	: AudioSource;
 	private var			_newSaveName	: String;
 	private var			_defaultName	: String;
@@ -11,28 +11,24 @@ public class MenuLoad extends Menu
 
 	public function		MenuLoad() {}
 
-	public function		MenuLoad(heroManager : HeroManager, action_sound : AudioSource, ptr : function(MenuManager.Menu_Data) : void)
-	{
-		super(heroManager, ptr, action_sound);
+	public function		MenuLoad(action_sound : AudioSource, ptr : function(MenuManager.Menu_Data) : void) {
+		super(ptr, action_sound);
 		this._menuTitle = "Load a previously saved game:";
 		this.refresh();
 	}
 	
-	public function	refresh() : void
-	{
+	public function	refresh() : void {
 		this._subMenus.Clear();
 		this._subMenus.Add(new MenuButton("Erase all saves", this.eraseAllSaves));
 		this.createLoadEntries();
 		this._subMenus.Add(new MenuButton("Return", this.returnPrevious));
 	}
 	
-	private function loadGame() : void
-	{
+	private function loadGame() : void {
 		LevelSerializer.LoadSavedLevel(this._subMenus[this.getLastClicked()].getSaveEntry().Data);
 	}
 	
-	private function	eraseAllSaves() : void
-	{
+	private function	eraseAllSaves() : void {
 		LevelSerializer.SavedGames[LevelSerializer.PlayerName].Clear();
 		LevelSerializer.SaveDataToPlayerPrefs();
 		PlayerPrefs.Save();
@@ -40,8 +36,7 @@ public class MenuLoad extends Menu
 		this.refresh();
 	}
 	
-	private function	createLoadEntries() : void
-	{
+	private function	createLoadEntries() : void {
 		for (var sg in LevelSerializer.SavedGames[LevelSerializer.PlayerName])
 		   	this._subMenus.Add(new MenuButton(sg.Name + "(" + sg.Level + "," + sg.When + ")", this.loadGame, sg));
 	}

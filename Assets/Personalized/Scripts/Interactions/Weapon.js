@@ -3,6 +3,7 @@
 @script SerializeAll
 public class Weapon extends Collectable
 {
+	private var _handling			: Texture;
 	private var _animation			: Texture[];
 	private var _canAttack 			: boolean;
 	private var _minDamage 			: int;
@@ -15,9 +16,10 @@ public class Weapon extends Collectable
 	
 
 	public function Weapon(type : Collectable.ObjectType, name : String, description : String, icon : Texture,
-	animation : Texture[], canAttack : boolean, minDamage : int, maxDamage : int, coldown : float)
+	animation : Texture[], handling : Texture, canAttack : boolean, minDamage : int, maxDamage : int, coldown : float)
 	{
 		super(type, name, description, icon);
+		this._handling  = handling;
 		this._animation  = animation;
 		this._canAttack  = canAttack;
 		this._minDamage  = minDamage;
@@ -51,7 +53,7 @@ public class Weapon extends Collectable
 	}
 	
 	public function getAnimation() : Texture[] {return (this._animation);}
-	public function getPicture() : Texture {return (this._animation[0]);}
+	public function getPicture() : Texture {return (this._handling);}
 	public function getCanAttack() : boolean {return (this._canAttack);}
 	public function getMinDamage() : int {return (this._minDamage);}
 	public function getMaxDamage() : int {return (this._maxDamage);}

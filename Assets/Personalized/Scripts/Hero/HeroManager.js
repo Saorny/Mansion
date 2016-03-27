@@ -31,15 +31,19 @@ public class HeroManager extends MonoBehaviour
 		this._dying = false;
 		this._targets = new List.<GameObject>();
 		this._hpMax = 100;
-		this._hp = 100;
+		this._hp = 80;
 	}
 	
 	public function		Awake() : void {
 		var	hero : GameObject;
-	
+		var inputManager : InputManager;
+		
 		hero = GameObject.Find("Hero");
+		inputManager = hero.GetComponent("InputManager") as InputManager;
+		
 		this._soundManager = hero.GetComponent("SoundManagerHero") as SoundManagerHero;
 		this._menuManager = hero.GetComponent("MenuManager") as MenuManager;
+		this._menuManager.load(this.closeMenu, useInkBottle, inputManager);
 		this._inventoryManager = hero.GetComponent("InventoryManager") as InventoryManager;
 		this._splatterEffect = hero.GetComponent("SplatterEffectManager") as SplatterEffectManager;
 		this._sanityManager = hero.GetComponent("SanityManager") as SanityManager;
@@ -146,6 +150,8 @@ public class HeroManager extends MonoBehaviour
 		
 	public function setSpecialAnimation(newAnimation : Texture) : void { this._inventoryManager.setSpecialAnimation(newAnimation); }
 	
+	public function setNoSpecialAnimation() : void { this._inventoryManager.setSpecialAnimation(null); }
+	
 	public function	setIndoor(val : boolean)
 	{
 		this.manageIsRaining(val);
@@ -164,7 +170,7 @@ public class HeroManager extends MonoBehaviour
 		
 		Time.timeScale = 0;
 		this.allowMouseMovement(false);
-		this._menuManager.goTo(parseInt(menu));
+		this._menuManager.goTo(menu);
 		this._menuManager.setMenuMode(true);
 		this._soundManager.setPlayRain(false);
 		this._soundManager.stopHeroAllAudios();
@@ -179,8 +185,7 @@ public class HeroManager extends MonoBehaviour
 		
 	}
 	
-	public function		closeMenu() : void
-	{
+	public function		closeMenu() : void {
 		Time.timeScale = 1.0;
 		this.allowMouseMovement(true);
 		this._menuManager.setMenuMode(false);
@@ -191,24 +196,26 @@ public class HeroManager extends MonoBehaviour
 			this._audiosPaused[i].active = true;
 		}
 		this._audiosPaused.Clear();
+		if (this._gameStarted == false)
+			this._gameStarted = true;
 	}
 	
-	public function 	openInventoryMode()
-	{
+	public function 	openInventoryMode() {
 		Time.timeScale = 0;
 		this._inventoryManager.setInventoryMode(InventoryManager.InventoryMode.MAIN);
 		this.allowMouseMovement(false);
 	}
 	
-	public function 	closeInventoryMode()
-	{
+	public function 	closeInventoryMode() {
 		Time.timeScale = 1.0;
 		this._inventoryManager.setInventoryMode(InventoryManager.InventoryMode.OFF);
 		this.allowMouseMovement(true);
 	}
 	
-	public function getCollectable(type : Collectable.ObjectType, name : String, description : String, icon : Texture) 
-	{
+	public function 	getCollectable(type : Collectable.ObjectType, name : String, description : String, icon : Texture, comment : String, disp : float) {
+		if (comment != "") {
+			this.addDialogText(comment, disp, Message.messageType.DIALOG);
+		}
 		this._inventoryManager.getCollectable(type, name, description, icon);
 	}
 	
@@ -218,16 +225,16 @@ public class HeroManager extends MonoBehaviour
 		this._inventoryManager.giveBook(name, description, icon, title, text, font, sketches);
 	}
 	
-	public function giveWeapon(	type : Collectable.ObjectType, name : String, description : String, icon : Texture,
-								animation : Texture[], canAttack : boolean, minDamage : int, maxDamage : int, coldown : float) 
+	public function 	giveWeapon(	type : Collectable.ObjectType, name : String, description : String, icon : Texture,
+								animation : Texture[], handling : Texture, canAttack : boolean, minDamage : int, maxDamage : int, coldown : float) 
 	{
 		this._inventoryManager.giveWeapon(type, name, description, icon,
-		animation, canAttack, minDamage, maxDamage, coldown);
+		animation, handling, canAttack, minDamage, maxDamage, coldown);
 	}
 	
-	public function manageObjectUse(obj : Collectable) { this._inventoryManager.manageObjectUse(obj, this._hp, this._hpMax); }
+	public function 	manageObjectUse(obj : Collectable) { this._inventoryManager.manageObjectUse(obj, this._hp, this._hpMax); }
 	
-	public function hasItem(typeRequested : Collectable.ObjectType, onceUse : boolean) : boolean {
+	public function		hasItem(typeRequested : Collectable.ObjectType, onceUse : boolean) : boolean {
 		return (this._inventoryManager.hasItem(typeRequested, onceUse));
 	}
 	
@@ -291,14 +298,13 @@ public class HeroManager extends MonoBehaviour
 	public function 	setUsableItemArea(area : UsableItemArea) : void { this._inventoryManager.setUsableItemArea(area); }
 
 	public function 	updateDiary(content: String) : void { this._inventoryManager.updateDiary(content); }
-	public function 	lookingUninteresting() { this._soundManager.playSoundType(SoundManagerHero.SoundType.SPEAK, SoundManagerHero.HeroVoice.UNINTERESTING); }
-	public function 	lookingUgly() { this._soundManager.playSoundType(SoundManagerHero.SoundType.SPEAK, SoundManagerHero.HeroVoice.UGLY_PAINTING); }
-	public function 	lookingAtDoorLocked() { this._soundManager.playSoundType(SoundManagerHero.SoundType.SPEAK, SoundManagerHero.HeroVoice.LOCKED); }
+	public function 	heroSays(type : SoundManagerHero.HeroVoice) : void { this._soundManager.playSoundType(SoundManagerHero.SoundType.SPEAK, type); }
 	public function 	hearHeartBeat() { this._soundManager.playSoundType(SoundManagerHero.SoundType.SPEAK, SoundManagerHero.HeroVoice.HEART_BEAT); }
 	public function 	hearOpenBook() { this._soundManager.playOpenBook(); }
 	public function 	hearCloseBook() { this._soundManager.playCloseBook(); }
 	public function 	hearTurnPage() { this._soundManager.playTurnPage(); }
 	public function		walkingOnBones() : void { this._soundManager.walkingOnBones(); }
+	public function		playSavingGame() : void { this._soundManager.savingGame(); }
 	
 	public function 	landingViolently(damage : int) : void { 
 		this._soundManager.playSoundType(SoundManagerHero.SoundType.SPEAK, SoundManagerHero.HeroVoice.LANDING);
@@ -316,6 +322,7 @@ public class HeroManager extends MonoBehaviour
 	}
 	
 	public function useInkBottle() : void {
+		this.addDialogText('Saving game...', 3, Message.messageType.TUTORIAL);
 		this._inventoryManager.depleteInkBottle();
 	}
 	

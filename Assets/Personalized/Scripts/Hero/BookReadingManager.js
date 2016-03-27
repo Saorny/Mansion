@@ -10,7 +10,6 @@ public class BookReadingManager extends MonoBehaviour
 	private var _leftPage 			: String[];
 	private var _rightPage;
 	private var _currentBook		: Book;
-	private var _hero 				: HeroManager;
 	private var _frameDelay			: float = 0.04;
 	private var _innerMargin		: int = 2;
 	private var _pageMinY			: int = 123;
@@ -22,21 +21,11 @@ public class BookReadingManager extends MonoBehaviour
 	private var _lineLength			: int = 400;
 	private var _lineHeight			: int = 35;
 	
-	public function		Start()
-	{
+	public function		Start() {
 		this._style.fontSize = 18;
 	}
 	
-	public function		Awake() : void
-	{
-		var	hero : GameObject;
-	
-		hero = GameObject.Find("Hero");
-		this._hero = hero.GetComponent("HeroManager") as HeroManager;
-	}
-	
-	public function 	Update()
-	{
+	public function 	Update() {
 		if (_bookMode == true && this._isTurningPage == false)
 		{
 	   		if (Input.GetButtonDown("Escape") || Input.GetButtonDown("Inventory"))
@@ -47,14 +36,12 @@ public class BookReadingManager extends MonoBehaviour
 	}
 	
 	
-	public function		displayLeftPage() : void
-	{
+	public function		displayLeftPage() : void {
 		if (this._leftPage != null)
 			this.displayPageContent(this._pageLeftMinX + this._innerMargin, this._pageMinY + this._innerMargin, this._leftPage);
 	}
 	
-	public function		displayRightPage() : void
-	{
+	public function		displayRightPage() : void {
 		if (this._rightPage != null)
 			this.displayPageContent(this._pageRightMinX + this._innerMargin, this._pageMinY + this._innerMargin, this._rightPage);
 	}
@@ -63,42 +50,38 @@ public class BookReadingManager extends MonoBehaviour
 	
 	public function	setBookMode(val : boolean) : void { _bookMode = val; }
 	
-	public function	openBook(obj : Book) : IEnumerator
-	{
+	public function	openBook(obj : Book) : IEnumerator {
 		this._isTurningPage = true;
-		this._hero.hearOpenBook();
+		gameObject.SendMessage("hearOpenBook");
 		this._currentBook = obj;
 		this._style.font = this._currentBook.getFontStyle();
 		this._bookMode = true;
 		for (var i : int = 0 ; i < 25 ; ++i)
 			yield this.setNextFrameToDisplay(open_book[i]);
-		this._hero.setSpecialAnimation(normal);
+		gameObject.SendMessage("setSpecialAnimation", normal);
 		_currentBook.resetReading();
 		displayBookContent();
 		this._isTurningPage = false;
 	}
 	
-	public public function	closeBook()
-	{
+	public public function	closeBook() {
 		this.turningPage();
-		this._hero.hearCloseBook();
+		gameObject.SendMessage("hearCloseBook");
 		for (var i : int = 24 ; i >= 0 ; --i)
 			yield this.setNextFrameToDisplay(open_book[i]);
 		this._bookMode = false;
-		this._hero.setSpecialAnimation(null);
+		gameObject.SendMessage("setNoSpecialAnimation");
 		this._currentBook = null;
 		this._isTurningPage = false;
 	}
 	
-	private function	playTurnLeftPageAnimation()
-	{
-		if (this._currentBook.getCurrentPage() > 0)
-		{
+	private function	playTurnLeftPageAnimation() {
+		if (this._currentBook.getCurrentPage() > 0) {
 			this.turningPage();
-			this._hero.hearTurnPage();
+			gameObject.SendMessage("hearTurnPage");
 			for (var i : int = 24 ; i >= 0 ; --i)
 				yield this.setNextFrameToDisplay(turn_page[i]);
-			this._hero.setSpecialAnimation(normal);
+			gameObject.SendMessage("setSpecialAnimation", normal);
 			this._currentBook.goPreviousPage();
 			this.displayBookContent();
 			this._isTurningPage = false;
@@ -107,25 +90,21 @@ public class BookReadingManager extends MonoBehaviour
 			this.closeBook();
 	}
 	
-	private function	playTurnRightPageAnimation()
-	{
-		if (this._currentBook.canTurnRightPage() == true)
-		{
+	private function	playTurnRightPageAnimation() {
+		if (this._currentBook.canTurnRightPage() == true) {
 			this.turningPage();
-			this._hero.hearTurnPage();
+			gameObject.SendMessage("hearTurnPage");
 			for (var i : int = 0 ; i < 25 ; ++i)
 				yield this.setNextFrameToDisplay(turn_page[i]);
-			this._hero.setSpecialAnimation(normal);
+			gameObject.SendMessage("setSpecialAnimation", normal);
 			this._currentBook.goNextPage();
 			this.displayBookContent();
 			this._isTurningPage = false;
 		}
 	}
 	
-	private function	managePageTurning()
-	{
-		if (Input.GetMouseButtonDown(0) && this._isTurningPage == false)
-		{
+	private function	managePageTurning() {
+		if (Input.GetMouseButtonDown(0) && this._isTurningPage == false) {
 			if 	((Input.mousePosition.x >= this._pageLeftMinX && Input.mousePosition.x <= this._pageLeftMaxX) &&
 				(Input.mousePosition.y >= this._pageMinY && Input.mousePosition.y <= this._pageMaxY))
 				this.playTurnLeftPageAnimation();
@@ -136,28 +115,23 @@ public class BookReadingManager extends MonoBehaviour
 	}
 	
 	
-	private function	displayBookContent() : void
-	{
-		if (_currentBook.getCurrentPage() == 0)
-		{
+	private function	displayBookContent() : void {
+		if (_currentBook.getCurrentPage() == 0) {
 			this._leftPage = null;
 			this._rightPage = this._currentBook.getTitle();
 		}
-		else
-		{
+		else {
 			this._leftPage = this._currentBook.getLeftPageContent();
 			this._rightPage = this._currentBook.getRightPageContent();
 		}
 	}
 	
-	private function displayPageContent(posX : int, posY : int, content : Array) : void
-	{
+	private function displayPageContent(posX : int, posY : int, content : Array) : void {
 		var		i			 	: int;
 		var		nb_rows			: int;
 		
 		nb_rows = content.length;
-		if (content[0].Length <= 5 || content[0].Substring(0, 5) != "_PIC_")
-		{
+		if (content[0].Length <= 5 || content[0].Substring(0, 5) != "_PIC_") {
 			for (i = 0 ; i < nb_rows ; ++i)
 			{
 				UnityEngine.GUI.Label(Rect (posX, posY, this._lineLength, this._lineHeight + 5), content[i], this._style);
@@ -171,16 +145,20 @@ public class BookReadingManager extends MonoBehaviour
 		}
 	}
 	
-	private function	setNextFrameToDisplay(frame : Texture) : IEnumerator
-	{
-		this._hero.setSpecialAnimation(frame);
-		yield this._hero.WaitForRealSeconds(this._frameDelay);
+	private function	setNextFrameToDisplay(frame : Texture) : IEnumerator {
+		gameObject.SendMessage("setSpecialAnimation", frame);
+		yield this.WaitForRealSeconds(this._frameDelay);
 	}
 	
-	private function	turningPage() : void
-	{
+	private function	turningPage() : void {
 		this._isTurningPage = true;
 		this._leftPage = null;
 		this._rightPage = null;
+	}
+	
+	private function	WaitForRealSeconds(time : float) : IEnumerator {
+		 var start : float = Time.realtimeSinceStartup;
+
+         while (Time.realtimeSinceStartup < start + time) { };
 	}
 }

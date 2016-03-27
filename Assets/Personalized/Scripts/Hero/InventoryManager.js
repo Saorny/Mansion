@@ -16,10 +16,10 @@ public class InventoryManager extends MonoBehaviour
 	public var		_maxY 				: int;
 	public var		descending 			: boolean;
 	public var		_lamp 				: Texture;
+	public var		_lampHandling		: Texture;
 	public var		_lampAnim			: Texture[];
 	public var		_inventoryTexture	: Texture;
 	public var		_heroFont			: Font;
-	private var		_hero				: HeroManager;
 	private var 	_specialAnimation	: Texture = null;
 	private var		_inHand				: Weapon = null;
 	private var		_diary				: Book = null;
@@ -36,8 +36,7 @@ public class InventoryManager extends MonoBehaviour
 	private var 	_usableArea 		: UsableItemArea;
 	private var 	_healingPotionHP 	: int = 25;
 	
-	public function 	Start() : void
-	{
+	public function 	Start() : void {
 		var text 		: TextAsset;
 	
 		this._inventoryMode = InventoryMode.OFF;
@@ -47,32 +46,27 @@ public class InventoryManager extends MonoBehaviour
 		this.buildUpInventories();
 		text = Resources.Load("Books_Content/Diary", typeof(TextAsset));
 		this.giveDiary("Diary", "Personal diary", this._diaryTexture, "Personal Diary", text.ToString(), this._heroFont, null);
-		this.giveWeapon(Collectable.ObjectType.lamp, "Lamp", "Useful to explore dark areas !", this._lamp,
-						this._lampAnim, false, 0, 0, 0);
+		this.giveWeapon(Collectable.ObjectType.lamp, "Lamp", "Useful to explore dark areas.", this._lamp,
+						this._lampAnim, this._lampHandling, false, 0, 0, 0);
 		this.switchToWeapon(0);
 	}
 	
-	public function		Awake() : void
-	{
+	public function		Awake() : void {
 		var	hero : GameObject;
 	
 		hero = GameObject.Find("Hero");
-		this._flashLight = hero.Find("Light");
+		this._flashLight = hero.Find("HeroLight");
 		this._bookSystem = hero.GetComponent("BookReadingManager") as BookReadingManager;
-		this._hero = hero.GetComponent("HeroManager") as HeroManager;
 	}
 	
-	public function 	manageLamp() : void
-	{
+	public function 	manageLamp() : void {
 		if (this._inHand == this._handables[0])
 		{
-			if (this._flashlightOn == true)
-		  	{
+			if (this._flashlightOn == true) {
 		  		this._flashLight.gameObject.light.active = false;
 		  		this._flashlightOn = false;
 		  	}
-		  	else
-		  	{
+		  	else {
 		  		this._flashLight.gameObject.light.active = true;
 		  		this._flashlightOn = true;
 		  	}
@@ -80,8 +74,7 @@ public class InventoryManager extends MonoBehaviour
 //	  	this._soundManager.playSoundType(parseInt(SoundType.SPEAK), parseInt(HeroVoice.FLASHLIGHT));
 	}
 	
-	public function hasItem(typeRequested : Collectable.ObjectType, onceUse : boolean): boolean
-	{
+	public function hasItem(typeRequested : Collectable.ObjectType, onceUse : boolean): boolean {
 		var obj : Collectable;
 		var found : boolean;
 		var i : int;
@@ -118,8 +111,7 @@ public class InventoryManager extends MonoBehaviour
 		
 	}
 	
-	public function 	displayInventory(hp : int, hpMax : int)
-	{
+	public function 	displayInventory(hp : int, hpMax : int) {
 		var	category : InventoryCategory;
 	
 		if (this._inventoryTexture != null)
@@ -147,8 +139,9 @@ public class InventoryManager extends MonoBehaviour
 								0, 
 								Screen.width, Screen.height), 
 								this._specialAnimation);
-		if (this._attacking == true)
+		if (this._attacking == true) {
 			this.manageAttackAnim();
+		}
 	}
 	
 	public function getCollectable(type : Collectable.ObjectType, name : String, description : String, icon : Texture) 
@@ -166,9 +159,9 @@ public class InventoryManager extends MonoBehaviour
 	}
 	
 	public function giveWeapon(	type : Collectable.ObjectType, name : String, description : String, icon : Texture,
-								animation : Texture[], canAttack : boolean, minDamage : int, maxDamage : int, coldown : float) 
+								animation : Texture[], handling : Texture, canAttack : boolean, minDamage : int, maxDamage : int, coldown : float) 
 	{
-		var weapon = new Weapon(type, name, description, icon, animation, canAttack, minDamage, maxDamage, coldown);
+		var weapon = new Weapon(type, name, description, icon, animation, handling, canAttack, minDamage, maxDamage, coldown);
 		
 		this._handables.Push(weapon);
 	}
@@ -193,14 +186,12 @@ public class InventoryManager extends MonoBehaviour
 	
 	public function 	updateDiary(content: String) : void { this._diary.addContent(content); }
 	
-	public function		displayObjectInHand() : void
-	{
+	public function		displayObjectInHand() : void {
 		GUI.DrawTexture(Rect(this._pos.x, this._pos.y, this._inHand.getPicture().width, this._inHand.getPicture().height), this._inHand.getPicture());
 		this.movingObjectInHands();
 	}
 	
-	public function		switchToWeapon(pos : int) : void
-	{
+	public function		switchToWeapon(pos : int) : void {
 		if (pos < this._handables.length && this._inHand != this._handables[pos])
 		{
 			if (this._inHand == this._handables[0])
@@ -216,8 +207,7 @@ public class InventoryManager extends MonoBehaviour
 		}
 	}
 	
-	public function		useCurrentWeapon() : boolean
-	{
+	public function		useCurrentWeapon() : boolean {
 		if (this._inHand.getCanAttack() == true)
 		{
 			this._attacking = true;
@@ -228,8 +218,7 @@ public class InventoryManager extends MonoBehaviour
 		return (this._attacking);
 	}
 	
-	private function manageAttackAnim() : void
-	{
+	private function manageAttackAnim() : void {
 		if (Time.time - this._lastAnimTime > 0.02)
 		{
 			this._specialAnimation = this._inHand.getNextAttackAnim();
@@ -244,23 +233,19 @@ public class InventoryManager extends MonoBehaviour
 		
 		for (var i = 0 ; i < this._usables.length ; ++i) {
 			item = this._usables[i] as Collectable;
-			Debug.Log(item.getType());
 			if (item.getType() == Collectable.ObjectType.ink_bottle) {
-				this._hero.addDialogText('Saving game...', 3, Message.messageType.TUTORIAL);
 				this._usables.Remove(item);
 				break;
 			}
 		}
 	}
 	
-	private function forceTurnLamp(val : boolean) : void
-	{
+	private function forceTurnLamp(val : boolean) : void {
 		this._flashLight.gameObject.SetActive(val);
 	  	this._flashlightOn = val;
 	}
 	
-	private function buildUpInventories() : void
-	{
+	private function buildUpInventories() : void {
 		this._inventories.Push(new InventoryCategory(	InventoryMode.OFF,
 														"Exit",
 														"Press escape or I to return resume the game",
@@ -289,15 +274,13 @@ public class InventoryManager extends MonoBehaviour
 		
 	}
 	
-	private function		closeInventoryMode() : void
-	{
+	private function		closeInventoryMode() : void {
 		Time.timeScale = 1.0;
 		this._inventoryMode = InventoryMode.OFF;
 		gameObject.SendMessage("allowMouseMovement", true);
 	}
 	
-	private function manageInventoryBrowsing(category : InventoryCategory) : IEnumerator
-	{
+	private function manageInventoryBrowsing(category : InventoryCategory) : IEnumerator {
 		if (Input.GetMouseButtonUp(0))
 		{
 			if (category.getType() != InventoryMode.OFF)
@@ -309,20 +292,17 @@ public class InventoryManager extends MonoBehaviour
 			GUI.Label (Rect (50, Screen.height - this.OBJECT_HEIGHT, 500, 500), category.getTitle() + " : " + category.getDescription());
 	}
 	
-	private function manageUseHandables(item : Collectable, weaponId : int) : IEnumerator
-	{
-		if (Input.GetMouseButtonDown(0))
-		{
+	private function manageUseHandables(item : Collectable, weaponId : int) : IEnumerator {
+		if (Input.GetMouseButtonDown(0)) {
 			this.switchToWeapon(weaponId);
-			yield this._hero.WaitForRealSeconds(0.1);
 			this.closeInventoryMode();
 		}
-		else
+		else {
 			GUI.Label (Rect (50, Screen.height - this.OBJECT_HEIGHT, 500, 500), item.getName() + " : " + item.getDescription());
+		}
 	}
 	
-	private function manageReadBooks(book : Book) : IEnumerator
-	{
+	private function manageReadBooks(book : Book) : IEnumerator {
 		if (Input.GetMouseButtonUp(0))
 			this._bookSystem.openBook(book);
 		else
@@ -330,8 +310,7 @@ public class InventoryManager extends MonoBehaviour
 		
 	}
 	
-	private function displayMainInventory() : void
-	{
+	private function displayMainInventory() : void {
 		var i 		: int;
 		var x 		: int;
 		var y 		: int;
@@ -361,8 +340,7 @@ public class InventoryManager extends MonoBehaviour
 		}
 	}
 	
-	private function displayHandableInventory(hp : int, hpMax : int) : void
-	{
+	private function displayHandableInventory(hp : int, hpMax : int) : void {
 		var i 		: int;
 		var x 		: int;
 		var y 		: int;
@@ -389,8 +367,7 @@ public class InventoryManager extends MonoBehaviour
 		}
 	}
 	
-	private function displayReadableInventory(hp : int, hpMax : int) : void
-	{
+	private function displayReadableInventory(hp : int, hpMax : int) : void {
 		var i 		: int;
 		var x 		: int;
 		var y 		: int;
@@ -420,8 +397,7 @@ public class InventoryManager extends MonoBehaviour
 		}
 	}
 	
-	private function displayUsableInventory(hp : int, hpMax : int) : void
-	{
+	private function displayUsableInventory(hp : int, hpMax : int) : void {
 		var i 		: int;
 		var x 		: int;
 		var y 		: int;
@@ -447,8 +423,7 @@ public class InventoryManager extends MonoBehaviour
 		}
 	}
 	
-	private function calculateMargin() : int
-	{
+	private function calculateMargin() : int {
 		var margin : int;
 	
 		if (Screen.width >= 500)
@@ -458,16 +433,14 @@ public class InventoryManager extends MonoBehaviour
 		return (margin);
 	}
 	
-	private function calculatePace(margin : int) : int
-	{
+	private function calculatePace(margin : int) : int {
 		var pace : int;
 	
 		pace = ((Screen.width - margin % this.OBJECT_WIDTH) / (Mathf.RoundToInt((Screen.width - margin) / this.OBJECT_WIDTH) - 1));
 		return (pace);
 	}
 	
-	private function movingObjectInHands()
-	{
+	private function movingObjectInHands() {
 		if (this._interval >= 10)
 		{
 			if (this.descending == true)
@@ -490,12 +463,12 @@ public class InventoryManager extends MonoBehaviour
 	
 	private function useFirstAid(obj: Collectable) : void {
 		this._usables.Remove(obj);
-		this._hero.drinkHealingPotion(this._healingPotionHP);
+		gameObject.SendMessage("drinkHealingPotion", this._healingPotionHP);
 	}
 	
 	private function useInkBottle(obj: Collectable) : void {
 		this.closeInventoryMode();
-		this._hero.openMenu(MenuManager.Menu_Data.SAVE_MENU);
+		gameObject.SendMessage("openMenu", MenuManager.Menu_Data.SAVE_MENU);
 	}
 	
 	private function 	OnDeserialized() : void {

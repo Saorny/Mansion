@@ -10,8 +10,8 @@ public class MenuTuto extends Menu
 
 	public function		MenuTuto() {}
 
-	public function		MenuTuto(hero : HeroManager, ptr : function(MenuManager.Menu_Data) : void, action_sound : AudioSource, path : String) {
-		super(hero, ptr, action_sound);
+	public function		MenuTuto(ptr : function(MenuManager.Menu_Data) : void, action_sound : AudioSource, path : String) {
+		super(ptr, action_sound);
 		var	res : TextAsset;
 		var	content : String;
 		

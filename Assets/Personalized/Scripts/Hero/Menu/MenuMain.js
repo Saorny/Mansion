@@ -3,11 +3,13 @@
 @DoNotSerialize
 public class MenuMain extends Menu
 {
+	private var			_closeMenuPtr	: function() : void;
+
 	public function		MenuMain() {}
 
-	public function		MenuMain(hero : HeroManager, action_sound : AudioSource, ptr : function(MenuManager.Menu_Data) : void)
-	{
-		super(hero, ptr, action_sound);
+	public function		MenuMain(action_sound : AudioSource, ptr : function(MenuManager.Menu_Data) : void, closeMenuPtr : function() : void) {
+		super(ptr, action_sound);
+		this._closeMenuPtr = closeMenuPtr;
 		this._menuTitle = "Main menu";
 		this._subMenus.Add(new MenuButton("New Game", this.launchNewGame));
 		this._subMenus.Add(new MenuButton("Last Checkpoint", this.loadCheckpoint, "Load Games", this.goToLoadMenu));
@@ -16,10 +18,8 @@ public class MenuMain extends Menu
 		this._subMenus.Add(new MenuButton("Quit", this.quitGame));
 	}
 	
-	private function	launchNewGame() : IEnumerable
-	{
-		this._hero.setGameStarted(true);
-		this._hero.closeMenu();
+	private function	launchNewGame() : IEnumerable {
+		this._closeMenuPtr();
 	}
 	
 	private function	loadCheckpoint() : void { LevelSerializer.Resume(); }

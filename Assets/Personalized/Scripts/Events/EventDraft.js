@@ -4,7 +4,6 @@
 public class EventDraft extends CinematicManager
 {
 	public	var		_furniture		: 	GameObject;
-	public var		_draft			:	AudioSource;
 	
 	public function		EventDraft()
 	{
@@ -17,11 +16,11 @@ public class EventDraft extends CinematicManager
 		{
 			this._triggered = true;
 			this.setCinematicMode();
-			yield this.MakeHeroLookAt(this._spots[0], 5);
-			this._draft.Play();
-			yield WaitForSeconds(3.0);
+			yield this.MakeHeroLookAt(this._spots[0], 3);
+			yield WaitForSeconds(1.0);
 			this.setAdventureMode();
-			this._hero.addDialogText('I should be able to push the bookcase... I have a funny feeling something is behind...', 3, Message.messageType.DIALOG);
+			this._hero.addDialogText('I should be able to push the bookcase... I have a funny feeling something is behind...', 6, Message.messageType.DIALOG);
+			this._hero.addDialogText('Certain objects may be pushed.', 6, Message.messageType.TUTORIAL);
 		}
 	}
 }

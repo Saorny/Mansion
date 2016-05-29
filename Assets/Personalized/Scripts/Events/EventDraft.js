@@ -21,6 +21,7 @@ public class EventDraft extends CinematicManager
 			this.setAdventureMode();
 			this._hero.addDialogText('I should be able to push the bookcase... I have a funny feeling something is behind...', 6, Message.messageType.DIALOG);
 			this._hero.addDialogText('Certain objects may be pushed.', 6, Message.messageType.TUTORIAL);
+			Destroy(this);
 		}
 	}
 }

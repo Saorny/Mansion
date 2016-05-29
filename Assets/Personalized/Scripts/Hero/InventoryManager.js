@@ -8,18 +8,22 @@ public class InventoryManager extends MonoBehaviour
 	public var 		OBJECT_WIDTH 		: int = 100;
 	public var 		OBJECT_HEIGHT 		: int = 100;
 
+	public var		_exitTexture 		: Texture;
 	public var		_diaryTexture 		: Texture;
 	public var		_toolBoxTexture		: Texture;
 	public var		_pos 				: Vector3;
 	public var		_interval 			: int;
 	public var		_minY 				: int;
 	public var		_maxY 				: int;
-	public var		descending 			: boolean;
+	public var		_descending 		: boolean;
 	public var		_lamp 				: Texture;
 	public var		_lampHandling		: Texture;
 	public var		_lampAnim			: Texture[];
 	public var		_inventoryTexture	: Texture;
 	public var		_heroFont			: Font;
+	public var 		_cursorTexture		: Texture2D;
+	public var 		_cursorMode			: CursorMode = CursorMode.Auto;
+	public var 		_hotSpot			: Vector2 = Vector2.zero;
 	private var 	_specialAnimation	: Texture = null;
 	private var		_inHand				: Weapon = null;
 	private var		_diary				: Book = null;
@@ -36,6 +40,8 @@ public class InventoryManager extends MonoBehaviour
 	private var 	_usableArea 		: UsableItemArea;
 	private var 	_healingPotionHP 	: int = 25;
 	
+
+	
 	public function 	Start() : void {
 		var text 		: TextAsset;
 	
@@ -44,7 +50,7 @@ public class InventoryManager extends MonoBehaviour
 		this._attacking = false;
 		this._interval = 0;
 		this.buildUpInventories();
-		text = Resources.Load("Books_Content/Diary", typeof(TextAsset));
+		text = Resources.Load("Books_Content/Diary/1", typeof(TextAsset));
 		this.giveDiary("Diary", "Personal diary", this._diaryTexture, "Personal Diary", text.ToString(), this._heroFont, null);
 		this.giveWeapon(Collectable.ObjectType.lamp, "Lamp", "Useful to explore dark areas.", this._lamp,
 						this._lampAnim, this._lampHandling, false, 0, 0, 0);
@@ -151,9 +157,9 @@ public class InventoryManager extends MonoBehaviour
 		this._usables.Push(newCollectable);
 	}
 	
-	public function giveBook(name : String, description : String, icon : Texture, title : String, text : String, font : Font, sketches : Texture[]) 
+	public function giveBook(name : String, description : String, icon : Texture, title : String, text : String, font : Font, sketches : Texture[], type : Book.BookType) 
 	{
-		var newBook = new Book(name, description, icon, title, text, font, sketches);
+		var newBook = new Book(name, description, icon, title, text, font, sketches, type);
 	
 		this._books.Push(newBook);
 	}
@@ -168,7 +174,7 @@ public class InventoryManager extends MonoBehaviour
 	
 	public function giveDiary(name : String, description : String, icon : Texture, title : String, text : String, font : Font, sketches : Texture[]) 
 	{
-		var newBook = new Book(name, description, icon, title, text, font, sketches);
+		var newBook = new Book(name, description, icon, title, text, font, sketches, Book.BookType.DIARY);
 
 		this._books.Push(newBook);
 		this._diary = newBook;
@@ -184,7 +190,12 @@ public class InventoryManager extends MonoBehaviour
 	public function		setUsableItemArea(area : UsableItemArea) : void { this._usableArea = area; }
 	public function		setSpecialAnimation(newAnimation : Texture) : void { this._specialAnimation = newAnimation; }
 	
-	public function 	updateDiary(content: String) : void { this._diary.addContent(content); }
+	public function 	updateBook(index : int, content: String) : void {
+		var book : Book;
+	
+		book = this._books[index] as Book;
+		book.addContent(content);
+	}
 	
 	public function		displayObjectInHand() : void {
 		GUI.DrawTexture(Rect(this._pos.x, this._pos.y, this._inHand.getPicture().width, this._inHand.getPicture().height), this._inHand.getPicture());
@@ -199,7 +210,7 @@ public class InventoryManager extends MonoBehaviour
 			else if (pos == 0)
 				this.forceTurnLamp(true);
 			this._inHand = this._handables[pos] as Weapon;
-			this.descending = true;
+			this._descending = true;
 			this._minY  = Screen.height - this._inHand.getPicture().height;
 			this._pos.x = Screen.width - this._inHand.getPicture().width;
 			this._pos.y = this._minY;
@@ -216,6 +227,26 @@ public class InventoryManager extends MonoBehaviour
 			this._specialAnimation = this._inHand.getPicture();
 		}
 		return (this._attacking);
+	}
+	
+	public function getBookIndex(type : Book.BookType) : int {
+		var book : Book;
+		var i : int;
+		
+		for (i = 0 ; i < this._books.length ; ++i) {
+			book = this._books[i] as Book;
+			if (book.getBookType() == type)
+				return i;
+		}
+		return -1;
+	}
+	
+	private function OnMouseEnter() {
+		Cursor.SetCursor(this._cursorTexture, this._hotSpot, this._cursorMode);
+	}
+	
+	private function OnMouseExit() {
+		Cursor.SetCursor(null, Vector2.zero, this._cursorMode);
 	}
 	
 	private function manageAttackAnim() : void {
@@ -248,8 +279,8 @@ public class InventoryManager extends MonoBehaviour
 	private function buildUpInventories() : void {
 		this._inventories.Push(new InventoryCategory(	InventoryMode.OFF,
 														"Exit",
-														"Press escape or I to return resume the game",
-														this._diaryTexture,
+														"Press escape or 'i' to return resume the game",
+														this._exitTexture,
 														null));
 		this._inventories.Push(new InventoryCategory(	InventoryMode.MAIN,
 														"Main inventory screen",
@@ -443,17 +474,17 @@ public class InventoryManager extends MonoBehaviour
 	private function movingObjectInHands() {
 		if (this._interval >= 10)
 		{
-			if (this.descending == true)
+			if (this._descending == true)
 			{
 				++this._pos.y;
 				if (this._pos.y >= this._maxY)
-					this.descending = false;
+					this._descending = false;
 			}
 			else
 			{
 				--this._pos.y;
 				if (this._pos.y <= this._minY)
-					this.descending = true;
+					this._descending = true;
 				
 			}
 			this._interval = 0;

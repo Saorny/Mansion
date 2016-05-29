@@ -15,10 +15,10 @@ public class WeaponCollider extends CollectableCollider
 		if (body.transform == this.getHeroBody() && Input.GetButtonDown("Use") && this._object.renderer.isVisible) 
 	   	{
 	   		this._hero.mayDislayTuto(TutorialManager.TutoList.WEAPON_COLLECTED);
-	   		this.getHero().giveWeapon(	this.ItemType, this.ItemName, this.ItemDescription, this.ItemIcon,
+	   		this.getHero().giveWeapon(	this._itemType, this._itemName, this._itemDescription, this._itemIcon,
 	   									this._animation, this._handling, this._canAttack, this._minDamage, this._maxDamage, this._coldown);
-			if (this.sound)
-				AudioSource.PlayClipAtPoint(this.sound, transform.position, 20);
+			if (this._sound)
+				AudioSource.PlayClipAtPoint(this._sound, transform.position, 20);
 			Destroy (this._object.gameObject);
 			Destroy (this);
 	   	}

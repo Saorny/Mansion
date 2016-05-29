@@ -5,7 +5,7 @@ public class SoundManagerHero extends MonoBehaviour
 {
 	public enum 	SoundType { WALK, SPEAK, PUSH, WEAPON }
 	public enum 	FloorType { GRASSY, WOODEN, WATERLY }
-	public enum 	HeroVoice { BREATHING_PUSHING, LOCKED, UNLOCKED, HEART_BEAT, LANDING, PAIN, SCARED, USE_BOTTLE }
+	public enum 	HeroVoice { BREATHING_PUSHING, LOCKED, UNLOCKED, SAVING, HEART_BEAT, LANDING, PAIN, SCARED, USE_BOTTLE }
 	public enum 	HeroWeapon { MINEPICK }
 	public enum 	CollisionSoundType { NOTHING, METAL, WOOD }
 	public enum 	MUSIC_THEMES { MENU }
@@ -21,8 +21,6 @@ public class SoundManagerHero extends MonoBehaviour
 	public var		_weather_volume		: float = 0;
 	private var		_themes				: Dictionary.<SoundManagerHero.MUSIC_THEMES, AudioSource>;
 	private var		_soundManagers		: Dictionary.<SoundManagerHero.SoundType, SoundTypeManager> = new Dictionary.<SoundManagerHero.SoundType, SoundTypeManager>();
-	@SerializeThis
-	public var 	_indoor 				: boolean = false;
 	@SerializeThis
 	public var		_walkingOn 			: FloorType = FloorType.WOODEN;
 	private var		_lastScare			: float;
@@ -80,7 +78,6 @@ public class SoundManagerHero extends MonoBehaviour
 		}
 	}
 
-	public function		getIndoor() : boolean { return (this._indoor); }
 	public function		getWalkingOn() : FloorType { return (this._walkingOn); }
 
 	public function		setPlayRain(val : boolean) : void
@@ -94,8 +91,7 @@ public class SoundManagerHero extends MonoBehaviour
 
 	public function		setIndoor(val : boolean) : void
 	{
-		this._indoor = val;
-		if (this._indoor == true)
+		if (val == true)
 			this._weather_volume = 0.1;
 		else
 			this._weather_volume = 1.0;

@@ -54,18 +54,17 @@ public class MenuSave extends Menu {
 	}
 	
 	private function	rewriteSave() : void {
-		LevelSerializer.SaveGame(this._subMenus[this.getLastClicked()].getSaveEntry().Name);
 		this._subMenus[this.getLastClicked()].getSaveEntry().Delete();
 		this._useInkPtr();
 		this._closeMenuPtr();
+		LevelSerializer.SaveGame(this._subMenus[this.getLastClicked()].getSaveEntry().Name);
 	}
 	
 	private function	createNewSave() : void {
-		LevelSerializer.SaveGame(this._newSaveName);
 		this._subMenus.Insert(0, new MenuButton(this._newSaveName + "(" + Application.loadedLevelName + "," + System.DateTime.Now + ")", null));
-		this._newSaveName = this._defaultName = "New save";
 		this._useInkPtr();
 		this._closeMenuPtr();
+		LevelSerializer.SaveGame(this._newSaveName);
 	}
 
 	private function	returnMainMenu() : void { this._closeMenuPtr(); }

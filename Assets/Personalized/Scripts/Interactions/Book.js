@@ -1,17 +1,22 @@
 @script SerializeAll
 public class Book extends Collectable
 {
-	private var	_title 					: String = "";
-	private var	_text 					: String = "";
-	private var _currentPage			: int = 0;
-	private var LINE_LENGTH				: int = 35;
-	private var PAGE_NB_ROWS			: int = 9;
-	private var _bookContent 			= new Array();
-	private var _fontStyle				: Font;
-	private var _sketches				: Texture[];
+	private var	_title 				: String = "";
+	private var	_text 				: String = "";
+	private var _currentPage		: int = 0;
+	private var CHAR_GRAPH_LENGTH 	: int = 11;
+	private var LINE_LENGTH			: int = ((Screen.width * 0.49) - (Screen.width * 0.12)) / CHAR_GRAPH_LENGTH;
+	private var LINE_HEIGHT			: int = 38;
+	private var PAGE_NB_ROWS		: int = ((Screen.height * 0.74) - (Screen.height * 0.14)) / LINE_HEIGHT;
+	private var _bookContent 		= new Array();
+	private var _fontStyle			: Font;
+	private var _sketches			: Texture[];
+	public var _bookType			: Book.BookType;
+	
+	public enum BookType { DIARY, PROFESSOR_DIARY }
 
-	public function Book(	name : String, description : String, icon : Texture ,
-							title : String, text : String, style : Font, sketches : Texture[])
+	public function Book(name : String, description : String, icon : Texture, title : String, text : String,
+						 style : Font, sketches : Texture[], type : Book.BookType)
 	{
 		super(Collectable.ObjectType.book, name, description, icon);
 		this._title = title;
@@ -19,6 +24,7 @@ public class Book extends Collectable
 		this._fontStyle = style;
 		this.resetReading();
 		this._sketches = sketches;
+		this._bookType = type;
 		parseContent(text);
 	}
 	
@@ -48,6 +54,7 @@ public class Book extends Collectable
 	}
 	public function getTitle() : String {return (this._title);}
 	public function getText() : String{return (this._text);}
+	public function getBookType() : Book.BookType {return (this._bookType);}
 	public function getCurrentPage() : int {return (this._currentPage);}
 	public function getFontStyle() : Font {return (this._fontStyle);}
 		
@@ -86,7 +93,7 @@ public class Book extends Collectable
 		
 		tl = text.Length;
 		ci = 0;
-		cp = 0;
+		cp = len(this._bookContent);
 		while (ci < tl)
 		{
 			this._bookContent[cp] = new Array();
@@ -94,7 +101,7 @@ public class Book extends Collectable
 			{
 				for (ll = 0 ; ll < this.LINE_LENGTH && (ci + ll) < tl ; )
 				{
-					if (ci + ll < tl && text[ci + ll] != ' ' && text[ci + ll] != '\n' && text.Substring(ci + ll, 5) != "_PIC_")
+					if (ci + ll < tl && text[ci + ll] != ' ' && text[ci + ll] != '\n' && (ci + ll + 5) < tl && text.Substring(ci + ll, 5) != "_PIC_")
 					{
 						wl = this.getNextWordLength(text.Substring(ci + ll));
 						if (ll + wl < this.LINE_LENGTH)

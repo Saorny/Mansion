@@ -12,13 +12,13 @@ public class BookReadingManager extends MonoBehaviour
 	private var _currentBook		: Book;
 	private var _frameDelay			: float = 0.04;
 	private var _innerMargin		: int = 2;
-	private var _pageMinY			: int = 123;
-	private var _pageMaxY			: int = 590;
-	private var _pageLeftMinX		: int = 117;
-	private var _pageLeftMaxX		: int = 515;
-	private var _pageRightMinX		: int = 545;
-	private var _pageRightMaxX		: int = 950;
-	private var _lineLength			: int = 400;
+	private var _pageMinY			: int = Screen.height * 0.2;
+	private var _pageMaxY			: int = Screen.height * 0.8;
+	private var _pageLeftMinX		: int = Screen.width * 0.12;
+	private var _pageLeftMaxX		: int = Screen.width * 0.49;
+	private var _pageRightMinX		: int = Screen.width * 0.52;
+	private var _pageRightMaxX		: int = Screen.width * 0.85;
+	private var _lineLength			: int = this._pageLeftMaxX - this._pageLeftMinX;
 	private var _lineHeight			: int = 35;
 	
 	public function		Start() {

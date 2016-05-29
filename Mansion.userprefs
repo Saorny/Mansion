@@ -1,15 +1,41 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Personalized\Scripts\Hero\HeroManager.js">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Personalized\Scripts\Hero\InventoryManager.js">
     <Files>
-      <File FileName="Assets\Personalized\Scripts\Hero\HeroManager.js" Line="314" Column="37" />
-      <File FileName="Assets\Personalized\Scripts\Interactions\WoodenDoorManager.js" Line="23" Column="39" />
-      <File FileName="Assets\Personalized\Scripts\Interactions\Interactable.js" Line="4" Column="48" />
-      <File FileName="Assets\Personalized\Scripts\Hero\SoundManagerHero.js" Line="67" Column="3" />
-      <File FileName="Assets\Personalized\Scripts\Interactions\Hittable.js" Line="9" Column="27" />
-      <File FileName="Assets\Personalized\Scripts\Interactions\CaveMonster\Creature.js" Line="1" Column="1" />
-      <File FileName="Assets\Personalized\Scripts\Events\EventDraft.js" Line="23" Column="94" />
+      <File FileName="Assets\Personalized\Scripts\Hero\InventoryManager.js" Line="271" Column="4" />
+      <File FileName="Assets\Personalized\Scripts\Hero\HeroManager.js" Line="1" Column="1" />
+      <File FileName="Assets\Personalized\Scripts\Hero\EnterArea.js" Line="1" Column="1" />
+      <File FileName="Assets\Personalized\Scripts\Hero\SoundManagerHero.js" Line="1" Column="1" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="Assembly-CSharp-firstpass" expanded="True">
+            <Node name="Plugins" expanded="True">
+              <Node name="whydoidoit.com" expanded="True">
+                <Node name="Radical" expanded="True">
+                  <Node name="System" expanded="True">
+                    <Node name="Delegates" expanded="True" />
+                  </Node>
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+          <Node name="Assembly-UnityScript" expanded="True">
+            <Node name="Personalized" expanded="True">
+              <Node name="Scripts" expanded="True">
+                <Node name="Events" expanded="True" />
+                <Node name="Hero" expanded="True">
+                  <Node name="Menu" expanded="True" />
+                  <Node name="InventoryManager.js" selected="True" />
+                </Node>
+                <Node name="Interactions" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

@@ -15,14 +15,18 @@ public class HeroManager extends MonoBehaviour
 	private var		_blurringEffect		: MotionBlur;
 	private var		_fishEyeEffect		: Fisheye;
 	private var		_targets			: List.<GameObject>;
+	@DoNotSerialize
 	private var		_audiosPaused		: List.<AudioSource>;
 	private var		_sanityManager		: SanityManager;
 	private var		_splatterEffect		: SplatterEffectManager;
 	private var 	_soundManager 		: SoundManagerHero;
 	private var 	_tutoManager 		: TutorialManager;
+	@DoNotSerialize
 	private var		_menuManager		: MenuManager;
 	private var		_inventoryManager	: InventoryManager;
+	@DoNotSerialize
 	private var		_dialogManager		: DialogManager;
+	private var		_indoor				: boolean = true;
 
 	public function 	Start() {
 		this._rainingSpawner.enableEmission = false;
@@ -156,6 +160,7 @@ public class HeroManager extends MonoBehaviour
 	{
 		this.manageIsRaining(val);
 		this._soundManager.setIndoor(val);
+		this._indoor = val;
 	}
 	
 	public function		setFloorType(val : SoundManagerHero.FloorType) : void { this._soundManager.setFloorType(val); }
@@ -167,7 +172,7 @@ public class HeroManager extends MonoBehaviour
 	public function		openMenu(menu : MenuManager.Menu_Data) : void
 	{
 		var allAudioSources = FindObjectsOfType(AudioSource) as AudioSource[];
-		
+		Screen.showCursor = true;
 		Time.timeScale = 0;
 		this.allowMouseMovement(false);
 		this._menuManager.goTo(menu);
@@ -186,6 +191,7 @@ public class HeroManager extends MonoBehaviour
 	}
 	
 	public function		closeMenu() : void {
+		Screen.showCursor = false;
 		Time.timeScale = 1.0;
 		this.allowMouseMovement(true);
 		this._menuManager.setMenuMode(false);
@@ -201,12 +207,14 @@ public class HeroManager extends MonoBehaviour
 	}
 	
 	public function 	openInventoryMode() {
+		Screen.showCursor = true;
 		Time.timeScale = 0;
 		this._inventoryManager.setInventoryMode(InventoryManager.InventoryMode.MAIN);
 		this.allowMouseMovement(false);
 	}
 	
 	public function 	closeInventoryMode() {
+		Screen.showCursor = false;
 		Time.timeScale = 1.0;
 		this._inventoryManager.setInventoryMode(InventoryManager.InventoryMode.OFF);
 		this.allowMouseMovement(true);
@@ -220,9 +228,9 @@ public class HeroManager extends MonoBehaviour
 	}
 	
 		
-	public function		giveBook(	name : String, description : String, icon : Texture,
-									title : String, text : String, font : Font, sketches : Texture[]) : void {
-		this._inventoryManager.giveBook(name, description, icon, title, text, font, sketches);
+	public function		giveBook(name : String, description : String, icon : Texture, title : String,
+								text : String, font : Font, sketches : Texture[], type : Book.BookType) : void {
+		this._inventoryManager.giveBook(name, description, icon, title, text, font, sketches, type);
 	}
 	
 	public function 	giveWeapon(	type : Collectable.ObjectType, name : String, description : String, icon : Texture,
@@ -290,14 +298,14 @@ public class HeroManager extends MonoBehaviour
 	public function		getInv() : InventoryManager.InventoryMode { return (this._inventoryManager.getInventoryMode()); }
 	public function 	getPauseHero() : boolean { return (this._heroPaused); }
 	public function 	getGameStarted() : boolean { return (this._gameStarted); }
-	public function 	getIndoor() : boolean { return (this._soundManager.getIndoor()); }
+	public function 	getIndoor() : boolean { return (this._indoor); }
 
 	public function		setMouseMovement(val : boolean) { this.allowMouseMovement(val);}
 	public function 	setPauseHero(val : boolean) { this._heroPaused = val; }
 	public function		setGameStarted(val : boolean) { this._gameStarted = val; }
 	public function 	setUsableItemArea(area : UsableItemArea) : void { this._inventoryManager.setUsableItemArea(area); }
 
-	public function 	updateDiary(content: String) : void { this._inventoryManager.updateDiary(content); }
+	public function 	updateBook(index : int, content: String) : void { this._inventoryManager.updateBook(index, content); }
 	public function 	heroSays(type : SoundManagerHero.HeroVoice) : void { this._soundManager.playSoundType(SoundManagerHero.SoundType.SPEAK, type); }
 	public function 	hearHeartBeat() { this._soundManager.playSoundType(SoundManagerHero.SoundType.SPEAK, SoundManagerHero.HeroVoice.HEART_BEAT); }
 	public function 	hearOpenBook() { this._soundManager.playOpenBook(); }
@@ -324,6 +332,11 @@ public class HeroManager extends MonoBehaviour
 	public function useInkBottle() : void {
 		this.addDialogText('Saving game...', 3, Message.messageType.TUTORIAL);
 		this._inventoryManager.depleteInkBottle();
+		this._soundManager.playSoundType(SoundManagerHero.SoundType.SPEAK, SoundManagerHero.HeroVoice.SAVING);
+	}
+	
+	public function getBookIndex(type : Book.BookType) : int {
+		return this._inventoryManager.getBookIndex(type);
 	}
 	
 	private function	dying() : void {
@@ -365,5 +378,6 @@ public class HeroManager extends MonoBehaviour
 	private function 	OnDeserialized() : void {
 		this.closeMenu();
 		this._gameStarted = true;
+		this.setIndoor(this._indoor);
 	}
 }

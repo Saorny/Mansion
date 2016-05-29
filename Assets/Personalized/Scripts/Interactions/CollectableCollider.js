@@ -3,13 +3,13 @@
 @DoNotSerialize
 public class CollectableCollider extends Interactable
 {
-	public var sound 				: AudioClip;
-	public var ItemType 			: Collectable.ObjectType;
-	public var ItemName				: String;
-	public var ItemDescription 		: String;
+	public var _sound 				: AudioClip;
+	public var _itemType 			: Collectable.ObjectType;
+	public var _itemName			: String;
+	public var _itemDescription 	: String;
 	public var _heroComment 		: String = "";
 	public var _heroCommentTime		: float = 2.0;
-	public var ItemIcon 			: Texture;
+	public var _itemIcon 			: Texture;
 	public var _object				: GameObject;
 	public var _highlight			: float = 2.5;
 	protected var _originalColor	: Color;
@@ -41,9 +41,9 @@ public class CollectableCollider extends Interactable
 
 	public function		OnTriggerStay(body : Collider) {
 		if (body.transform == this._heroBody && this._object.renderer.isVisible && Input.GetButtonDown("Use")) {
-			this._hero.getCollectable(this.ItemType, this.ItemName, this.ItemDescription, this.ItemIcon, this._heroComment, this._heroCommentTime);
-			if (this.sound)
-				AudioSource.PlayClipAtPoint(this.sound, transform.position, 20);
+			this._hero.getCollectable(this._itemType, this._itemName, this._itemDescription, this._itemIcon, this._heroComment, this._heroCommentTime);
+			if (this._sound)
+				AudioSource.PlayClipAtPoint(this._sound, transform.position, 20);
 			this._hero.mayDislayTuto(TutorialManager.TutoList.OBJECT_COLLECTED);
 			Destroy (this._object.gameObject);
 			Destroy (this);

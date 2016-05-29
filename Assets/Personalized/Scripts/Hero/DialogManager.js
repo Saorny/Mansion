@@ -1,6 +1,6 @@
 #pragma strict
 
-@script SerializeAll
+@DoNotSerialize
 public class DialogManager extends MonoBehaviour {
 
 	private var		_styles : Dictionary.<Message.messageType, GUIStyle>;

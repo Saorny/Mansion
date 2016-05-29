@@ -1,6 +1,6 @@
 #pragma strict
 
-@script SerializeAll
+@DoNotSerialize
 public class MenuManager extends MonoBehaviour
 {
 	public enum Menu_Data { 
